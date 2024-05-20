@@ -1,0 +1,24 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-standard-scss",
+    "stylelint-config-rational-order"
+  ],
+  "overrides": [
+    {
+      "files": ["**/*.{vue,html}"],
+      "customSyntax": "postcss-html"
+    }
+  ],
+  "rules": {
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": ["global", "export", "v-deep", "deep"]
+      }
+    ],
+    "unit-no-unknown": [true, { "ignoreUnits": ["/rpx/", "/upx/"] }],
+    "selector-type-no-unknown": [true, { "ignoreTypes": ["page"] }],
+    "value-keyword-case": null
+  }
+}

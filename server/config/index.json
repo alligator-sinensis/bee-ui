@@ -1,0 +1,6 @@
+{
+  "outDir": "dist",
+  "envDir": "./env",
+  "envPrefix": ["APP_"],
+  "envDataFileName": "env.data.json"
+}
