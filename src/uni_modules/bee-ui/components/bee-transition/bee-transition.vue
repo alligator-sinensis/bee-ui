@@ -29,10 +29,12 @@ const props = withDefaults(
     show?: boolean
     customStyle?: object
     customClass?: string
+    name?: string
   }>(),
   {
     show: false,
     customStyle: () => ({}),
+    name: "bee",
   },
 )
 
@@ -60,23 +62,23 @@ watch(
 
 async function enter() {
   emit("before-enter")
-  classList.value = ["bee-enter-active", "bee-enter-from"]
+  classList.value = [`${props.name}-enter-active`, `${props.name}-enter-from`]
   isShow.value = true
   await nextTick()
   await new Promise<void>((resolve) => {
     setTimeout(() => resolve(), 20)
   })
-  classList.value = ["bee-enter-active", "bee-enter-to"]
+  classList.value = [`${props.name}-enter-active`, `${props.name}-enter-to`]
   emit("enter")
 }
 async function leave() {
   emit("before-leave")
-  classList.value = ["bee-leave-active", "bee-leave-from"]
+  classList.value = [`${props.name}-leave-active`, `${props.name}-leave-from`]
   await nextTick()
   await new Promise<void>((resolve) => {
     setTimeout(() => resolve(), 20)
   })
-  classList.value = ["bee-leave-active", "bee-leave-to"]
+  classList.value = [`${props.name}-leave-active`, `${props.name}-leave-to`]
   emit("leave")
 }
 

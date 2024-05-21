@@ -5,8 +5,6 @@
 </template>
 
 <script setup lang="ts">
-import { uni } from "@dcloudio/uni-h5"
-
 withDefaults(
   defineProps<{
     backgroundColor?: string
@@ -15,8 +13,6 @@ withDefaults(
     backgroundColor: "#fff",
   },
 )
-
-console.log(uni.getSystemInfoSync())
 </script>
 
 <style scoped lang="scss">
