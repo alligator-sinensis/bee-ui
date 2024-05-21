@@ -1,7 +1,12 @@
 <template>
-  <bee-doc-demo-block title="为过渡效果命名">
-    <button size="mini" @click="show = !show">Toggle Fade</button>
-    <bee-transition name="fade" :show="show">Hello!</bee-transition>
+  <bee-doc-demo-block title="集成 Animate.css">
+    <button size="mini" @click="show = !show">Toggle</button>
+    <bee-transition
+      enter-active-class="animate__animated animate__tada"
+      leave-active-class="animate__animated animate__bounceOutRight"
+      :show="show"
+      >Hello!</bee-transition
+    >
   </bee-doc-demo-block>
 </template>
 
@@ -15,6 +20,7 @@ export default {
 
 <script setup lang="ts">
 import { ref } from "vue"
+import "animate.css"
 
 const show = ref(false)
 </script>
@@ -22,22 +28,17 @@ const show = ref(false)
 <style scoped lang="scss">
 :deep() {
   .bee-transition {
+    --animate-duration: 1s;
+    --animate-delay: 1s;
+    --animate-repeat: 1;
+
     position: relative;
     width: 120rpx;
+    margin-top: 20rpx;
     color: #fff;
     line-height: 50rpx;
     text-align: center;
     background-color: orangered;
-  }
-
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: opacity 0.5s ease;
-  }
-
-  .fade-enter-from,
-  .fade-leave-to {
-    opacity: 0;
   }
 }
 </style>
