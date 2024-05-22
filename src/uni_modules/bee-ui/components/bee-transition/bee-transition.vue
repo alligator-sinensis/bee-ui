@@ -18,7 +18,6 @@
 export default {
   options: {
     virtualHost: true,
-    styleIsolation: "shared",
   },
 }
 </script>

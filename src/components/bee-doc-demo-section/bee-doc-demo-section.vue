@@ -19,6 +19,7 @@ withDefaults(
 .bee-doc-demo-section {
   position: relative;
   min-height: 100vh;
+  padding-bottom: 40rpx;
   background-color: v-bind(backgroundColor);
 }
 </style>
