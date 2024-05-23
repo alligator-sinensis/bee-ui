@@ -8,8 +8,29 @@ page {
   --bee-color-white: #fff;
   --bee-color-black: #000;
   --bee-border-color: #dcdfe6;
+  --bee-font-size-xl: 18px;
+  --bee-font-size-lg: 16px;
+  --bee-font-size-md: 14px;
+  --bee-font-size-sm: 12px;
+  --bee-font-size-xs: 10px;
+  --bee-border-radius-xl: 16px;
+  --bee-border-radius-lg: 8px;
+  --bee-border-radius-md: 4px;
+  --bee-border-radius-sm: 2px;
+  --bee-padding-xl: 32px;
+  --bee-padding-lg: 24px;
+  --bee-padding-md: 16px;
+  --bee-padding-sm: 8px;
+  --bee-padding-xs: 4px;
+  --bee-text-color-primary: #303133;
+  --bee-text-color-regular: #606266;
+  --bee-text-color-secondary: #909399;
+  --bee-text-color-placeholder: #a8abb2;
+  --bee-text-color-disabled: #c0c4cc;
 
   // 按钮
+  --bee-button-radius: var(--bee-border-radius-md);
+  --bee-button-plain-background-color: var(--bee-color-white);
   --bee-button-primary-color: var(--bee-color-white);
   --bee-button-primary-background-color: var(--bee-color-primary);
   --bee-button-primary-border-color: var(--bee-color-primary);
@@ -26,15 +47,15 @@ page {
   --bee-button-danger-background-color: var(--bee-color-danger);
   --bee-button-danger-border-color: var(--bee-color-danger);
   --bee-button-large-height: 42px;
-  --bee-button-large-font-size: 14px;
-  --bee-button-large-padding: 0 18px;
-  --bee-button-normal-height: 36px;
-  --bee-button-normal-font-size: 14px;
-  --bee-button-normal-padding: 0 12px;
+  --bee-button-large-font-size: var(--bee-font-size-lg);
+  --bee-button-large-padding: 0 var(--bee-padding-lg);
+  --bee-button-middle-height: 36px;
+  --bee-button-middle-font-size: var(--bee-font-size-md);
+  --bee-button-middle-padding: 0 var(--bee-padding-md);
   --bee-button-small-height: 28px;
-  --bee-button-small-font-size: 12px;
-  --bee-button-small-padding: 0 8px;
+  --bee-button-small-font-size: var(--bee-font-size-sm);
+  --bee-button-small-padding: 0 var(--bee-padding-sm);
   --bee-button-mini-height: 20px;
-  --bee-button-mini-font-size: 10px;
-  --bee-button-mini-padding: 0 4px;
+  --bee-button-mini-font-size: var(--bee-font-size-xs);
+  --bee-button-mini-padding: 0 var(--bee-padding-xs);
 }

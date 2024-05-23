@@ -13,7 +13,7 @@ export type ButtonProps = {
 }
 
 export const buttonPropDefaults: ButtonProps = {
-  size: "normal",
+  size: "middle",
   plain: false,
   round: false,
   circle: false,
