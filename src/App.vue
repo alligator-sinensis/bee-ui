@@ -8,4 +8,5 @@ onLaunch(() => {
 
 <style lang="scss">
 @import "@zebra-ui/uniapp/index";
+@import "./uni_modules/bee-ui/style/variables";
 </style>

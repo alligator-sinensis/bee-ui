@@ -1,40 +1,53 @@
 .bee-button {
+  display: inline-block;
+  line-height: 1;
+
   // border: 2px solid seagreen;
   // border: none;
+  // color: var(--van-button-default-color);
+  background-color: #fff;
+  border: 1px solid var(--bee-border-color);
 
   &::after {
     display: none;
   }
 
-  // &--default {
-  //   color: var(--van-button-default-color);
-  //   background: var(--van-button-default-background);
-  //   border: var(--van-button-border-width) solid var(--van-button-default-border-color);
-  // }
+  &__content {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
 
-  // &--primary {
-  //   color: var(--van-button-primary-color);
-  //   background: var(--van-button-primary-background);
-  //   border: var(--van-button-border-width) solid var(--van-button-primary-border-color);
-  // }
+  &--primary {
+    color: var(--bee-button-primary-color);
+    background-color: var(--bee-button-primary-background-color);
+    border-color: var(--bee-button-primary-border-color);
+  }
 
-  // &--success {
-  //   color: var(--van-button-success-color);
-  //   background: var(--van-button-success-background);
-  //   border: var(--van-button-border-width) solid var(--van-button-success-border-color);
-  // }
+  &--success {
+    color: var(--bee-button-success-color);
+    background-color: var(--bee-button-success-background-color);
+    border-color: var(--bee-button-success-border-color);
+  }
 
-  // &--danger {
-  //   color: var(--van-button-danger-color);
-  //   background: var(--van-button-danger-background);
-  //   border: var(--van-button-border-width) solid var(--van-button-danger-border-color);
-  // }
+  &--info {
+    color: var(--bee-button-info-color);
+    background-color: var(--bee-button-info-background-color);
+    border-color: var(--bee-button-info-border-color);
+  }
 
-  // &--warning {
-  //   color: var(--van-button-warning-color);
-  //   background: var(--van-button-warning-background);
-  //   border: var(--van-button-border-width) solid var(--van-button-warning-border-color);
-  // }
+  &--warning {
+    color: var(--bee-button-warning-color);
+    background-color: var(--bee-button-warning-background-color);
+    border-color: var(--bee-button-warning-border-color);
+  }
+
+  &--danger {
+    color: var(--bee-button-danger-color);
+    background-color: var(--bee-button-danger-background-color);
+    border-color: var(--bee-button-danger-border-color);
+  }
 
   // &--plain {
   //   background: var(--van-button-plain-background);
@@ -56,31 +69,29 @@
   //   }
   // }
 
-  // &--large {
-  //   width: 100%;
-  //   height: var(--van-button-large-height);
-  // }
+  &--large {
+    height: var(--bee-button-large-height);
+    padding: var(--bee-button-large-padding);
+    font-size: var(--bee-button-large-font-size);
+  }
 
-  // &--normal {
-  //   padding: var(--van-button-normal-padding);
-  //   font-size: var(--van-button-normal-font-size);
-  // }
+  &--normal {
+    height: var(--bee-button-normal-height);
+    padding: var(--bee-button-normal-padding);
+    font-size: var(--bee-button-normal-font-size);
+  }
 
-  // &--small {
-  //   height: var(--van-button-small-height);
-  //   padding: var(--van-button-small-padding);
-  //   font-size: var(--van-button-small-font-size);
-  // }
+  &--small {
+    height: var(--bee-button-small-height);
+    padding: var(--bee-button-small-padding);
+    font-size: var(--bee-button-small-font-size);
+  }
 
-  // &--mini {
-  //   height: var(--van-button-mini-height);
-  //   padding: var(--van-button-mini-padding);
-  //   font-size: var(--van-button-mini-font-size);
-
-  //   & + &--mini {
-  //     margin-left: var(--van-padding-base);
-  //   }
-  // }
+  &--mini {
+    height: var(--bee-button-mini-height);
+    padding: var(--bee-button-mini-padding);
+    font-size: var(--bee-button-mini-font-size);
+  }
 
   // &__loading {
   //   color: inherit;

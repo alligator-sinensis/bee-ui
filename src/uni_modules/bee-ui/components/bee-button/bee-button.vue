@@ -1,6 +1,12 @@
 <template>
-  <button class="bee-button" :class="getClass">bee-button</button>
-  <pre>{{ props }}</pre>
+  <button class="bee-button" :class="getClass">
+    <view class="bee-button__content">
+      <view>图标</view>
+      <view>
+        <slot></slot>
+      </view>
+    </view>
+  </button>
 </template>
 
 <script lang="ts">
@@ -15,11 +21,6 @@ export default {
 import { computed } from "vue"
 import { type ButtonProps, buttonPropDefaults } from "./button"
 
-// vant 50 44 32 24
-// wot     44 36 28
-// uview   50 40 30 22
-// el 40 32 24
-
 const props = withDefaults(defineProps<ButtonProps>(), buttonPropDefaults)
 
 const namespace = "bee-button"
@@ -27,6 +28,7 @@ const namespace = "bee-button"
 const getClass = computed(() => {
   const res = [
     `${namespace}--${props.type}`,
+    `${namespace}--${props.size}`,
     {
       "is-plain": props.plain,
       "is-round": props.round,
