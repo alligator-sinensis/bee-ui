@@ -6,6 +6,7 @@ export type ButtonProps = {
   plain?: boolean // 朴素按钮
   round?: boolean // 圆角按钮
   circle?: boolean // 圆形按钮
+  square?: boolean // 方形按钮
   loading?: boolean
   disabled?: boolean
   to?: string
@@ -17,6 +18,7 @@ export const buttonPropDefaults: ButtonProps = {
   plain: false,
   round: false,
   circle: false,
+  square: false,
   loading: false,
   disabled: false,
   to: "",

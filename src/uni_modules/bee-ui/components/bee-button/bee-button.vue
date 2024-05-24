@@ -1,5 +1,5 @@
 <template>
-  <button class="bee-button" :class="getClass">
+  <button class="bee-button" :class="getClass" hover-class="is-active">
     <view class="bee-button__content">
       <view>图标</view>
       <view>
@@ -33,6 +33,7 @@ const getClass = computed(() => {
       "is-plain": props.plain,
       "is-round": props.round,
       "is-circle": props.circle,
+      "is-square": props.square,
       "is-loading": props.loading,
       "is-disabled": props.disabled,
     },

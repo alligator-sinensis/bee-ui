@@ -22,6 +22,11 @@
       <bee-button plain type="warning">Warning</bee-button>
       <bee-button plain type="danger">Danger</bee-button>
     </bee-doc-demo-block>
+    <bee-doc-demo-block title="按钮形状">
+      <bee-button square type="primary">方形按钮</bee-button>
+      <bee-button round type="primary">圆角按钮</bee-button>
+      <bee-button circle type="primary">圆形按钮</bee-button>
+    </bee-doc-demo-block>
   </bee-doc-demo-section>
 </template>
 
