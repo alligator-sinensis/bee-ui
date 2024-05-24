@@ -1,127 +1,115 @@
 <template>
   <bee-doc-demo-section>
-    <div class="tab-list">
-      <div
-        v-for="(item, index) in tabList"
-        :key="index"
-        class="tab-item"
-        :class="{ 'is-active': activeTab === index }"
-        @click="activeTab = index"
-      >
-        {{ item.label }}
-      </div>
-    </div>
-    <template v-if="activeTab === 0">
-      <bee-doc-demo-block title="图标颜色">
-        <view class="icon-list">
-          <view class="icon-item">
-            <bee-icon color="#FE0000" name="youtube-fill" size="32px" />
-          </view>
-          <view class="icon-item">
-            <bee-icon color="#42B883" name="vuejs-fill" size="32px" />
-          </view>
-          <view class="icon-item">
-            <bee-icon color="#00A1D6" name="bilibili-fill" size="32px" />
-          </view>
-        </view>
-      </bee-doc-demo-block>
-      <bee-doc-demo-block title="图标大小">
-        <view class="icon-list">
-          <view class="icon-item">
-            <bee-icon
-              color="var(--bee-text-color-primary)"
-              name="upload-cloud-2-line"
-              size="64px"
-            />
-          </view>
-          <view class="icon-item">
-            <bee-icon
-              color="var(--bee-text-color-primary)"
-              name="upload-cloud-2-line"
-              size="32px"
-            />
-          </view>
-          <view class="icon-item">
-            <bee-icon
-              color="var(--bee-text-color-primary)"
-              name="upload-cloud-2-line"
-              size="16px"
-            />
-          </view>
-        </view>
-      </bee-doc-demo-block>
-    </template>
-    <bee-doc-demo-block v-else>
+    <bee-doc-demo-block title="图标颜色">
       <view class="icon-list">
-        <view v-for="(item, index) in displayIconList" :key="index" class="icon-item">
-          <bee-icon color="var(--bee-text-color-primary)" :name="item" size="32px" />
-          <view class="label"> {{ item }}</view>
+        <view class="icon-item">
+          <bee-icon color="#FE0000" name="youtube-fill" size="32px" />
+        </view>
+        <view class="icon-item">
+          <bee-icon color="#42B883" name="vuejs-fill" size="32px" />
+        </view>
+        <view class="icon-item">
+          <bee-icon color="#00A1D6" name="bilibili-fill" size="32px" />
         </view>
       </view>
+    </bee-doc-demo-block>
+    <bee-doc-demo-block title="图标大小">
+      <view class="icon-list">
+        <view class="icon-item">
+          <bee-icon color="var(--bee-text-color-primary)" name="upload-cloud-2-line" size="64px" />
+        </view>
+        <view class="icon-item">
+          <bee-icon color="var(--bee-text-color-primary)" name="upload-cloud-2-line" size="32px" />
+        </view>
+        <view class="icon-item">
+          <bee-icon color="var(--bee-text-color-primary)" name="upload-cloud-2-line" size="16px" />
+        </view>
+      </view>
+    </bee-doc-demo-block>
+    <bee-doc-demo-block title="全部图标">
+      <input v-model="queryValue" class="search-input" :placeholder="`Search ${iconQty} Icons`" />
+      <template v-for="(item, index) in getDataList" :key="index">
+        <view v-if="item.tag !== '_comment'">
+          <view> {{ item.tag }}</view>
+          <view class="icon-list">
+            <view
+              v-for="(icon, iconIndex) in item.icons"
+              :key="iconIndex"
+              class="icon-item"
+              @click="setClipboardData(icon.name)"
+            >
+              <bee-icon color="var(--bee-text-color-primary)" :name="icon.name" size="32px" />
+              <view class="label"> {{ icon.name }}</view>
+            </view>
+          </view>
+        </view>
+      </template>
     </bee-doc-demo-block>
   </bee-doc-demo-section>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import remixiconGlyphJson from "remixicon/fonts/remixicon.glyph.json"
+import tags from "./tags.json"
 import { ref } from "vue"
 
-const iconNameList = Object.keys(remixiconGlyphJson)
+const queryValue = ref("")
 
-const filterLine = iconNameList.filter((item) => item.endsWith("-line"))
-const filterFill = iconNameList.filter((item) => item.endsWith("-fill"))
-const filter = iconNameList.filter((item) => !item.endsWith("-fill") && !item.endsWith("-line"))
-console.log({ filterLine, filterFill, filter })
+let dataList = Object.entries(tags)
+  .map(([tag, icons]) => ({
+    tag,
+    icons: Object.entries(icons).flatMap(([name, keyword]) =>
+      tag === "Editor"
+        ? { name, keyword }
+        : [
+            { name: name + "-line", keyword },
+            { name: name + "-fill", keyword },
+          ],
+    ),
+  }))
+  .filter((item) => !item.tag.startsWith("_"))
 
-const activeTab = ref(0)
-const tabList = [
-  {
-    label: "用法示例",
-  },
-  {
-    label: "line图标",
-  },
-  {
-    label: "fill图标",
-  },
-  {
-    label: "其他图标",
-  },
-]
+let iconQty = dataList.reduce((total, obj) => total + obj.icons.length, 0)
 
-const displayIconList = computed(() => {
-  switch (activeTab.value) {
-    case 1:
-      return iconNameList.filter((item) => item.endsWith("-line"))
-    case 2:
-      return iconNameList.filter((item) => item.endsWith("-fill"))
-    case 3:
-      return iconNameList.filter((item) => !item.endsWith("-line") && !item.endsWith("-fill"))
-    default:
-      return []
-  }
+const getDataList = computed(() => {
+  let res = dataList
+    .map(({ tag, icons }) => {
+      return {
+        tag,
+        icons: icons.filter((item) => {
+          return `${item.keyword},${item.name}`.indexOf(queryValue.value) !== -1
+        }),
+      }
+    })
+    .filter((item) => item.icons.length)
+  return res
 })
+
+const setClipboardData = (name) => {
+  const text = `<bee-icon name="${name}" />`
+  uni.setClipboardData({
+    data: text,
+    success: () => {
+      uni.showToast({
+        title: text,
+        icon: "none",
+      })
+    },
+  })
+}
 </script>
 
 <style scoped lang="scss">
-.tab-list {
+.search-input {
   position: sticky;
-  top: 44px;
-  display: flex;
-  align-items: center;
-  height: 30px;
+  top: 50px;
+  z-index: 10;
+  margin-bottom: 20px;
+  padding: 10px 20px;
   background-color: #fff;
-  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 12%);
-
-  .tab-item {
-    flex: 1;
-    text-align: center;
-
-    &.is-active {
-      color: var(--bee-color-primary);
-    }
-  }
+  box-shadow:
+    0 8px 24px #1a29470a,
+    0 2px 8px #1a294714;
 }
 
 .icon-list {
