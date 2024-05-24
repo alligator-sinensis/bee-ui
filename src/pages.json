@@ -19,6 +19,12 @@
           "style": {
             "navigationBarTitleText": "Button 按钮"
           }
+        },
+        {
+          "path": "icon/index",
+          "style": {
+            "navigationBarTitleText": "Icon 图标"
+          }
         }
       ]
     }

@@ -24,6 +24,10 @@ const componentPages = ref([
     label: "Button 按钮",
     url: "/pages/component/button/index",
   },
+  {
+    label: "Icon 图标",
+    url: "/pages/component/icon/index",
+  },
 ])
 
 const to = (url) => {
