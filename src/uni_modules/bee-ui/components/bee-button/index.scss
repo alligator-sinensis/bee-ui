@@ -34,24 +34,13 @@
 
   &__content {
     display: inline-flex;
-    gap: 40px;
     align-items: center;
     justify-content: center;
     height: 100%;
 
     :deep() {
       .bee-button__icon {
-        --bee-button-icon-margin: var(--bee-padding-xs);
-
         font-size: var(--bee-button-icon-font-size);
-
-        // &.left {
-        //   margin-right: var(--bee-button-icon-margin);
-        // }
-
-        // &.right {
-        //   margin-left: var(--bee-button-icon-margin);
-        // }
       }
     }
   }
@@ -111,6 +100,12 @@
 
     padding: var(--bee-button-large-padding);
     font-size: var(--bee-button-large-font-size);
+
+    :deep() {
+      .bee-button__content {
+        gap: var(--bee-padding-xs);
+      }
+    }
   }
 
   &--middle {
@@ -118,6 +113,12 @@
 
     padding: var(--bee-button-middle-padding);
     font-size: var(--bee-button-middle-font-size);
+
+    :deep() {
+      .bee-button__content {
+        gap: var(--bee-padding-xs);
+      }
+    }
   }
 
   &--small {
@@ -127,8 +128,8 @@
     font-size: var(--bee-button-small-font-size);
 
     :deep() {
-      .bee-button__icon {
-        --bee-button-icon-margin: calc(var(--bee-padding-xs) / 2);
+      .bee-button__content {
+        gap: calc(var(--bee-padding-xs) / 2);
       }
     }
   }
@@ -140,8 +141,8 @@
     font-size: var(--bee-button-mini-font-size);
 
     :deep() {
-      .bee-button__icon {
-        --bee-button-icon-margin: calc(var(--bee-padding-xs) / 2);
+      .bee-button__content {
+        gap: calc(var(--bee-padding-xs) / 2);
       }
     }
   }

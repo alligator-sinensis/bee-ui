@@ -5,6 +5,6 @@ import { pluginUni } from "./uni"
 export const getPlugins = (): PluginOption[] => {
   return [
     pluginUni(),
-    //  pluginAutoImport()
+    // pluginAutoImport()
   ]
 }

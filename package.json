@@ -56,7 +56,6 @@
     "@dcloudio/uni-mp-xhs": "3.0.0-alpha-4010520240507001",
     "@dcloudio/uni-quickapp-webview": "3.0.0-alpha-4010520240507001",
     "@vueuse/core": "^10.7.2",
-    "@zebra-ui/uniapp": "^2.0.1",
     "animate.css": "^4.1.1",
     "async-validator": "^4.2.5",
     "luch-request": "^3.1.1",
@@ -65,8 +64,7 @@
     "radash": "^12.1.0",
     "remixicon": "^4.2.0",
     "vue": "^3.4.21",
-    "vue-i18n": "^9.1.9",
-    "z-paging": "^2.7.10"
+    "vue-i18n": "^9.1.9"
   },
   "devDependencies": {
     "@dcloudio/types": "^3.4.8",

@@ -5,5 +5,9 @@
     "source.fixAll.eslint": "explicit",
     "source.fixAll.stylelint": "explicit"
   },
-  "stylelint.validate": ["css", "less", "postcss", "scss", "vue", "sass", "html"]
+  "stylelint.validate": ["css", "less", "postcss", "scss", "vue", "sass", "html"],
+  "files.associations": {
+    "manifest.json": "jsonc",
+    "pages.json": "jsonc"
+  }
 }

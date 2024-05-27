@@ -23,10 +23,30 @@
       <bee-button plain type="danger">Danger</bee-button>
     </bee-doc-demo-block>
     <bee-doc-demo-block title="按钮形状">
-      <bee-button square type="primary">方形按钮</bee-button>
-      <bee-button round type="primary">圆角按钮</bee-button>
-      <bee-button circle icon="search-line" type="primary" />
-      <bee-button circle type="primary">6</bee-button>
+      <view>
+        <bee-button size="large" square type="primary">方形按钮</bee-button>
+        <bee-button size="middle" square type="primary">方形按钮</bee-button>
+        <bee-button size="small" square type="primary">方形按钮</bee-button>
+        <bee-button size="mini" square type="primary">方形按钮</bee-button>
+      </view>
+      <view>
+        <bee-button round size="large" type="primary">圆角按钮</bee-button>
+        <bee-button round size="middle" type="primary">圆角按钮</bee-button>
+        <bee-button round size="small" type="primary">圆角按钮</bee-button>
+        <bee-button round size="mini" type="primary">圆角按钮</bee-button>
+      </view>
+      <view>
+        <bee-button circle icon="search-line" size="large" type="primary" />
+        <bee-button circle icon="search-line" size="middle" type="primary" />
+        <bee-button circle icon="search-line" size="small" type="primary" />
+        <bee-button circle icon="search-line" size="mini" type="primary" />
+      </view>
+      <view>
+        <bee-button circle size="large" type="primary">8</bee-button>
+        <bee-button circle size="middle" type="primary">8</bee-button>
+        <bee-button circle size="small" type="primary">8</bee-button>
+        <bee-button circle size="mini" type="primary">8</bee-button>
+      </view>
     </bee-doc-demo-block>
     <bee-doc-demo-block title="图标按钮">
       <view>
@@ -40,6 +60,11 @@
         <bee-button icon="add-line" size="small" type="primary">按钮</bee-button>
         <bee-button icon="add-line" size="mini" type="primary">按钮</bee-button>
       </view>
+    </bee-doc-demo-block>
+    <bee-doc-demo-block title="加载状态">
+      <bee-button loading />
+      <bee-button loading type="primary">加载中...</bee-button>
+      <bee-button loading type="primary">加载中...</bee-button>
     </bee-doc-demo-block>
   </bee-doc-demo-section>
 </template>

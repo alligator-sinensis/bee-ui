@@ -1,17 +1,18 @@
 <template>
   <button class="bee-button" :class="getClass" hover-class="is-active">
     <view class="bee-button__content">
+      <bee-icon v-if="loading" custom-class="bee-button__icon is-loading" name="loader-2-line" />
       <bee-icon
         v-if="icon && iconPosition === 'left'"
-        custom-class="bee-button__icon left"
+        custom-class="bee-button__icon"
         :name="icon"
       />
-      <view v-if="!!slots.default" class="bee-button__text">
+      <view v-if="hasContentText" class="bee-button__text">
         <slot></slot>
       </view>
       <bee-icon
         v-if="icon && iconPosition === 'right'"
-        custom-class="bee-button__icon right"
+        custom-class="bee-button__icon"
         :name="icon"
       />
     </view>
@@ -46,12 +47,13 @@ const getClass = computed(() => {
       "is-round": props.round,
       "is-circle": props.circle,
       "is-square": props.square,
-      "is-loading": props.loading,
       "is-disabled": props.disabled,
     },
   ]
   return res
 })
+
+const hasContentText = computed(() => !!slots.default)
 </script>
 
 <style scoped lang="scss">

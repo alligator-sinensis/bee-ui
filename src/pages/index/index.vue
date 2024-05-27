@@ -1,30 +1,21 @@
 <template>
   <view>
-    <button v-for="(item, index) in componentPages" :key="index" block @click="to(item.url)">
-      {{ item.label }}
+    <button
+      v-for="(item, index) in pages.subPackages[0].pages"
+      :key="index"
+      block
+      @click="to(item)"
+    >
+      {{ item.style.navigationBarTitleText }}
     </button>
   </view>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue"
+import pages from "@/pages.json"
 
-const componentPages = ref([
-  {
-    label: "Transition 动画",
-    url: "/pages/component/transition/index",
-  },
-  {
-    label: "Button 按钮",
-    url: "/pages/component/button/index",
-  },
-  {
-    label: "Icon 图标",
-    url: "/pages/component/icon/index",
-  },
-])
-
-const to = (url) => {
+const to = (item) => {
+  const url = `/${pages.subPackages[0].root}/${item.path}`
   uni.navigateTo({
     url,
   })

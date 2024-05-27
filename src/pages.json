@@ -4,45 +4,32 @@
       "path": "pages/index/index"
     }
   ],
+  // pages
   "subPackages": [
-    // {
-    //   "root": "pages/component",
-    //   "pages": [
-    //     {
-    //       "path": "transition/index",
-    //       "style": {
-    //         "navigationBarTitleText": "Transition 动画"
-    //       }
-    //     },
-    //     {
-    //       "path": "button/index",
-    //       "style": {
-    //         "navigationBarTitleText": "Button 按钮"
-    //       }
-    //     },
-    //     {
-    //       "path": "icon/index",
-    //       "style": {
-    //         "navigationBarTitleText": "Icon 图标"
-    //       }
-    //     }
-    //   ]
-    // }
+    {
+      "root": "pages/component",
+      "pages": [
+        {
+          "path": "transition/index",
+          "style": {
+            "navigationBarTitleText": "Transition 动画"
+          }
+        },
+        {
+          "path": "button/index",
+          "style": {
+            "navigationBarTitleText": "Button 按钮"
+          }
+        },
+        {
+          "path": "icon/index",
+          "style": {
+            "navigationBarTitleText": "Icon 图标"
+          }
+        }
+      ]
+    }
   ],
-  // "tabBar": {
-  //   "borderStyle": "white",
-  //   "backgroundColor": "#fff",
-  //   "list": [
-  //     {
-  //       "pagePath": "pages/index/index",
-  //       "text": "index"
-  //     },
-  //     {
-  //       "pagePath": "pages/user/index",
-  //       "text": "user"
-  //     }
-  //   ]
-  // },
   "globalStyle": {
     "navigationBarTitleText": "BeeUI",
     "navigationBarBackgroundColor": "#ffffff",
@@ -50,9 +37,6 @@
   },
   "easycom": {
     "autoscan": true,
-    "custom": {
-      "^z-(?!paging($|.*))(.+)$": "@zebra-ui/uniapp/components/z-$2/z-$2.vue",
-      "^(?!z-paging-refresh|z-paging-load-more)z-paging(.*)": "z-paging/components/z-paging$1/z-paging$1.vue"
-    }
+    "custom": {}
   }
 }
