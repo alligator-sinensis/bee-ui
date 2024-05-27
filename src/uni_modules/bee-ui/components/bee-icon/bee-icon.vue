@@ -1,10 +1,10 @@
 <template>
   <view
     class="bee-icon"
-    :class="[`ri-${name}`]"
+    :class="[`${classPrefix}-${name}`, customClass]"
     :style="{
-      color,
-      fontSize: size,
+      '--color': color,
+      '--font-size': size,
     }"
   />
 </template>
@@ -13,6 +13,7 @@
 export default {
   options: {
     virtualHost: true,
+    styleIsolation: "shared",
   },
 }
 </script>
@@ -23,19 +24,25 @@ withDefaults(
     name: string
     color?: string
     size?: string
+    classPrefix?: string
+    customClass?: string
   }>(),
   {
     color: "inherit",
     size: "inherit",
+    classPrefix: "ri",
+    customClass: "",
   },
 )
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 @import "remixicon/fonts/remixicon.css";
 
 .bee-icon {
   display: inline-block;
+  color: var(--color);
+  font-size: var(--font-size);
   line-height: 1;
 
   &::before {

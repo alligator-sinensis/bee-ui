@@ -49,13 +49,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue"
+import { computed, ref } from "vue"
 import tags from "./tags.json"
-import { ref } from "vue"
 
 const queryValue = ref("")
 
-let dataList = Object.entries(tags)
+const dataList = Object.entries(tags)
   .map(([tag, icons]) => ({
     tag,
     icons: Object.entries(icons).flatMap(([name, keyword]) =>
@@ -69,10 +68,10 @@ let dataList = Object.entries(tags)
   }))
   .filter((item) => !item.tag.startsWith("_"))
 
-let iconQty = dataList.reduce((total, obj) => total + obj.icons.length, 0)
+const iconQty = dataList.reduce((total, obj) => total + obj.icons.length, 0)
 
 const getDataList = computed(() => {
-  let res = dataList
+  const res = dataList
     .map(({ tag, icons }) => {
       return {
         tag,

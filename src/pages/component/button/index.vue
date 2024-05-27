@@ -25,7 +25,21 @@
     <bee-doc-demo-block title="按钮形状">
       <bee-button square type="primary">方形按钮</bee-button>
       <bee-button round type="primary">圆角按钮</bee-button>
-      <bee-button circle type="primary">圆形按钮</bee-button>
+      <bee-button circle icon="search-line" type="primary" />
+      <bee-button circle type="primary">6</bee-button>
+    </bee-doc-demo-block>
+    <bee-doc-demo-block title="图标按钮">
+      <view>
+        <bee-button icon="add-line" type="primary" />
+        <bee-button icon="add-line" type="primary">按钮</bee-button>
+        <bee-button icon="add-line" icon-position="right" type="primary">按钮</bee-button>
+      </view>
+      <view>
+        <bee-button icon="add-line" size="large" type="primary">按钮</bee-button>
+        <bee-button icon="add-line" type="primary">按钮</bee-button>
+        <bee-button icon="add-line" size="small" type="primary">按钮</bee-button>
+        <bee-button icon="add-line" size="mini" type="primary">按钮</bee-button>
+      </view>
     </bee-doc-demo-block>
   </bee-doc-demo-section>
 </template>

@@ -1,14 +1,8 @@
 <template>
   <view>
-    <z-button
-      v-for="(item, index) in componentPages"
-      :key="index"
-      block
-      type="primary"
-      @click="to(item.url)"
-    >
+    <button v-for="(item, index) in componentPages" :key="index" block @click="to(item.url)">
       {{ item.label }}
-    </z-button>
+    </button>
   </view>
 </template>
 

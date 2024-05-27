@@ -37,7 +37,8 @@
     "build:quickapp-webview": "uni build -p quickapp-webview",
     "build:quickapp-webview-huawei": "uni build -p quickapp-webview-huawei",
     "build:quickapp-webview-union": "uni build -p quickapp-webview-union",
-    "type-check": "vue-tsc --noEmit"
+    "type-check": "vue-tsc --noEmit",
+    "generate-component-types": "node scripts/generateComponentTypes.ts"
   },
   "dependencies": {
     "@dcloudio/uni-app": "3.0.0-alpha-4010520240507001",
@@ -61,6 +62,7 @@
     "luch-request": "^3.1.1",
     "pinia": "^2.0.3",
     "pinia-plugin-persistedstate": "^3.2.1",
+    "radash": "^12.1.0",
     "remixicon": "^4.2.0",
     "vue": "^3.4.21",
     "vue-i18n": "^9.1.9",

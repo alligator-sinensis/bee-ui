@@ -16,6 +16,7 @@
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "src/types/components.d.ts"
+    "src/types/components.d.ts",
+    "uni_modules/bee-ui/types/components.d.ts"
   ]
 }

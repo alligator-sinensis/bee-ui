@@ -5,29 +5,29 @@
     }
   ],
   "subPackages": [
-    {
-      "root": "pages/component",
-      "pages": [
-        {
-          "path": "transition/index",
-          "style": {
-            "navigationBarTitleText": "Transition 动画"
-          }
-        },
-        {
-          "path": "button/index",
-          "style": {
-            "navigationBarTitleText": "Button 按钮"
-          }
-        },
-        {
-          "path": "icon/index",
-          "style": {
-            "navigationBarTitleText": "Icon 图标"
-          }
-        }
-      ]
-    }
+    // {
+    //   "root": "pages/component",
+    //   "pages": [
+    //     {
+    //       "path": "transition/index",
+    //       "style": {
+    //         "navigationBarTitleText": "Transition 动画"
+    //       }
+    //     },
+    //     {
+    //       "path": "button/index",
+    //       "style": {
+    //         "navigationBarTitleText": "Button 按钮"
+    //       }
+    //     },
+    //     {
+    //       "path": "icon/index",
+    //       "style": {
+    //         "navigationBarTitleText": "Icon 图标"
+    //       }
+    //     }
+    //   ]
+    // }
   ],
   // "tabBar": {
   //   "borderStyle": "white",

@@ -11,6 +11,8 @@ export type ButtonProps = {
   disabled?: boolean
   to?: string
   replace?: boolean
+  icon?: string
+  iconPosition?: "left" | "right"
 }
 
 export const buttonPropDefaults: ButtonProps = {
@@ -23,4 +25,6 @@ export const buttonPropDefaults: ButtonProps = {
   disabled: false,
   to: "",
   replace: false,
+  icon: "",
+  iconPosition: "left",
 }

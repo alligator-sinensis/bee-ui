@@ -67,5 +67,7 @@ module.exports = {
         alphabetical: true,
       },
     ],
+    "no-duplicate-imports": "error",
+    "prefer-const": "error",
   },
 }

@@ -1,10 +1,19 @@
 <template>
   <button class="bee-button" :class="getClass" hover-class="is-active">
     <view class="bee-button__content">
-      <view>图标</view>
-      <view>
+      <bee-icon
+        v-if="icon && iconPosition === 'left'"
+        custom-class="bee-button__icon left"
+        :name="icon"
+      />
+      <view v-if="!!slots.default" class="bee-button__text">
         <slot></slot>
       </view>
+      <bee-icon
+        v-if="icon && iconPosition === 'right'"
+        custom-class="bee-button__icon right"
+        :name="icon"
+      />
     </view>
   </button>
 </template>
@@ -13,15 +22,18 @@
 export default {
   options: {
     virtualHost: true,
+    styleIsolation: "shared",
   },
 }
 </script>
 
 <script setup lang="ts">
-import { computed } from "vue"
+import { computed, useSlots } from "vue"
 import { type ButtonProps, buttonPropDefaults } from "./button"
 
 const props = withDefaults(defineProps<ButtonProps>(), buttonPropDefaults)
+
+const slots = useSlots()
 
 const namespace = "bee-button"
 
