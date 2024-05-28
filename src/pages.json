@@ -26,6 +26,12 @@
           "style": {
             "navigationBarTitleText": "Icon 图标"
           }
+        },
+        {
+          "path": "loading/index",
+          "style": {
+            "navigationBarTitleText": "Loading 加载"
+          }
         }
       ]
     }

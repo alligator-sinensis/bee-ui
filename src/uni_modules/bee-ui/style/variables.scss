@@ -59,4 +59,10 @@ page {
   --bee-button-mini-height: 20px;
   --bee-button-mini-font-size: var(--bee-font-size-xs);
   --bee-button-mini-padding: 0 var(--bee-padding-xs);
+
+  // loading
+  --bee-loading-text-color: var(--bee-text-color-2);
+  --bee-loading-text-font-size: var(--bee-font-size-md);
+  --bee-loading-spinner-color: #c8c9cc;
+  --bee-loading-spinner-size: 30px;
 }

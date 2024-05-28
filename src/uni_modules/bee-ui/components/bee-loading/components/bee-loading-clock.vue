@@ -1,0 +1,36 @@
+<template>
+  <view class="bee-loading" />
+</template>
+
+<script setup lang="ts"></script>
+
+<style scoped lang="scss">
+.bee-loading {
+  --size: 1em;
+
+  display: inline-flex;
+  box-sizing: border-box;
+  width: var(--size);
+  background:
+    radial-gradient(circle calc(0.08 * var(--size)), currentColor 95%, #0000),
+    linear-gradient(currentColor 50%, #0000 0) 50% / calc(0.08 * var(--size)) 60% no-repeat;
+  border: calc(0.08 * var(--size)) solid;
+  border-radius: 50%;
+  animation: l1 2s infinite linear;
+  aspect-ratio: 1;
+
+  &::before {
+    flex: 1;
+    background: linear-gradient(currentColor 50%, #0000 0) 50% / calc(0.06 * var(--size)) 80%
+      no-repeat;
+    animation: inherit;
+    content: "";
+  }
+}
+
+@keyframes l1 {
+  100% {
+    transform: rotate(1turn);
+  }
+}
+</style>

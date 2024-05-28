@@ -1,0 +1,61 @@
+<template>
+  <view class="bee-loading">
+    <view
+      v-for="(item, index) in 12"
+      :key="index"
+      class="bee-loading__line"
+      :class="[`bee-loading__line--${index + 1}`]"
+    />
+  </view>
+</template>
+
+<script setup lang="ts"></script>
+
+<style scoped lang="scss">
+.bee-loading {
+  --size: 1em;
+
+  position: relative;
+  display: inline-block;
+  width: var(--size);
+  height: var(--size);
+  vertical-align: middle;
+  animation: rotate 0.8s linear infinite;
+  animation-timing-function: steps(12);
+
+  .bee-loading__line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    &::before {
+      display: block;
+      width: calc(var(--size) * 0.04);
+      height: 25%;
+      margin: 0 auto;
+      background-color: currentColor;
+      border-radius: 40%;
+      content: " ";
+    }
+  }
+
+  @for $i from 1 through 12 {
+    .bee-loading__line--#{$i} {
+      transform: rotate($i * 30deg);
+      opacity: calc(1 - (0.75 / 12) * ($i - 1));
+    }
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+</style>
