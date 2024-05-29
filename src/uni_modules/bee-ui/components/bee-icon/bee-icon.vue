@@ -44,6 +44,7 @@ withDefaults(
   color: var(--color);
   font-size: var(--font-size);
   line-height: 1;
+  vertical-align: middle;
 
   &::before {
     display: inline-block;

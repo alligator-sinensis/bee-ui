@@ -7,6 +7,14 @@
   </view>
 </template>
 
+<script lang="ts">
+export default {
+  options: {
+    virtualHost: true,
+    styleIsolation: "shared",
+  },
+}
+</script>
 <script setup lang="ts">
 withDefaults(
   defineProps<{

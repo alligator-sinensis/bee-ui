@@ -8,6 +8,7 @@ page {
   --bee-color-white: #fff;
   --bee-color-black: #000;
   --bee-border-color: #dcdfe6;
+  --bee-border-width: 1px;
   --bee-font-size-xl: 18px;
   --bee-font-size-lg: 16px;
   --bee-font-size-md: 14px;
@@ -29,6 +30,7 @@ page {
   --bee-text-color-disabled: #c0c4cc;
 
   // 按钮
+  --bee-button-border-width: var(--bee-border-width);
   --bee-button-radius: var(--bee-border-radius-md);
   --bee-button-icon-font-size: 1.2em;
   --bee-button-plain-background-color: var(--bee-color-white);
@@ -65,4 +67,7 @@ page {
   --bee-loading-text-font-size: var(--bee-font-size-md);
   --bee-loading-spinner-color: #c8c9cc;
   --bee-loading-spinner-size: 30px;
+
+  // overlay
+  --bee-overlay-background-color: rgb(0 0 0 / 70%);
 }

@@ -15,12 +15,22 @@
       <bee-button size="mini" type="primary">mini</bee-button>
     </bee-doc-demo-block>
     <bee-doc-demo-block title="朴素按钮">
-      <bee-button plain>Default</bee-button>
-      <bee-button plain type="primary">Primary</bee-button>
-      <bee-button plain type="success">Success</bee-button>
-      <bee-button plain type="info">Info</bee-button>
-      <bee-button plain type="warning">Warning</bee-button>
-      <bee-button plain type="danger">Danger</bee-button>
+      <view>
+        <bee-button plain>Default</bee-button>
+        <bee-button plain type="primary">Primary</bee-button>
+        <bee-button plain type="success">Success</bee-button>
+        <bee-button plain type="info">Info</bee-button>
+        <bee-button plain type="warning">Warning</bee-button>
+        <bee-button plain type="danger">Danger</bee-button>
+      </view>
+      <view>
+        <bee-button plain round>Default</bee-button>
+        <bee-button plain round type="primary">Primary</bee-button>
+        <bee-button plain round type="success">Success</bee-button>
+        <bee-button plain round type="info">Info</bee-button>
+        <bee-button plain round type="warning">Warning</bee-button>
+        <bee-button plain round type="danger">Danger</bee-button>
+      </view>
     </bee-doc-demo-block>
     <bee-doc-demo-block title="按钮形状">
       <view>
@@ -91,7 +101,6 @@
       <bee-button :click="fetchSave" color="#34C0FF" icon="save-line" type="primary">
         保存
       </bee-button>
-      <bee-button :click="save" color="#34C0FF" icon="save-line" type="primary"> 保存 </bee-button>
     </bee-doc-demo-block>
   </bee-doc-demo-section>
 </template>
@@ -102,17 +111,15 @@ const fetchSave = () => {
     setTimeout(() => {
       console.log("ok")
       resolve()
-    }, 1000)
+    }, 100000)
   })
-}
-
-const save = () => {
-  console.log("ok")
-}
-
-const onClickContainer = () => {
-  console.log("onClickContainer")
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+:deep() {
+  .bee-button {
+    margin: 0 10px 10px 0;
+  }
+}
+</style>

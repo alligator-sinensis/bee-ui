@@ -32,6 +32,18 @@
           "style": {
             "navigationBarTitleText": "Loading 加载"
           }
+        },
+        {
+          "path": "overlay/index",
+          "style": {
+            "navigationBarTitleText": "Overlay 遮罩层"
+          }
+        },
+        {
+          "path": "popup/index",
+          "style": {
+            "navigationBarTitleText": "Popup 弹出层"
+          }
         }
       ]
     }

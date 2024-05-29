@@ -15,7 +15,7 @@ export type ButtonProps = {
   icon?: string
   iconPosition?: "left" | "right"
   background?: string
-  click?: (() => Promise<any>) | (() => any)
+  click?: ((event: MouseEvent) => Promise<any>) | ((event: MouseEvent) => any)
 }
 
 export const buttonPropDefaults: ButtonProps = {

@@ -85,7 +85,7 @@ const hasContentText = computed(() => !!slots.default)
 
 const clickLoading = ref(false)
 
-const onClick = async () => {
+const onClick = async (event: MouseEvent) => {
   const { to, replace, click } = props
   if (to) {
     if (replace) {
@@ -101,7 +101,7 @@ const onClick = async () => {
   if (click) {
     try {
       clickLoading.value = true
-      await click()
+      await click(event)
     } finally {
       clickLoading.value = false
     }
