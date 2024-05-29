@@ -61,6 +61,16 @@
         <bee-button icon="add-line" size="mini" type="primary">按钮</bee-button>
       </view>
     </bee-doc-demo-block>
+    <bee-doc-demo-block title="禁用状态">
+      <view>
+        <bee-button disabled type="primary">禁用状态</bee-button>
+        <bee-button disabled type="success">禁用状态</bee-button>
+      </view>
+      <view>
+        <bee-button disabled plain type="primary">禁用状态</bee-button>
+        <bee-button disabled plain type="success">禁用状态</bee-button>
+      </view>
+    </bee-doc-demo-block>
     <bee-doc-demo-block title="加载状态">
       <bee-button loading />
       <bee-button loading type="primary">加载中...</bee-button>
@@ -90,6 +100,7 @@
 const fetchSave = () => {
   return new Promise<void>((resolve) => {
     setTimeout(() => {
+      console.log("ok")
       resolve()
     }, 1000)
   })
@@ -97,6 +108,10 @@ const fetchSave = () => {
 
 const save = () => {
   console.log("ok")
+}
+
+const onClickContainer = () => {
+  console.log("onClickContainer")
 }
 </script>
 

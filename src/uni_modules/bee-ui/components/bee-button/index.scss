@@ -177,32 +177,13 @@
     display: block;
   }
 
-  // &__loading {
-  //   color: inherit;
-  //   font-size: inherit;
+  &.is-disabled {
+    color: var(--bee-button-color);
+    background-color: var(--bee-button-background-color);
 
-  //   &__spinner {
-  //     width: var(--van-button-loading-icon-size);
-  //     height: var(--van-button-loading-icon-size);
-  //     color: currentColor;
-  //   }
-  // }
-
-  // &--block {
-  //   display: block;
-  //   width: 100%;
-  // }
-
-  // &--disabled {
-  //   cursor: not-allowed;
-  //   opacity: var(--van-button-disabled-opacity);
-  // }
-
-  // &--loading {
-  //   cursor: default;
-  // }
-
-  // &--round {
-  //   border-radius: var(--van-button-round-radius);
-  // }
+    &::before {
+      background: var(--bee-color-white);
+      opacity: 0.5;
+    }
+  }
 }

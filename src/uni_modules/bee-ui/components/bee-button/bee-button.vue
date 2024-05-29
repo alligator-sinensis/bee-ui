@@ -2,6 +2,7 @@
   <button
     class="bee-button"
     :class="getClass"
+    :disabled="disabled"
     hover-class="is-active"
     :style="getStyle"
     @click="onClick"
