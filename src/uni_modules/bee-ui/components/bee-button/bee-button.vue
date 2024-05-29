@@ -3,13 +3,13 @@
     class="bee-button"
     :class="getClass"
     hover-class="is-active"
-    :style="{ background }"
+    :style="getStyle"
     @click="onClick"
   >
     <view class="bee-button__content">
-      <bee-loading v-if="loading" color="inherit" size="inherit" />
+      <bee-loading v-if="getLoading" color="inherit" size="var(--bee-button-icon-font-size)" />
       <bee-icon
-        v-if="icon && !loading && iconPosition === 'left'"
+        v-if="icon && !getLoading && iconPosition === 'left'"
         custom-class="bee-button__icon"
         :name="icon"
       />
@@ -17,7 +17,7 @@
         <slot></slot>
       </view>
       <bee-icon
-        v-if="icon && !loading && iconPosition === 'right'"
+        v-if="icon && !getLoading && iconPosition === 'right'"
         custom-class="bee-button__icon"
         :name="icon"
       />
@@ -35,7 +35,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { computed, useSlots } from "vue"
+import { computed, ref, useSlots } from "vue"
 import { type ButtonProps, buttonPropDefaults } from "./button"
 
 const props = withDefaults(defineProps<ButtonProps>(), buttonPropDefaults)
@@ -60,10 +60,32 @@ const getClass = computed(() => {
   return res
 })
 
+const getStyle = computed(() => {
+  const { background, plain, click } = props
+  const res = {}
+  if (background) {
+    if (plain) {
+      res["--bee-button-color"] = background
+      res["--bee-button-border-color"] = background
+    } else {
+      res["background"] = background
+      res["border"] = "none"
+      res["--bee-button-color"] = "var(--bee-color-white)"
+    }
+  }
+  return res
+})
+
+const getLoading = computed(() => {
+  return props.loading || clickLoading.value
+})
+
 const hasContentText = computed(() => !!slots.default)
 
-const onClick = () => {
-  const { to, replace } = props
+const clickLoading = ref(false)
+
+const onClick = async () => {
+  const { to, replace, click } = props
   if (to) {
     if (replace) {
       uni.redirectTo({
@@ -73,6 +95,14 @@ const onClick = () => {
       uni.navigateTo({
         url: to,
       })
+    }
+  }
+  if (click) {
+    try {
+      clickLoading.value = true
+      await click()
+    } finally {
+      clickLoading.value = false
     }
   }
 }

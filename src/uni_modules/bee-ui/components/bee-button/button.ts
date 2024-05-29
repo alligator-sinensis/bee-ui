@@ -15,6 +15,7 @@ export type ButtonProps = {
   icon?: string
   iconPosition?: "left" | "right"
   background?: string
+  click?: (() => Promise<any>) | (() => any)
 }
 
 export const buttonPropDefaults: ButtonProps = {

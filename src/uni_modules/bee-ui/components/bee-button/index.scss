@@ -1,11 +1,15 @@
 .bee-button {
+  --bee-button-color: var(--bee-text-color-primary);
+  --bee-button-background-color: var(--bee-color-white);
+  --bee-button-border-color: var(--bee-border-color);
+
   display: inline-block;
   height: var(--bee-button-height);
-  color: var(--bee-text-color-primary);
+  color: var(--bee-button-color);
   line-height: 1;
   white-space: nowrap;
-  background-color: var(--bee-color-white);
-  border: 1px solid var(--bee-border-color);
+  background-color: var(--bee-button-background-color);
+  border: 1px solid var(--bee-button-border-color);
   border-radius: var(--bee-button-radius);
 
   &::after {
@@ -46,52 +50,52 @@
   }
 
   &--primary {
-    color: var(--bee-button-primary-color);
-    background-color: var(--bee-button-primary-background-color);
-    border-color: var(--bee-button-primary-border-color);
+    --bee-button-color: var(--bee-button-primary-color);
+    --bee-button-background-color: var(--bee-button-primary-background-color);
+    --bee-button-border-color: var(--bee-button-primary-border-color);
 
     &.is-plain {
-      color: var(--bee-button-primary-background-color);
+      --bee-button-color: var(--bee-button-primary-background-color);
     }
   }
 
   &--success {
-    color: var(--bee-button-success-color);
-    background-color: var(--bee-button-success-background-color);
-    border-color: var(--bee-button-success-border-color);
+    --bee-button-color: var(--bee-button-success-color);
+    --bee-button-background-color: var(--bee-button-success-background-color);
+    --bee-button-border-color: var(--bee-button-success-border-color);
 
     &.is-plain {
-      color: var(--bee-button-success-background-color);
+      --bee-button-color: var(--bee-button-success-background-color);
     }
   }
 
   &--info {
-    color: var(--bee-button-info-color);
-    background-color: var(--bee-button-info-background-color);
-    border-color: var(--bee-button-info-border-color);
+    --bee-button-color: var(--bee-button-info-color);
+    --bee-button-background-color: var(--bee-button-info-background-color);
+    --bee-button-border-color: var(--bee-button-info-border-color);
 
     &.is-plain {
-      color: var(--bee-button-info-background-color);
+      --bee-button-color: var(--bee-button-info-background-color);
     }
   }
 
   &--warning {
-    color: var(--bee-button-warning-color);
-    background-color: var(--bee-button-warning-background-color);
-    border-color: var(--bee-button-warning-border-color);
+    --bee-button-color: var(--bee-button-warning-color);
+    --bee-button-background-color: var(--bee-button-warning-background-color);
+    --bee-button-border-color: var(--bee-button-warning-border-color);
 
     &.is-plain {
-      color: var(--bee-button-warning-background-color);
+      --bee-button-color: var(--bee-button-warning-background-color);
     }
   }
 
   &--danger {
-    color: var(--bee-button-danger-color);
-    background-color: var(--bee-button-danger-background-color);
-    border-color: var(--bee-button-danger-border-color);
+    --bee-button-color: var(--bee-button-danger-color);
+    --bee-button-background-color: var(--bee-button-danger-background-color);
+    --bee-button-border-color: var(--bee-button-danger-border-color);
 
     &.is-plain {
-      color: var(--bee-button-danger-background-color);
+      --bee-button-color: var(--bee-button-danger-background-color);
     }
   }
 
@@ -148,7 +152,7 @@
   }
 
   &.is-plain {
-    background: var(--bee-button-plain-background-color);
+    --bee-button-background-color: var(--bee-button-plain-background-color);
   }
 
   &.is-round {

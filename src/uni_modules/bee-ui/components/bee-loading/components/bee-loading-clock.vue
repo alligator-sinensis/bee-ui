@@ -2,7 +2,14 @@
   <view class="bee-loading__icon" />
 </template>
 
-<script setup lang="ts"></script>
+<script lang="ts">
+export default {
+  options: {
+    virtualHost: true,
+    styleIsolation: "shared",
+  },
+}
+</script>
 
 <style scoped lang="scss">
 .bee-loading__icon {

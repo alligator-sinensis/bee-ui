@@ -77,9 +77,27 @@
       <bee-button background="#7232dd" plain>单色按钮</bee-button>
       <bee-button background="linear-gradient(to right, #ff6034, #ee0a24)"> 渐变色按钮 </bee-button>
     </bee-doc-demo-block>
+    <bee-doc-demo-block title="异步Loading">
+      <bee-button :click="fetchSave" color="#34C0FF" icon="save-line" type="primary">
+        保存
+      </bee-button>
+      <bee-button :click="save" color="#34C0FF" icon="save-line" type="primary"> 保存 </bee-button>
+    </bee-doc-demo-block>
   </bee-doc-demo-section>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const fetchSave = () => {
+  return new Promise<void>((resolve) => {
+    setTimeout(() => {
+      resolve()
+    }, 1000)
+  })
+}
+
+const save = () => {
+  console.log("ok")
+}
+</script>
 
 <style scoped lang="scss"></style>
