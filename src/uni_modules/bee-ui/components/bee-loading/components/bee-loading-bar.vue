@@ -1,20 +1,20 @@
 <template>
-  <view class="bee-loading" />
+  <view class="bee-loading__icon" />
 </template>
 
 <script setup lang="ts"></script>
 
 <style scoped lang="scss">
-.bee-loading {
+.bee-loading__icon {
   --c: no-repeat linear-gradient(currentColor 0 0);
 
   display: inline-block;
-  width: 1em;
-  aspect-ratio: 1;
+  width: var(--loading-icon-size);
   background: var(--c), var(--c), var(--c), var(--c), var(--c), var(--c);
   animation:
     l14-1 0.5s infinite alternate,
     l14-2 2s infinite;
+  aspect-ratio: 1;
 }
 
 @keyframes l14-1 {

@@ -7,12 +7,14 @@ export type ButtonProps = {
   round?: boolean // 圆角按钮
   circle?: boolean // 圆形按钮
   square?: boolean // 方形按钮
+  block?: boolean
   loading?: boolean
   disabled?: boolean
   to?: string
   replace?: boolean
   icon?: string
   iconPosition?: "left" | "right"
+  background?: string
 }
 
 export const buttonPropDefaults: ButtonProps = {
@@ -21,6 +23,7 @@ export const buttonPropDefaults: ButtonProps = {
   round: false,
   circle: false,
   square: false,
+  block: false,
   loading: false,
   disabled: false,
   to: "",

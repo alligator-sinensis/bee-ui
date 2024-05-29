@@ -1,17 +1,15 @@
 <template>
-  <view class="bee-loading" />
+  <view class="bee-loading__icon" />
 </template>
 
 <script setup lang="ts"></script>
 
 <style scoped lang="scss">
-.bee-loading {
-  --size: 1em;
-
+.bee-loading__icon {
   display: inline-block;
   box-sizing: border-box;
-  width: var(--size);
-  border: calc(0.2 * var(--size)) solid currentColor;
+  width: var(--loading-icon-size);
+  border: calc(0.08 * var(--loading-icon-size)) solid currentColor;
   border-radius: 50%;
   animation:
     l20-1 0.8s infinite linear alternate,

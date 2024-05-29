@@ -1,13 +1,13 @@
 <template>
-  <view class="bee-loading" />
+  <view class="bee-loading__icon" />
 </template>
 
 <script setup lang="ts"></script>
 
 <style scoped lang="scss">
-.bee-loading {
+.bee-loading__icon {
   display: inline-flex;
-  width: 1em;
+  width: var(--loading-icon-size);
   background:
     linear-gradient(currentColor 0 0) right / 51% 100%,
     linear-gradient(currentColor 0 0) bottom / 100% 51%;

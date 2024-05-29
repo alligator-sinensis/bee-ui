@@ -169,6 +169,10 @@
     border-radius: 0;
   }
 
+  &.is-block {
+    display: block;
+  }
+
   // &__loading {
   //   color: inherit;
   //   font-size: inherit;

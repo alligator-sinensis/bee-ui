@@ -64,7 +64,18 @@
     <bee-doc-demo-block title="加载状态">
       <bee-button loading />
       <bee-button loading type="primary">加载中...</bee-button>
-      <bee-button loading type="primary">加载中...</bee-button>
+    </bee-doc-demo-block>
+    <bee-doc-demo-block title="块级按钮">
+      <bee-button block loading type="primary">块级按钮</bee-button>
+    </bee-doc-demo-block>
+    <bee-doc-demo-block title="页面导航">
+      <bee-button to="/pages/index/index" type="primary">页面跳转</bee-button>
+      <bee-button replace to="/pages/index/index" type="primary">页面跳转 replace</bee-button>
+    </bee-doc-demo-block>
+    <bee-doc-demo-block title="自定义颜色">
+      <bee-button background="#7232dd">单色按钮</bee-button>
+      <bee-button background="#7232dd" plain>单色按钮</bee-button>
+      <bee-button background="linear-gradient(to right, #ff6034, #ee0a24)"> 渐变色按钮 </bee-button>
     </bee-doc-demo-block>
   </bee-doc-demo-section>
 </template>

@@ -1,9 +1,15 @@
 <template>
-  <button class="bee-button" :class="getClass" hover-class="is-active">
+  <button
+    class="bee-button"
+    :class="getClass"
+    hover-class="is-active"
+    :style="{ background }"
+    @click="onClick"
+  >
     <view class="bee-button__content">
-      <bee-icon v-if="loading" custom-class="bee-button__icon is-loading" name="loader-2-line" />
+      <bee-loading v-if="loading" color="inherit" size="inherit" />
       <bee-icon
-        v-if="icon && iconPosition === 'left'"
+        v-if="icon && !loading && iconPosition === 'left'"
         custom-class="bee-button__icon"
         :name="icon"
       />
@@ -11,7 +17,7 @@
         <slot></slot>
       </view>
       <bee-icon
-        v-if="icon && iconPosition === 'right'"
+        v-if="icon && !loading && iconPosition === 'right'"
         custom-class="bee-button__icon"
         :name="icon"
       />
@@ -48,12 +54,28 @@ const getClass = computed(() => {
       "is-circle": props.circle,
       "is-square": props.square,
       "is-disabled": props.disabled,
+      "is-block": props.block,
     },
   ]
   return res
 })
 
 const hasContentText = computed(() => !!slots.default)
+
+const onClick = () => {
+  const { to, replace } = props
+  if (to) {
+    if (replace) {
+      uni.redirectTo({
+        url: to,
+      })
+    } else {
+      uni.navigateTo({
+        url: to,
+      })
+    }
+  }
+}
 </script>
 
 <style scoped lang="scss">

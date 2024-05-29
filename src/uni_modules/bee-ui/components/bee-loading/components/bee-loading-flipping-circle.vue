@@ -1,14 +1,14 @@
 <template>
-  <view class="bee-loading" />
+  <view class="bee-loading__icon" />
 </template>
 
 <script setup lang="ts"></script>
 
 <style scoped lang="scss">
-.bee-loading {
+.bee-loading__icon {
   display: inline-flex;
-  width: 1em;
-  height: 1em;
+  width: var(--loading-icon-size);
+  height: var(--loading-icon-size);
   background:
     radial-gradient(farthest-side at left, var(--c)) right / 50% 100%,
     radial-gradient(farthest-side at top, var(--c)) bottom/100% 50%;

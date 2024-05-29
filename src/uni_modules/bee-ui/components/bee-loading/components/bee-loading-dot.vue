@@ -1,14 +1,14 @@
 <template>
-  <div class="bee-loading"></div>
+  <div class="bee-loading__icon"></div>
 </template>
 
 <script setup lang="ts"></script>
 
 <style scoped lang="scss">
-.bee-loading {
+.bee-loading__icon {
   --_g: no-repeat radial-gradient(farthest-side, currentColor 94%, transparent);
   display: inline-block;
-  width: 1em;
+  width: var(--loading-icon-size);
   aspect-ratio: 1;
   background:
     var(--_g) 0 0,

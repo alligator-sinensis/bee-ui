@@ -1,16 +1,14 @@
 <template>
-  <view class="bee-loading" />
+  <view class="bee-loading__icon" />
 </template>
 
 <script setup lang="ts"></script>
 
 <style scoped lang="scss">
-.bee-loading {
-  --size: 1em;
-
+.bee-loading__icon {
   aspect-ratio: 1;
-  width: var(--size);
-  padding: calc(0.2 * var(--size));
+  width: var(--loading-icon-size);
+  padding: calc(0.1 * var(--loading-icon-size));
   background: currentColor;
   border-radius: 50%;
 
