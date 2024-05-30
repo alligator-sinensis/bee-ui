@@ -1,6 +1,6 @@
 <template>
   <bee-overlay :duration="duration" :show="show" :z-index="zIndex" @click="clickOverLay" />
-  <bee-transition class="bee-popup" :show="show">
+  <bee-transition class="bee-popup" :class="[`bee-popup__${position}`]" :show="show">
     <slot></slot>
   </bee-transition>
 </template>
@@ -29,7 +29,7 @@ const props = withDefaults(
     show: false,
     overlay: false,
     position: "center",
-    duration: "0.3",
+    duration: "1.3",
     zIndex: 2000,
     round: false,
     closeOnClickOverlay: true,
@@ -61,15 +61,26 @@ const clickOverLay = () => {
   overflow-y: auto;
   background-color: var(--bee-popup-background-color);
   -webkit-overflow-scrolling: touch;
-}
 
-.bee-enter-active,
-.bee-leave-active {
-  transition: opacity v-bind(getDuration);
-}
+  &__center {
+    top: 50%;
+    right: 0;
+    left: 0;
+    width: fit-content;
+    max-width: calc(100vw - 2 * var(--bee-padding-md));
+    margin: 0 auto;
+    padding: 50px;
+    transform: scale(1) translateY(-50%);
+  }
 
-.bee-enter-from,
-.bee-leave-to {
-  opacity: 0;
+  &.bee-enter-active,
+  &.bee-leave-active {
+    transition: all v-bind(getDuration) ease;
+  }
+
+  &.bee-enter-from,
+  &.bee-leave-to {
+    transform: scale(0);
+  }
 }
 </style>
