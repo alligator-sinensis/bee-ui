@@ -37,18 +37,14 @@ const props = withDefaults(
   },
 )
 const emit = defineEmits(["update:show"])
-// const show = useVModel(props, "show", emit)
-
-// const clickOverLay = () => {
-//   console.log("clickOverLay")
-//   if (props.closeOnClickOverlay) {
-//     show.value = false
-//   }
-// }
-
 const show = useVModel(props, "show", emit)
 
-console.log(useVModel)
+const clickOverLay = () => {
+  console.log("clickOverLay")
+  if (props.closeOnClickOverlay) {
+    show.value = false
+  }
+}
 </script>
 
 <style scoped lang="scss"></style>
