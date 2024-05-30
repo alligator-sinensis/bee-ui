@@ -1,10 +1,13 @@
 <template>
   <bee-overlay :duration="duration" :show="show" :z-index="zIndex" @click="clickOverLay" />
-  <view class="bee-popup">bee-popup</view>
+  <bee-transition class="bee-popup" :show="show">
+    <slot></slot>
+  </bee-transition>
 </template>
 
 <script setup lang="ts">
 import { useVModel } from "@vueuse/core"
+import { computed } from "vue"
 
 const props = withDefaults(
   defineProps<{
@@ -39,6 +42,8 @@ const props = withDefaults(
 const emit = defineEmits(["update:show"])
 const show = useVModel(props, "show", emit)
 
+const getDuration = computed(() => `${props.duration}s`)
+
 const clickOverLay = () => {
   console.log("clickOverLay")
   if (props.closeOnClickOverlay) {
@@ -47,4 +52,24 @@ const clickOverLay = () => {
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.bee-popup {
+  position: fixed;
+  z-index: v-bind(zIndex);
+  box-sizing: border-box;
+  max-height: 100%;
+  overflow-y: auto;
+  background-color: var(--bee-popup-background-color);
+  -webkit-overflow-scrolling: touch;
+}
+
+.bee-enter-active,
+.bee-leave-active {
+  transition: opacity v-bind(getDuration);
+}
+
+.bee-enter-from,
+.bee-leave-to {
+  opacity: 0;
+}
+</style>
