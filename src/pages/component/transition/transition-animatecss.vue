@@ -26,19 +26,17 @@ const show = ref(false)
 </script>
 
 <style scoped lang="scss">
-:deep() {
-  .bee-transition {
-    --animate-duration: 1s;
-    --animate-delay: 1s;
-    --animate-repeat: 1;
+.bee-transition {
+  --animate-duration: 1s;
+  --animate-delay: 1s;
+  --animate-repeat: 1;
 
-    position: relative;
-    width: 120rpx;
-    margin-top: 20rpx;
-    color: #fff;
-    line-height: 50rpx;
-    text-align: center;
-    background-color: orangered;
-  }
+  position: relative;
+  width: 120rpx;
+  margin-top: 20rpx;
+  color: #fff;
+  line-height: 50rpx;
+  text-align: center;
+  background-color: orangered;
 }
 </style>

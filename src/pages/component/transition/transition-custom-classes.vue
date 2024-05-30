@@ -29,25 +29,23 @@ const show = ref(false)
 </script>
 
 <style scoped lang="scss">
-:deep() {
-  .bee-transition {
-    position: relative;
-    width: 120rpx;
-    margin-top: 20rpx;
-    color: #fff;
-    line-height: 50rpx;
-    text-align: center;
-    background-color: orangered;
-  }
+.bee-transition {
+  position: relative;
+  width: 120rpx;
+  margin-top: 20rpx;
+  color: #fff;
+  line-height: 50rpx;
+  text-align: center;
+  background-color: orangered;
+}
 
-  .custom-enter-from,
-  .custom-leave-to {
-    transform: translate3d(100px, -100px, 0) rotate(-180deg);
-  }
+.custom-enter-from,
+.custom-leave-to {
+  transform: translate3d(100px, -100px, 0) rotate(-180deg);
+}
 
-  .custom-enter-active,
-  .custom-leave-active {
-    transition: all 0.3s ease-out;
-  }
+.custom-enter-active,
+.custom-leave-active {
+  transition: all 0.3s ease-out;
 }
 </style>

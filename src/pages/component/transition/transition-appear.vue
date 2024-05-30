@@ -21,29 +21,27 @@ const show = ref(true)
 </script>
 
 <style scoped lang="scss">
-:deep() {
-  .bee-transition {
-    position: relative;
-    width: 120rpx;
-    margin-top: 20rpx;
-    color: #fff;
-    line-height: 50rpx;
-    text-align: center;
-    background-color: orangered;
-  }
+.bee-transition {
+  position: relative;
+  width: 120rpx;
+  margin-top: 20rpx;
+  color: #fff;
+  line-height: 50rpx;
+  text-align: center;
+  background-color: orangered;
+}
 
-  .bee-enter-active {
-    transition: all 0.3s ease-out;
-  }
+.bee-enter-active {
+  transition: all 0.3s ease-out;
+}
 
-  .bee-leave-active {
-    transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
-  }
+.bee-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
 
-  .bee-enter-from,
-  .bee-leave-to {
-    transform: rotate(180deg);
-    opacity: 0;
-  }
+.bee-enter-from,
+.bee-leave-to {
+  transform: rotate(180deg);
+  opacity: 0;
 }
 </style>

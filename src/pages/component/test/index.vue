@@ -21,11 +21,17 @@ import ACom from "./components/a-com.vue"
 <style scoped lang="scss">
 // .a-com {
 //   color: #fff;
-//   background-color: rebeccapurple;
+//   background-color: rebeccapurple;`
 // }
 
 .kkk {
   color: #fff;
   background-color: sandybrown;
+
+  :deep() {
+    .aaa {
+      color: pink !important;
+    }
+  }
 }
 </style>

@@ -21,7 +21,6 @@
     position: absolute;
     top: calc(var(--bee-button-border-width) * -1);
     left: calc(var(--bee-button-border-width) * -1);
-    z-index: 100;
     width: calc(100% + var(--bee-button-border-width) * 2);
     height: calc(100% + var(--bee-button-border-width) * 2);
     background: var(--bee-color-black);

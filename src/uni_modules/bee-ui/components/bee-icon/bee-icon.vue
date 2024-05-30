@@ -1,7 +1,7 @@
 <template>
   <view
     class="bee-icon"
-    :class="[`${classPrefix}-${name}`, customClass]"
+    :class="[`${classPrefix}-${name}`]"
     :style="{
       '--color': color,
       '--font-size': size,
@@ -25,13 +25,11 @@ withDefaults(
     color?: string
     size?: string
     classPrefix?: string
-    customClass?: string
   }>(),
   {
     color: "inherit",
     size: "inherit",
     classPrefix: "ri",
-    customClass: "",
   },
 )
 </script>

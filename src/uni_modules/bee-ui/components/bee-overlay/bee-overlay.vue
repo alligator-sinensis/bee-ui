@@ -1,44 +1,62 @@
 <template>
-  <bee-doc-demo-block title="为过渡效果命名">
-    <button size="mini" @click="show = !show">Toggle Fade</button>
-    <bee-transition :show="show">Hello!</bee-transition>
-  </bee-doc-demo-block>
+  <bee-transition
+    class="bee-overlay"
+    :show="show"
+    @click="emit('click', $event)"
+    @touchmove.prevent
+  >
+    <slot></slot>
+  </bee-transition>
 </template>
 
 <script lang="ts">
 export default {
   options: {
+    virtualHost: true,
     styleIsolation: "shared",
   },
 }
 </script>
 
 <script setup lang="ts">
-import { ref } from "vue"
+import { computed } from "vue"
 
-const show = ref(true)
+const props = withDefaults(
+  defineProps<{
+    show?: boolean
+    zIndex: number | string
+    duration: number | string
+  }>(),
+  {
+    show: false,
+    zIndex: 1,
+    duration: "0.3",
+  },
+)
+
+const emit = defineEmits(["click"])
+
+const getDuration = computed(() => `${props.duration}s`)
 </script>
 
 <style scoped lang="scss">
-:deep() {
-  .bee-transition {
-    position: relative;
-    width: 120rpx;
-    margin-top: 20rpx;
-    color: #fff;
-    line-height: 50rpx;
-    text-align: center;
-    background-color: orangered;
-  }
+.bee-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: v-bind(zIndex);
+  width: 100%;
+  height: 100%;
+  background: var(--bee-overlay-background-color);
+}
 
-  .bee-enter-active,
-  .bee-leave-active {
-    transition: opacity 0.5s ease;
-  }
+.bee-enter-active,
+.bee-leave-active {
+  transition: opacity v-bind(getDuration);
+}
 
-  .bee-enter-from,
-  .bee-leave-to {
-    opacity: 0;
-  }
+.bee-enter-from,
+.bee-leave-to {
+  opacity: 0;
 }
 </style>

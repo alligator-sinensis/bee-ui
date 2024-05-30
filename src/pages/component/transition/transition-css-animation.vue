@@ -20,37 +20,35 @@ const show = ref(false)
 </script>
 
 <style scoped lang="scss">
-:deep() {
-  .bee-transition {
-    position: relative;
-    width: 120rpx;
-    margin-top: 20rpx;
-    color: #fff;
-    line-height: 50rpx;
-    text-align: center;
-    background-color: orangered;
+.bee-transition {
+  position: relative;
+  width: 120rpx;
+  margin-top: 20rpx;
+  color: #fff;
+  line-height: 50rpx;
+  text-align: center;
+  background-color: orangered;
+}
+
+.bounce-enter-active {
+  animation: bounce 0.5s;
+}
+
+.bounce-leave-active {
+  animation: bounce 0.8s reverse forwards;
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(0);
   }
 
-  .bounce-enter-active {
-    animation: bounce 0.5s;
+  50% {
+    transform: scale(1.25);
   }
 
-  .bounce-leave-active {
-    animation: bounce 0.8s reverse forwards;
-  }
-
-  @keyframes bounce {
-    0% {
-      transform: scale(0);
-    }
-
-    50% {
-      transform: scale(1.25);
-    }
-
-    100% {
-      transform: scale(1);
-    }
+  100% {
+    transform: scale(1);
   }
 }
 </style>

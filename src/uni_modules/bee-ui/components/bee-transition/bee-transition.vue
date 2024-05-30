@@ -2,12 +2,12 @@
   <view
     ref="refEl"
     class="bee-transition"
-    :class="[...classList, customClass]"
+    :class="classList"
     :style="{
-      ...customStyle,
       display: isShow ? 'block' : 'none',
     }"
     @animationend="onTransitionOrAnimationendEnd"
+    @click="emit('click', $event)"
     @transitionend="onTransitionOrAnimationendEnd"
   >
     <slot></slot>
@@ -29,8 +29,6 @@ import { getCurrentInstance, nextTick, ref, watch } from "vue"
 const props = withDefaults(
   defineProps<{
     show?: boolean
-    customStyle?: object
-    customClass?: string
     name?: string
     appear?: boolean
     enterFromClass?: string
@@ -55,6 +53,7 @@ const emit = defineEmits([
   "before-leave",
   "leave",
   "after-leave",
+  "click",
 ])
 
 const refEl = ref()

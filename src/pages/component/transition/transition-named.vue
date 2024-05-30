@@ -20,25 +20,23 @@ const show = ref(false)
 </script>
 
 <style scoped lang="scss">
-:deep() {
-  .bee-transition {
-    position: relative;
-    width: 120rpx;
-    margin-top: 20rpx;
-    color: #fff;
-    line-height: 50rpx;
-    text-align: center;
-    background-color: orangered;
-  }
+.bee-transition {
+  position: relative;
+  width: 120rpx;
+  margin-top: 20rpx;
+  color: #fff;
+  line-height: 50rpx;
+  text-align: center;
+  background-color: orangered;
+}
 
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: opacity 0.5s ease;
-  }
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
 
-  .fade-enter-from,
-  .fade-leave-to {
-    opacity: 0;
-  }
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

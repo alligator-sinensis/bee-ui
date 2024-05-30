@@ -11,7 +11,7 @@
       <bee-loading v-if="getLoading" color="inherit" size="var(--bee-button-icon-font-size)" />
       <bee-icon
         v-if="icon && !getLoading && iconPosition === 'left'"
-        custom-class="bee-button__icon"
+        class="bee-button__icon"
         :name="icon"
       />
       <view v-if="hasContentText" class="bee-button__text">
@@ -19,7 +19,7 @@
       </view>
       <bee-icon
         v-if="icon && !getLoading && iconPosition === 'right'"
-        custom-class="bee-button__icon"
+        class="bee-button__icon"
         :name="icon"
       />
     </view>
@@ -40,6 +40,10 @@ import { computed, ref, useSlots } from "vue"
 import { type ButtonProps, buttonPropDefaults } from "./button"
 
 const props = withDefaults(defineProps<ButtonProps>(), buttonPropDefaults)
+
+const emit = defineEmits<{
+  (e: "click", event: MouseEvent): void
+}>()
 
 const slots = useSlots()
 
@@ -86,6 +90,7 @@ const hasContentText = computed(() => !!slots.default)
 const clickLoading = ref(false)
 
 const onClick = async (event: MouseEvent) => {
+  emit("click", event)
   const { to, replace, click } = props
   if (to) {
     if (replace) {
