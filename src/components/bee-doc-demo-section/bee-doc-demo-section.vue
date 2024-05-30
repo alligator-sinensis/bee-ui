@@ -12,6 +12,7 @@ export default {
   },
 }
 </script>
+
 <script setup lang="ts">
 withDefaults(
   defineProps<{

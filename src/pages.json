@@ -44,6 +44,12 @@
           "style": {
             "navigationBarTitleText": "Popup 弹出层"
           }
+        },
+        {
+          "path": "test/index",
+          "style": {
+            "navigationBarTitleText": "Test 测试"
+          }
         }
       ]
     }
