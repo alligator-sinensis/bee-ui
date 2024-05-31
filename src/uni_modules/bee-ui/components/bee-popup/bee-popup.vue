@@ -1,13 +1,42 @@
 <template>
-  <bee-overlay :duration="duration" :show="show" :z-index="zIndex" @click="clickOverLay" />
-  <bee-transition class="bee-popup" :class="[`bee-popup__${position}`]" :show="show">
+  <bee-overlay
+    v-if="overlay"
+    :duration="duration"
+    :show="show"
+    :z-index="zIndex"
+    @click="clickOverLay"
+  />
+  <bee-transition
+    class="bee-popup"
+    :class="[`bee-popup__${position}`]"
+    :show="show"
+    :style="{
+      '--bee-popup-duration': `${props.duration}s`,
+    }"
+  >
+    <bee-icon
+      v-if="closeable"
+      class="bee-popup__close-icon"
+      color="var(--bee-popup-close-icon-color)"
+      name="close-large-line"
+      size="var(--bee-popup-close-icon-size)"
+      @click="show = false"
+    />
     <slot></slot>
   </bee-transition>
 </template>
 
+<script lang="ts">
+export default {
+  options: {
+    virtualHost: true,
+    styleIsolation: "shared",
+  },
+}
+</script>
+
 <script setup lang="ts">
 import { useVModel } from "@vueuse/core"
-import { computed } from "vue"
 
 const props = withDefaults(
   defineProps<{
@@ -27,9 +56,9 @@ const props = withDefaults(
   }>(),
   {
     show: false,
-    overlay: false,
+    overlay: true,
     position: "center",
-    duration: "1.3",
+    duration: "0.3",
     zIndex: 2000,
     round: false,
     closeOnClickOverlay: true,
@@ -41,8 +70,6 @@ const props = withDefaults(
 )
 const emit = defineEmits(["update:show"])
 const show = useVModel(props, "show", emit)
-
-const getDuration = computed(() => `${props.duration}s`)
 
 const clickOverLay = () => {
   console.log("clickOverLay")
@@ -60,27 +87,94 @@ const clickOverLay = () => {
   max-height: 100%;
   overflow-y: auto;
   background-color: var(--bee-popup-background-color);
-  -webkit-overflow-scrolling: touch;
+
+  &__close-icon {
+    position: absolute;
+    top: var(--bee-popup-close-icon-margin);
+    right: var(--bee-popup-close-icon-margin);
+  }
 
   &__center {
-    top: 50%;
-    right: 0;
-    left: 0;
     width: fit-content;
     max-width: calc(100vw - 2 * var(--bee-padding-md));
-    margin: 0 auto;
-    padding: 50px;
-    transform: scale(1) translateY(-50%);
+    height: fit-content;
+    margin: auto;
+    transform: scale(1);
+    inset: 0;
+
+    &.bee-enter-active,
+    &.bee-leave-active {
+      transition: all var(--bee-popup-duration) ease;
+    }
+
+    &.bee-enter-from,
+    &.bee-leave-to {
+      transform: scale(0);
+    }
   }
 
-  &.bee-enter-active,
-  &.bee-leave-active {
-    transition: all v-bind(getDuration) ease;
+  &__top {
+    top: 0;
+    right: 0;
+    left: 0;
+
+    &.bee-enter-active,
+    &.bee-leave-active {
+      transition: all var(--bee-popup-duration) ease;
+    }
+
+    &.bee-enter-from,
+    &.bee-leave-to {
+      transform: translateY(-100%);
+    }
   }
 
-  &.bee-enter-from,
-  &.bee-leave-to {
-    transform: scale(0);
+  &__bottom {
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    &.bee-enter-active,
+    &.bee-leave-active {
+      transition: all var(--bee-popup-duration) ease;
+    }
+
+    &.bee-enter-from,
+    &.bee-leave-to {
+      transform: translateY(100%);
+    }
+  }
+
+  &__left {
+    top: 0;
+    bottom: 0;
+    left: 0;
+
+    &.bee-enter-active,
+    &.bee-leave-active {
+      transition: all var(--bee-popup-duration) ease;
+    }
+
+    &.bee-enter-from,
+    &.bee-leave-to {
+      transform: translateX(-100%);
+    }
+  }
+
+  &__right {
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+    &.bee-enter-active,
+    &.bee-leave-active {
+      transition: all var(--bee-popup-duration) ease;
+    }
+
+    &.bee-enter-from,
+    &.bee-leave-to {
+      transform: translateX(100%);
+    }
   }
 }
 </style>
