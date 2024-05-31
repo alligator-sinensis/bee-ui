@@ -7,12 +7,23 @@
     @click="clickOverLay"
   />
   <bee-transition
+    :appear="transitionAppear"
     class="bee-popup"
-    :class="[`bee-popup__${position}`]"
+    :class="[
+      `bee-popup__${position}`,
+      { 'is-round': round },
+      { 'bee-safe-area-top': safeAreaInsetTop },
+      { 'bee-safe-area-bottom': safeAreaInsetBottom },
+    ]"
     :show="show"
     :style="{
       '--bee-popup-duration': `${props.duration}s`,
     }"
+    @after-enter="emit('opened')"
+    @after-leave="emit('closed')"
+    @before-enter="emit('open')"
+    @before-leave="emit('close')"
+    @click="emit('click', $event)"
   >
     <bee-icon
       v-if="closeable"
@@ -20,7 +31,7 @@
       color="var(--bee-popup-close-icon-color)"
       name="close-large-line"
       size="var(--bee-popup-close-icon-size)"
-      @click="show = false"
+      @tap.stop="close"
     />
     <slot></slot>
   </bee-transition>
@@ -48,11 +59,11 @@ const props = withDefaults(
     round?: boolean
     closeOnClickOverlay?: boolean
     closeable?: boolean
-    beforeClose?: (action: string) => boolean | Promise<boolean>
+    beforeClose?: () => boolean | Promise<any>
     // 是否在初始渲染时启用过渡动画
     transitionAppear?: boolean
-    safeAreaInsetTop?: false
-    safeAreaInsetBottom?: false
+    safeAreaInsetTop?: boolean
+    safeAreaInsetBottom?: boolean
   }>(),
   {
     show: false,
@@ -68,13 +79,25 @@ const props = withDefaults(
     safeAreaInsetBottom: false,
   },
 )
-const emit = defineEmits(["update:show"])
+const emit = defineEmits(["update:show", "click", "open", "opened", "close", "closed"])
 const show = useVModel(props, "show", emit)
 
 const clickOverLay = () => {
-  console.log("clickOverLay")
   if (props.closeOnClickOverlay) {
+    close()
+  }
+}
+
+const close = async () => {
+  const { beforeClose } = props
+  if (!beforeClose) show.value = false
+  const result = props.beforeClose?.()
+  if (result === true) {
     show.value = false
+  } else if (result instanceof Promise) {
+    await result.then(() => {
+      show.value = false
+    })
   }
 }
 </script>
@@ -102,6 +125,10 @@ const clickOverLay = () => {
     transform: scale(1);
     inset: 0;
 
+    &.is-round {
+      border-radius: var(--bee-popup-round-radius);
+    }
+
     &.bee-enter-active,
     &.bee-leave-active {
       transition: all var(--bee-popup-duration) ease;
@@ -117,6 +144,10 @@ const clickOverLay = () => {
     top: 0;
     right: 0;
     left: 0;
+
+    &.is-round {
+      border-radius: 0 0 var(--bee-popup-round-radius) var(--bee-popup-round-radius);
+    }
 
     &.bee-enter-active,
     &.bee-leave-active {
@@ -134,6 +165,10 @@ const clickOverLay = () => {
     bottom: 0;
     left: 0;
 
+    &.is-round {
+      border-radius: var(--bee-popup-round-radius) var(--bee-popup-round-radius) 0 0;
+    }
+
     &.bee-enter-active,
     &.bee-leave-active {
       transition: all var(--bee-popup-duration) ease;
@@ -150,6 +185,10 @@ const clickOverLay = () => {
     bottom: 0;
     left: 0;
 
+    &.is-round {
+      border-radius: 0 var(--bee-popup-round-radius) var(--bee-popup-round-radius) 0;
+    }
+
     &.bee-enter-active,
     &.bee-leave-active {
       transition: all var(--bee-popup-duration) ease;
@@ -165,6 +204,10 @@ const clickOverLay = () => {
     top: 0;
     right: 0;
     bottom: 0;
+
+    &.is-round {
+      border-radius: var(--bee-popup-round-radius) 0 0 var(--bee-popup-round-radius);
+    }
 
     &.bee-enter-active,
     &.bee-leave-active {

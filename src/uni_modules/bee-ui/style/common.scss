@@ -12,6 +12,16 @@
   justify-content: center;
 }
 
+.bee-safe-area-bottom {
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.bee-safe-area-top {
+  padding-top: constant(safe-area-inset-top);
+  padding-top: env(safe-area-inset-top);
+}
+
 .is-loading {
   animation: rotating 2s linear infinite;
 }
