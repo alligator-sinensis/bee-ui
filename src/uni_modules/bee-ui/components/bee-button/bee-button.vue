@@ -47,12 +47,10 @@ const emit = defineEmits<{
 
 const slots = useSlots()
 
-const namespace = "bee-button"
-
 const getClass = computed(() => {
   const res = [
-    `${namespace}--${props.type}`,
-    `${namespace}--${props.size}`,
+    `bee-button--${props.type}`,
+    `bee-button--${props.size}`,
     {
       "is-plain": props.plain,
       "is-round": props.round,

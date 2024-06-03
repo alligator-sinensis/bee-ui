@@ -133,6 +133,7 @@ const showToast = (title) => {
   })
 }
 
+// 返回true或者Promise.resolve可以关闭
 const beforeClose = () => {
   return new Promise<void>((resolve) => {
     setTimeout(() => {

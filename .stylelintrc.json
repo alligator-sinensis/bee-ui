@@ -22,6 +22,7 @@
     "selector-type-no-unknown": [true, { "ignoreTypes": ["page"] }],
     "value-keyword-case": null,
     "font-family-no-missing-generic-family-keyword": null,
-    "selector-class-pattern": null
+    "selector-class-pattern": null,
+    "no-empty-source": null
   }
 }

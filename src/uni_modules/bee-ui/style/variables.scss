@@ -14,6 +14,10 @@ page {
   --bee-font-size-md: 14px;
   --bee-font-size-sm: 12px;
   --bee-font-size-xs: 10px;
+  --bee-line-height-lg: 22px;
+  --bee-line-height-md: 20px;
+  --bee-line-height-sm: 18px;
+  --bee-line-height-xs: 14px;
   --bee-border-radius-xl: 16px;
   --bee-border-radius-lg: 8px;
   --bee-border-radius-md: 4px;
@@ -77,4 +81,18 @@ page {
   --bee-popup-close-icon-color: var(--bee-text-color-placeholder);
   --bee-popup-close-icon-margin: 16px;
   --bee-popup-round-radius: 16px;
+
+  // cell
+  --bee-cell-font-size: var(--bee-font-size-md);
+  --bee-cell-line-height: 24px;
+  --bee-cell-vertical-padding: 10px;
+  --bee-cell-horizontal-padding: var(--bee-padding-md);
+  --bee-cell-text-color: var(--bee-text-color-primary);
+  --bee-cell-background: var(--bee-color-white);
+  --bee-cell-border-color: var(--bee-border-color);
+  --bee-cell-active-color: #f2f3f5;
+  --bee-cell-value-color: var(--bee-text-color-secondary);
+  --bee-cell-value-font-size: inherit;
+  --bee-cell-icon-size: 16px;
+  --bee-cell-right-icon-color: var(--bee-text-color-secondary);
 }

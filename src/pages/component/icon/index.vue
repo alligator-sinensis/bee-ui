@@ -26,6 +26,17 @@
         </view>
       </view>
     </bee-doc-demo-block>
+    <bee-doc-demo-block title="使用图片">
+      <view class="icon-list">
+        <view class="icon-item">
+          <bee-icon
+            color="var(--bee-text-color-primary)"
+            name="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
+            size="64px"
+          />
+        </view>
+      </view>
+    </bee-doc-demo-block>
     <bee-doc-demo-block title="全部图标">
       <input v-model="queryValue" class="search-input" :placeholder="`Search ${iconQty} Icons`" />
       <template v-for="(item, index) in getDataList" :key="index">
