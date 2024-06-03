@@ -24,8 +24,8 @@ import { computed } from "vue"
 const props = withDefaults(
   defineProps<{
     show?: boolean
-    zIndex: number | string
-    duration: number | string
+    zIndex?: number | string
+    duration?: number | string
   }>(),
   {
     show: false,

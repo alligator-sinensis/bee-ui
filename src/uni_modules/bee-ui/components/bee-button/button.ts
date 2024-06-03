@@ -13,6 +13,7 @@ export type ButtonProps = {
   to?: string
   replace?: boolean
   icon?: string
+  iconPrefix?: string
   iconPosition?: "left" | "right"
   background?: string
   click?: ((event: MouseEvent) => Promise<any>) | ((event: MouseEvent) => any)
@@ -27,7 +28,6 @@ export const buttonPropDefaults: ButtonProps = {
   block: false,
   loading: false,
   disabled: false,
-  to: "",
   replace: false,
   icon: "",
   iconPosition: "left",

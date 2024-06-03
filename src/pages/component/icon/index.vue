@@ -26,6 +26,13 @@
         </view>
       </view>
     </bee-doc-demo-block>
+    <bee-doc-demo-block title="自定义图标">
+      <view class="icon-list">
+        <view class="icon-item">
+          <bee-icon name="liulanqi" prefix="test-icon" size="30px" />
+        </view>
+      </view>
+    </bee-doc-demo-block>
     <bee-doc-demo-block title="使用图片">
       <view class="icon-list">
         <view class="icon-item">

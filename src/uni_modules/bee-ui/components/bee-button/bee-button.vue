@@ -13,6 +13,7 @@
         v-if="icon && !getLoading && iconPosition === 'left'"
         class="bee-button__icon"
         :name="icon"
+        :prefix="iconPrefix"
       />
       <view v-if="hasContentText" class="bee-button__text">
         <slot></slot>
@@ -21,6 +22,7 @@
         v-if="icon && !getLoading && iconPosition === 'right'"
         class="bee-button__icon"
         :name="icon"
+        :prefix="iconPrefix"
       />
     </view>
   </button>

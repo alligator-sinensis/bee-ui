@@ -46,6 +46,12 @@
           }
         },
         {
+          "path": "cell/index",
+          "style": {
+            "navigationBarTitleText": "Cell 单元格"
+          }
+        },
+        {
           "path": "test/index",
           "style": {
             "navigationBarTitleText": "Test 测试"

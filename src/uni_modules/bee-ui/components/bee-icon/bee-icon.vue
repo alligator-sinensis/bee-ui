@@ -1,7 +1,7 @@
 <template>
   <view
     class="bee-icon"
-    :class="[{ [`${classPrefix}-${name}`]: !isImage }]"
+    :class="getClassList"
     :style="{
       '--color': color,
       '--font-size': size,
@@ -28,16 +28,26 @@ const props = withDefaults(
     name: string
     color?: string
     size?: string
-    classPrefix?: string
+    prefix?: string
   }>(),
   {
     color: "inherit",
     size: "inherit",
-    classPrefix: "ri",
+    prefix: "ri",
   },
 )
 
 const isImage = computed(() => props.name?.includes("/"))
+
+const getClassList = computed(() => {
+  const { prefix, name } = props
+  const res: string[] = []
+  if (!isImage.value) {
+    res.push(prefix)
+    res.push(`${prefix}-${name}`)
+  }
+  return res
+})
 </script>
 
 <style lang="scss" scoped>
