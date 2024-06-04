@@ -55,6 +55,8 @@ const getClassList = computed(() => {
 
 .bee-icon {
   display: inline-block;
+  width: 1em;
+  height: 1em;
   color: var(--color);
   font-size: var(--font-size);
   line-height: 1;

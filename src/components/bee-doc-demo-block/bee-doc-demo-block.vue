@@ -1,9 +1,11 @@
 <template>
   <view class="bee-doc-demo-block">
     <view class="bee-doc-demo-block__title">{{ title }}</view>
-    <view class="bee-doc-demo-block__content">
+    <view v-if="card" class="bee-doc-demo-block__content">
       <slot></slot>
     </view>
+
+    <slot v-else></slot>
   </view>
 </template>
 
@@ -19,9 +21,11 @@ export default {
 withDefaults(
   defineProps<{
     title?: string
+    card?: boolean
   }>(),
   {
     title: "",
+    card: true,
   },
 )
 </script>
