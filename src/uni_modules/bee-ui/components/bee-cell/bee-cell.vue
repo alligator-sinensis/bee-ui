@@ -44,8 +44,6 @@
         size="var(--bee-cell-icon-right-arrow-size)"
       />
     </view>
-    <slot name="aa"></slot>
-    <slot name="aa-bb"></slot>
   </view>
 </template>
 

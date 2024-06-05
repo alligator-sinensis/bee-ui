@@ -35,11 +35,9 @@
         </template>
         <template #left>
           <bee-icon color="#F9BD12" name="bug-line" size="20px" />
-          <!-- <bee-icon name="bug-line" /> -->
         </template>
         <template #right>
-          <bee-icon color="green" name="search-line" size="20px" />
-          <!-- <bee-icon name="search-line" /> -->
+          <bee-icon name="search-line" />
         </template>
       </bee-cell>
     </bee-doc-demo-block>

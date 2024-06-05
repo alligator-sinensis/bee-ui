@@ -1,8 +1,14 @@
 <template>
   <view class="bee-input" :class="[`bee-button--${props.size}`]" :style="getStyle">
-    <view v-if="prefixIcon" class="bee-input__icon bee-input__prefix-icon">
-      <bee-icon :name="prefixIcon" :prefix="prefixIconPrefix" />
+    <view v-if="leftIcon" class="bee-cell__left">
+      <bee-icon class="bee-cell__icon" :name="leftIcon" :prefix="leftIconPrefix" />
     </view>
+    <view v-if="!!slots.left" class="bee-cell__left">
+      <slot name="left"></slot>
+    </view>
+    <!-- <view v-if="prefixIcon" class="bee-input__icon bee-input__prefix-icon">
+      <bee-icon :name="prefixIcon" :prefix="prefixIconPrefix" />
+    </view> -->
     <!-- <view class="bee-input__prefix">prefix</view> -->
     <input
       v-model="modelValue"
@@ -12,14 +18,20 @@
       :type="type"
     />
     <!-- <view class="suffix">suffix</view> -->
-    <view v-if="suffixIcon" class="bee-input__icon bee-input__suffix-icon">
+    <!-- <view v-if="suffixIcon" class="bee-input__icon bee-input__suffix-icon">
       <bee-icon :name="suffixIcon" :prefix="suffixIconPrefix" />
+    </view> -->
+    <view v-if="!!slots.right" class="bee-cell__right">
+      <slot name="right"></slot>
+    </view>
+    <view v-if="rightIcon" class="bee-cell__right">
+      <bee-icon class="bee-cell__icon" :name="rightIcon" :prefix="rightIconPrefix" />
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import { computed, type HTMLAttributes, type InputTypeHTMLAttribute } from "vue"
+import { computed, useSlots, type HTMLAttributes, type InputTypeHTMLAttribute } from "vue"
 import { componentSizeMap, type ComponentSize } from "../../constants"
 
 const props = withDefaults(
@@ -67,6 +79,7 @@ const getStyle = computed(() => {
 //   ["prefix-icon"](): any
 //   ["suffix-icon"](): any
 // }>()
+const slots = useSlots()
 </script>
 
 <style scoped lang="scss">
@@ -103,21 +116,61 @@ const getStyle = computed(() => {
     font-size: 10px;
   }
 
-  &__icon {
+  // &__icon {
+  //   display: flex;
+  //   align-items: center;
+  //   height: 100%;
+  //   color: var(--bee-cell-title-color);
+  //   background-color: var(--bee-text-color-secondary);
+
+  //   &-prefix {
+  //     margin-right: var(--bee-padding-xs);
+  //     font-size: var(--bee-cell-title-font-size);
+  //   }
+
+  //   &-suffix {
+  //     margin-left: var(--bee-padding-xs);
+  //     font-size: var(--bee-cell-value-font-size);
+  //   }
+  // }
+
+  &__left,
+  &__right {
     display: flex;
     align-items: center;
-    height: 100%;
+    justify-content: center;
+    height: var(--bee-cell-line-height);
+  }
+
+  &__left {
+    margin-right: var(--bee-padding-xs);
     color: var(--bee-cell-title-color);
-    background-color: var(--bee-text-color-secondary);
+    font-size: var(--bee-cell-title-font-size);
+  }
 
-    &-prefix {
-      margin-right: var(--bee-padding-xs);
-      font-size: var(--bee-cell-title-font-size);
-    }
+  &__right {
+    margin-left: var(--bee-padding-xs);
+    color: var(--bee-cell-value-color);
+    font-size: var(--bee-cell-value-font-size);
 
-    &-suffix {
-      margin-left: var(--bee-padding-xs);
-      font-size: var(--bee-cell-value-font-size);
+    .bee-cell__icon {
+      &.arrow {
+        &.left {
+          transform: rotate(270deg);
+        }
+
+        &.right {
+          transform: rotate(90deg);
+        }
+
+        &.up {
+          transform: rotate(0deg);
+        }
+
+        &.down {
+          transform: rotate(180deg);
+        }
+      }
     }
   }
 }
