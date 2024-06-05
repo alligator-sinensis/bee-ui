@@ -11,10 +11,11 @@
     :hover-stay-time="70"
     @click="onClick"
   >
-    <view v-if="leftIcon || slots['left-icon']" class="bee-cell__icon bee-cell__icon-left">
-      <slot name="left-icon">
-        <bee-icon v-if="leftIcon" :name="leftIcon" :prefix="leftIconPrefix" />
-      </slot>
+    <view v-if="leftIcon" class="bee-cell__left">
+      <bee-icon class="bee-cell__icon" :name="leftIcon" :prefix="leftIconPrefix" />
+    </view>
+    <view v-if="!!slots.left" class="bee-cell__left">
+      <slot name="left"></slot>
     </view>
     <view class="bee-cell__title">
       <slot name="title">
@@ -29,14 +30,15 @@
     <view class="bee-cell__value">
       <slot>{{ value }}</slot>
     </view>
-    <view v-if="rightIcon || slots['right-icon']" class="bee-cell__icon bee-cell__icon-right">
-      <slot name="right-icon">
-        <bee-icon v-if="rightIcon" :name="rightIcon" :prefix="rightIconPrefix" />
-      </slot>
+    <view v-if="!!slots.right" class="bee-cell__right">
+      <slot name="right"></slot>
     </view>
-    <view v-if="arrow" class="bee-cell__icon bee-cell__icon-right">
+    <view v-if="rightIcon" class="bee-cell__right">
+      <bee-icon class="bee-cell__icon" :name="rightIcon" :prefix="rightIconPrefix" />
+    </view>
+    <view v-if="arrow" class="bee-cell__right">
       <bee-icon
-        class="arrow"
+        class="bee-cell__icon arrow"
         :class="[arrowDirection]"
         name="arrow-up-s-line"
         size="var(--bee-cell-icon-right-arrow-size)"
@@ -94,8 +96,8 @@ const slots = defineSlots<{
   title(): any
   label(): any
   value(): any
-  ["left-icon"](): any
-  ["right-icon"](): any
+  ["left"](): any
+  ["right"](): any
 }>()
 
 const onClick = async (event: MouseEvent) => {
@@ -164,25 +166,27 @@ const onClick = async (event: MouseEvent) => {
     word-wrap: break-word;
   }
 
-  &__icon {
+  &__left,
+  &__right {
     display: flex;
     align-items: center;
+    justify-content: center;
     height: var(--bee-cell-line-height);
+  }
 
-    &-left {
-      margin-right: var(--bee-padding-xs);
-      color: var(--bee-cell-title-color);
-      font-size: var(--bee-cell-title-font-size);
-    }
+  &__left {
+    margin-right: var(--bee-padding-xs);
+    color: var(--bee-cell-title-color);
+    font-size: var(--bee-cell-title-font-size);
+  }
 
-    &-right {
-      margin-left: var(--bee-padding-xs);
-      color: var(--bee-cell-value-color);
-      font-size: var(--bee-cell-value-font-size);
+  &__right {
+    margin-left: var(--bee-padding-xs);
+    color: var(--bee-cell-value-color);
+    font-size: var(--bee-cell-value-font-size);
 
-      .arrow {
-        transition: all 0.3s;
-
+    .bee-cell__icon {
+      &.arrow {
         &.left {
           transform: rotate(270deg);
         }

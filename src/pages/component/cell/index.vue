@@ -22,7 +22,7 @@
       <bee-cell arrow arrow-direction="up" title="单元格">up</bee-cell>
     </bee-doc-demo-block>
     <bee-doc-demo-block :card="false" title="使用插槽">
-      <bee-cell arrow>
+      <bee-cell arrow left-icon="bug-line" right-icon="search-line">
         随便写点东西
         <template #title>
           <view style="color: red; font-weight: bold">
@@ -33,11 +33,13 @@
         <template #label>
           <view style="color: blueviolet; font-weight: bold">label</view>
         </template>
-        <template #left-icon>
+        <template #left>
           <bee-icon color="#F9BD12" name="bug-line" size="20px" />
+          <!-- <bee-icon name="bug-line" /> -->
         </template>
-        <template #right-icon>
+        <template #right>
           <bee-icon color="green" name="search-line" size="20px" />
+          <!-- <bee-icon name="search-line" /> -->
         </template>
       </bee-cell>
     </bee-doc-demo-block>
