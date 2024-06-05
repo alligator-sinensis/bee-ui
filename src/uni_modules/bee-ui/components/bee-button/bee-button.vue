@@ -40,6 +40,7 @@ export default {
 <script setup lang="ts">
 import { computed, ref, useSlots } from "vue"
 import { type ButtonProps, buttonPropDefaults } from "./button"
+import { componentSizeMap } from "../../constants"
 
 const props = withDefaults(defineProps<ButtonProps>(), buttonPropDefaults)
 
@@ -66,8 +67,10 @@ const getClass = computed(() => {
 })
 
 const getStyle = computed(() => {
-  const { background, plain, click } = props
-  const res = {}
+  const { background, plain, size } = props
+  const res = {
+    "--bee-button-height": `${componentSizeMap[size]}px`,
+  }
   if (background) {
     if (plain) {
       res["--bee-button-color"] = background

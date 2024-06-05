@@ -56,6 +56,12 @@
           "style": {
             "navigationBarTitleText": "Test 测试"
           }
+        },
+        {
+          "path": "input/index",
+          "style": {
+            "navigationBarTitleText": "Input 输入框"
+          }
         }
       ]
     }

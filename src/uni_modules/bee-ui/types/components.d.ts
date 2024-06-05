@@ -5,6 +5,7 @@ declare module "@vue/runtime-core" {
     BeeButton: (typeof import("./../components/bee-button/bee-button.vue"))["default"]
     BeeCell: (typeof import("./../components/bee-cell/bee-cell.vue"))["default"]
     BeeIcon: (typeof import("./../components/bee-icon/bee-icon.vue"))["default"]
+    BeeInput: (typeof import("./../components/bee-input/bee-input.vue"))["default"]
     BeeLoading: (typeof import("./../components/bee-loading/bee-loading.vue"))["default"]
     BeeOverlay: (typeof import("./../components/bee-overlay/bee-overlay.vue"))["default"]
     BeePopup: (typeof import("./../components/bee-popup/bee-popup.vue"))["default"]

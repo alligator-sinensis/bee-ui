@@ -98,8 +98,6 @@ const slots = defineSlots<{
   ["right-icon"](): any
 }>()
 
-console.log(slots)
-
 const onClick = async (event: MouseEvent) => {
   emit("click", event)
   const { to, replace } = props

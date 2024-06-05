@@ -101,8 +101,6 @@
   }
 
   &--large {
-    --bee-button-height: var(--bee-button-large-height);
-
     padding: var(--bee-button-large-padding);
     font-size: var(--bee-button-large-font-size);
 
@@ -114,8 +112,6 @@
   }
 
   &--middle {
-    --bee-button-height: var(--bee-button-middle-height);
-
     padding: var(--bee-button-middle-padding);
     font-size: var(--bee-button-middle-font-size);
 
@@ -127,8 +123,6 @@
   }
 
   &--small {
-    --bee-button-height: var(--bee-button-small-height);
-
     padding: var(--bee-button-small-padding);
     font-size: var(--bee-button-small-font-size);
 
@@ -140,8 +134,6 @@
   }
 
   &--mini {
-    --bee-button-height: var(--bee-button-mini-height);
-
     padding: var(--bee-button-mini-padding);
     font-size: var(--bee-button-mini-font-size);
 

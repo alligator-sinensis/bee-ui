@@ -22,7 +22,8 @@
       <bee-cell arrow arrow-direction="up" title="单元格">up</bee-cell>
     </bee-doc-demo-block>
     <bee-doc-demo-block :card="false" title="使用插槽">
-      <bee-cell>
+      <bee-cell arrow>
+        随便写点东西
         <template #title>
           <view style="color: red; font-weight: bold">
             title
