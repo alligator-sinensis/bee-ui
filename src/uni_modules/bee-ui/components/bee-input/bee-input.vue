@@ -1,38 +1,69 @@
 <template>
-  <view class="bee-input" :class="[`bee-button--${props.size}`]" :style="getStyle">
-    <view v-if="leftIcon" class="bee-cell__left">
-      <bee-icon class="bee-cell__icon" :name="leftIcon" :prefix="leftIconPrefix" />
+  <view
+    class="bee-input"
+    :class="[`bee-input--${props.size}`, { 'is-disabled': disabled }]"
+    :style="getStyle"
+  >
+    <view v-if="prefixIcon" class="bee-input__left">
+      <bee-icon class="bee-input__icon" :name="prefixIcon" :prefix="prefixIconPrefix" />
     </view>
-    <view v-if="!!slots.left" class="bee-cell__left">
-      <slot name="left"></slot>
+    <view v-if="!!slots.prefix" class="bee-input__left">
+      <slot name="prefix"></slot>
     </view>
-    <!-- <view v-if="prefixIcon" class="bee-input__icon bee-input__prefix-icon">
-      <bee-icon :name="prefixIcon" :prefix="prefixIconPrefix" />
-    </view> -->
-    <!-- <view class="bee-input__prefix">prefix</view> -->
     <input
       v-model="modelValue"
+      :disabled="disabled || readonly"
       :inputmode="inputmode"
       :maxlength="maxlength"
+      :password="showPassword ? !passwordEnableStatus : password"
       :placeholder="placeholder"
       :type="type"
+      @blur="onBlur"
+      @confirm="onConfirm"
+      @focus="onFocus"
+      @input="onInput"
     />
-    <!-- <view class="suffix">suffix</view> -->
-    <!-- <view v-if="suffixIcon" class="bee-input__icon bee-input__suffix-icon">
-      <bee-icon :name="suffixIcon" :prefix="suffixIconPrefix" />
-    </view> -->
-    <view v-if="!!slots.right" class="bee-cell__right">
-      <slot name="right"></slot>
+    <view v-if="!!slots.suffix" class="bee-input__right">
+      <slot name="suffix"></slot>
     </view>
-    <view v-if="rightIcon" class="bee-cell__right">
-      <bee-icon class="bee-cell__icon" :name="rightIcon" :prefix="rightIconPrefix" />
+    <view v-if="suffixIcon" class="bee-input__right">
+      <bee-icon class="bee-input__icon" :name="suffixIcon" :prefix="suffixIconPrefix" />
     </view>
+    <view v-if="showClearable" class="bee-input__right">
+      <bee-icon class="bee-input__icon" name="close-circle-line" @click="modelValue = ''" />
+    </view>
+    <view v-if="showPassword" class="bee-input__right">
+      <bee-icon
+        v-if="passwordEnableStatus"
+        class="bee-input__icon"
+        name="eye-line"
+        @click="passwordEnableStatus = !passwordEnableStatus"
+      />
+      <bee-icon
+        v-else
+        class="bee-input__icon"
+        name="eye-off-line"
+        @click="passwordEnableStatus = !passwordEnableStatus"
+      />
+    </view>
+    <view v-if="showWordLimit" class="bee-input__right bee-input__count"
+      >{{ getModelValueLength }} / {{ maxlength }}</view
+    >
   </view>
 </template>
 
+<script lang="ts">
+export default {
+  options: {
+    virtualHost: true,
+    styleIsolation: "shared",
+  },
+}
+</script>
 <script setup lang="ts">
-import { computed, useSlots, type HTMLAttributes, type InputTypeHTMLAttribute } from "vue"
+import { computed, ref, useSlots, type HTMLAttributes, type InputTypeHTMLAttribute } from "vue"
 import { componentSizeMap, type ComponentSize } from "../../constants"
+import { sleep } from "radash"
 
 const props = withDefaults(
   defineProps<{
@@ -40,11 +71,17 @@ const props = withDefaults(
     maxlength?: string | number
     placeholder?: string
     clearable?: boolean
-    size?: ComponentSize
+    size?: Exclude<ComponentSize, "mini">
     prefixIcon?: string
     prefixIconPrefix?: string
     suffixIcon?: string
     suffixIconPrefix?: string
+    password?: boolean
+    showPassword?: boolean
+    showWordLimit?: boolean
+    disabled?: boolean
+    readonly?: boolean
+    clearTrigger?: "always" | "focus"
 
     // uniapp其他
     type?: InputTypeHTMLAttribute
@@ -55,12 +92,18 @@ const props = withDefaults(
     maxlength: 140,
     clearable: false,
     size: "middle",
+    password: false,
+    showPassword: false,
+    showWordLimit: false,
+    disabled: false,
+    readonly: false,
+    clearTrigger: "focus",
   },
 )
 
-const emit = defineEmits<{
-  (e: "update:modelValue", value: string | number): void
-}>()
+const emit = defineEmits(["update:modelValue", "focus", "blur", "input", "confirm"])
+const passwordEnableStatus = ref(false)
+const isFocus = ref(false)
 
 const modelValue = computed({
   get: () => props.modelValue,
@@ -75,10 +118,40 @@ const getStyle = computed(() => {
   return res
 })
 
-// const slots = defineSlots<{
-//   ["prefix-icon"](): any
-//   ["suffix-icon"](): any
-// }>()
+const getModelValueLength = computed(() => {
+  if (modelValue.value === null || modelValue.value === undefined) {
+    return 0
+  }
+  return String(modelValue.value).length
+})
+
+const showClearable = computed(() => {
+  const { clearTrigger, clearable } = props
+  if (!clearable) return false
+  if (clearTrigger === "always") {
+    return getModelValueLength.value > 0
+  } else if (clearTrigger === "focus") {
+    return isFocus.value && getModelValueLength.value > 0
+  }
+  return false
+})
+
+const onFocus = (event) => {
+  emit("focus", event)
+  isFocus.value = true
+}
+const onBlur = async (event) => {
+  emit("blur", event)
+  await sleep(0)
+  isFocus.value = false
+}
+const onConfirm = (event) => {
+  emit("confirm", event)
+}
+const onInput = (event) => {
+  emit("input", event)
+}
+
 const slots = useSlots()
 </script>
 
@@ -91,87 +164,57 @@ const slots = useSlots()
   width: 100%;
   height: var(--bee-input-height);
   line-height: 1;
+  vertical-align: middle;
+  background-color: #fff;
   border: 1px solid var(--bee-border-color);
+  border-radius: var(--bee-input-border-radius);
+
+  &.is-disabled {
+    background-color: var(--bee-disabled-bg-color);
+  }
 
   input {
     flex: 1;
     height: 100%;
     min-height: 0;
-    background-color: #fff;
+    color: var(--bee-input-text-color);
+    font-size: inherit;
+
+    .input-placeholder {
+      color: var(--bee-text-color-placeholder);
+    }
   }
 
   &--large {
-    font-size: 10px;
+    padding: 0 14px;
+    font-size: 16px;
   }
 
   &--middle {
-    font-size: 10px;
+    padding: 0 11px;
+    font-size: 14px;
   }
 
   &--small {
+    padding: 0 8px;
     font-size: 10px;
   }
-
-  &--mini {
-    font-size: 10px;
-  }
-
-  // &__icon {
-  //   display: flex;
-  //   align-items: center;
-  //   height: 100%;
-  //   color: var(--bee-cell-title-color);
-  //   background-color: var(--bee-text-color-secondary);
-
-  //   &-prefix {
-  //     margin-right: var(--bee-padding-xs);
-  //     font-size: var(--bee-cell-title-font-size);
-  //   }
-
-  //   &-suffix {
-  //     margin-left: var(--bee-padding-xs);
-  //     font-size: var(--bee-cell-value-font-size);
-  //   }
-  // }
 
   &__left,
   &__right {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: var(--bee-cell-line-height);
+    height: 100%;
+    color: var(--bee-text-color-placeholder);
   }
 
   &__left {
     margin-right: var(--bee-padding-xs);
-    color: var(--bee-cell-title-color);
-    font-size: var(--bee-cell-title-font-size);
   }
 
   &__right {
     margin-left: var(--bee-padding-xs);
-    color: var(--bee-cell-value-color);
-    font-size: var(--bee-cell-value-font-size);
-
-    .bee-cell__icon {
-      &.arrow {
-        &.left {
-          transform: rotate(270deg);
-        }
-
-        &.right {
-          transform: rotate(90deg);
-        }
-
-        &.up {
-          transform: rotate(0deg);
-        }
-
-        &.down {
-          transform: rotate(180deg);
-        }
-      }
-    }
   }
 }
 </style>

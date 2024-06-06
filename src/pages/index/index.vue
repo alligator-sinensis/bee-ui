@@ -5,6 +5,7 @@
       v-for="(item, index) in pages.subPackages[0].pages"
       :key="index"
       arrow
+      clickable
       :title="item.style.navigationBarTitleText"
       :to="`/${pages.subPackages[0].root}/${item.path}`"
     />

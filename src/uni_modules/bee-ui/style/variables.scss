@@ -33,6 +33,9 @@ page {
   --bee-text-color-secondary: #909399;
   --bee-text-color-placeholder: #a8abb2;
   --bee-text-color-disabled: #c0c4cc;
+  --bee-disabled-bg-color: #f5f7fa;
+  --bee-disabled-text-color: var(--el-text-color-placeholder);
+  --bee-disabled-border-color: #e4e7ed;
 
   // 按钮
   --bee-button-border-width: var(--bee-border-width);
@@ -95,4 +98,8 @@ page {
   --bee-cell-icon-color: var(--bee-text-color-secondary);
   --bee-cell-icon-right-arrow-size: 22px;
   --bee-cell-active-color: #f2f3f5;
+
+  // input
+  --bee-input-text-color: var(--bee-text-color-regular);
+  --bee-input-border-radius: var(--bee-border-radius-md);
 }
