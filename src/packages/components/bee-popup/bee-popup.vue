@@ -48,6 +48,9 @@ export default {
 
 <script setup lang="ts">
 import { useVModel } from "@vueuse/core"
+import BeeOverlay from "../bee-overlay/bee-overlay.vue"
+import BeeTransition from "../bee-transition/bee-transition.vue"
+import BeeIcon from "../bee-icon/bee-icon.vue"
 
 const props = withDefaults(
   defineProps<{

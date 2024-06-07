@@ -41,6 +41,8 @@ export default {
 import { computed, ref, useSlots } from "vue"
 import { type ButtonProps, buttonPropDefaults } from "./button"
 import { componentSizeMap } from "../../constants"
+import BeeIcon from "../bee-icon/bee-icon.vue"
+import BeeLoading from "../bee-loading/bee-loading.vue"
 
 const props = withDefaults(defineProps<ButtonProps>(), buttonPropDefaults)
 

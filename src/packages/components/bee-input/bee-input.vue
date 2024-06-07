@@ -3,6 +3,7 @@
     class="bee-input"
     :class="[`bee-input--${props.size}`, { 'is-disabled': disabled }]"
     :style="getStyle"
+    @click="onClick"
   >
     <view v-if="prefixIcon" class="bee-input__left">
       <bee-icon class="bee-input__icon" :name="prefixIcon" :prefix="prefixIconPrefix" />
@@ -19,6 +20,7 @@
       :placeholder="placeholder"
       :type="type"
       @blur="onBlur"
+      @click="onClickInput"
       @confirm="onConfirm"
       @focus="onFocus"
       @input="onInput"
@@ -64,6 +66,7 @@ export default {
 import { computed, ref, useSlots, type HTMLAttributes, type InputTypeHTMLAttribute } from "vue"
 import { componentSizeMap, type ComponentSize } from "../../constants"
 import { sleep } from "radash"
+import BeeIcon from "../bee-icon/bee-icon.vue"
 
 const props = withDefaults(
   defineProps<{
@@ -101,7 +104,15 @@ const props = withDefaults(
   },
 )
 
-const emit = defineEmits(["update:modelValue", "focus", "blur", "input", "confirm"])
+const emit = defineEmits([
+  "update:modelValue",
+  "focus",
+  "blur",
+  "input",
+  "confirm",
+  "click",
+  "clickInput",
+])
 const passwordEnableStatus = ref(false)
 const isFocus = ref(false)
 
@@ -150,6 +161,12 @@ const onConfirm = (event) => {
 }
 const onInput = (event) => {
   emit("input", event)
+}
+const onClick = (event) => {
+  emit("click", event)
+}
+const onClickInput = (event) => {
+  emit("clickInput", event)
 }
 
 const slots = useSlots()

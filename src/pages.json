@@ -73,6 +73,8 @@
   },
   "easycom": {
     "autoscan": true,
-    "custom": {}
+    "custom": {
+      // "^bee-(.*)": "@/packages/components/bee-$1/bee-$1.vue"
+    }
   }
 }

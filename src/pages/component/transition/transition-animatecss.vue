@@ -21,6 +21,7 @@ export default {
 <script setup lang="ts">
 import { ref } from "vue"
 import "animate.css"
+import BeeTransition from "@/packages/components/bee-transition/bee-transition.vue"
 
 const show = ref(false)
 </script>

@@ -20,6 +20,7 @@ export default {
 
 <script setup lang="ts">
 import { computed } from "vue"
+import BeeTransition from "../bee-transition/bee-transition.vue"
 
 const props = withDefaults(
   defineProps<{

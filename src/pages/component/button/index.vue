@@ -106,6 +106,8 @@
 </template>
 
 <script setup lang="ts">
+import BeeButton from "@/packages/components/bee-button/bee-button.vue"
+
 const fetchSave = () => {
   return new Promise<void>((resolve) => {
     setTimeout(() => {

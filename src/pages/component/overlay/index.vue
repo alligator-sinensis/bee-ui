@@ -20,6 +20,8 @@
 
 <script setup lang="ts">
 import { ref } from "vue"
+import BeeButton from "@/packages/components/bee-button/bee-button.vue"
+import BeeOverlay from "@/packages/components/bee-overlay/bee-overlay.vue"
 
 const show1 = ref(false)
 const show2 = ref(false)

@@ -1,6 +1,5 @@
 <template>
   <bee-doc-demo-section>
-    <pre>{{ state }}</pre>
     <bee-doc-demo-block title="基础用法">
       <bee-input v-model="state.value1" placeholder="请输入" />
     </bee-doc-demo-block>
@@ -25,13 +24,7 @@
       <bee-input v-model="state.value1" show-word-limit />
     </bee-doc-demo-block>
     <bee-doc-demo-block title="带图标的输入框">
-      <bee-input
-        v-model="state.value1"
-        prefix-icon="search-line"
-        style="width: 200px"
-        suffix-icon="calendar-2-line"
-      />
-      <bee-button>小蜜蜂</bee-button>
+      <bee-input v-model="state.value1" prefix-icon="search-line" suffix-icon="calendar-2-line" />
     </bee-doc-demo-block>
     <bee-doc-demo-block title="插槽">
       <bee-input v-model="state.value1" prefix-icon="search-line" suffix-icon="calendar-2-line">
@@ -48,6 +41,8 @@
         show-word-limit
         suffix-icon="calendar-2-line"
         @blur="showToast('blur')"
+        @click="showToast('click')"
+        @click-input="showToast('click-input')"
         @confirm="showToast('confirm')"
         @focus="showToast('focus')"
         @input="showToast('input')"
@@ -55,18 +50,29 @@
         <template #prefix> prefix </template>
         <template #suffix> suffix </template>
       </bee-input>
+
+      <bee-input
+        v-model="state.value1"
+        prefix-icon="search-line"
+        style="width: 200px"
+        suffix-icon="calendar-2-line"
+      />
+      <bee-button>小蜜蜂</bee-button>
     </bee-doc-demo-block>
   </bee-doc-demo-section>
 </template>
 
 <script setup lang="ts">
 import { reactive } from "vue"
+import BeeInput from "@/packages/components/bee-input/bee-input.vue"
+import BeeButton from "@/packages/components/bee-button/bee-button.vue"
 
 const state = reactive({
   value1: undefined,
 })
 
 const showToast = (title) => {
+  console.log(title)
   uni.showToast({
     icon: "none",
     title,
