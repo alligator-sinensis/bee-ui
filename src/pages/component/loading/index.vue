@@ -37,8 +37,6 @@
   </bee-doc-demo-section>
 </template>
 
-<script setup lang="ts">
-import BeeLoading from "@/packages/components/bee-loading/bee-loading.vue"
-</script>
+<script setup lang="ts"></script>
 
 <style scoped lang="scss"></style>

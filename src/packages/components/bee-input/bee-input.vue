@@ -66,7 +66,6 @@ export default {
 import { computed, ref, useSlots, type HTMLAttributes, type InputTypeHTMLAttribute } from "vue"
 import { componentSizeMap, type ComponentSize } from "../../constants"
 import { sleep } from "radash"
-import BeeIcon from "../bee-icon/bee-icon.vue"
 
 const props = withDefaults(
   defineProps<{

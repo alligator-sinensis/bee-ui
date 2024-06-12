@@ -57,8 +57,6 @@ export default {
 </script>
 
 <script setup lang="ts">
-import BeeIcon from "../bee-icon/bee-icon.vue"
-
 const props = withDefaults(
   defineProps<{
     title?: string

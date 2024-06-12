@@ -69,7 +69,6 @@
 <script setup lang="ts">
 import { computed, ref } from "vue"
 import tags from "./tags.json"
-import BeeIcon from "@/packages/components/bee-icon/bee-icon.vue"
 
 const queryValue = ref("")
 

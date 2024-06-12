@@ -14,7 +14,6 @@
 
 <script setup lang="ts">
 import pages from "@/pages.json"
-import BeeCell from "@/packages/components/bee-cell/bee-cell.vue"
 </script>
 
 <style scoped lang="scss"></style>

@@ -9,15 +9,13 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    BeeButton: (typeof import("./../components/bee-button/bee-button.vue"))["default"]
-    BeeCell: (typeof import("./../components/bee-cell/bee-cell.vue"))["default"]
+    BeeButton: typeof import('@/packages/components/bee-button/bee-button.vue')['default']
+    BeeCell: typeof import('@/packages/components/bee-cell/bee-cell.vue')['default']
     BeeDocDemoBlock: typeof import('./../../components/bee-doc-demo-block/bee-doc-demo-block.vue')['default']
     BeeDocDemoSection: typeof import('./../../components/bee-doc-demo-section/bee-doc-demo-section.vue')['default']
-    BeeIcon: (typeof import("./../components/bee-icon/bee-icon.vue"))["default"]
-    BeeInput: (typeof import("./../components/bee-input/bee-input.vue"))["default"]
-    BeeLoading: (typeof import("./../components/bee-loading/bee-loading.vue"))["default"]
-    BeeOverlay: (typeof import("./../components/bee-overlay/bee-overlay.vue"))["default"]
-    BeePopup: (typeof import("./../components/bee-popup/bee-popup.vue"))["default"]
-    BeeTransition: (typeof import("./../components/bee-transition/bee-transition.vue"))["default"]
+    BeeIcon: typeof import('@/packages/components/bee-icon/bee-icon.vue')['default']
+    BeeInput: typeof import('@/packages/components/bee-input/bee-input.vue')['default']
+    BeeLoading: typeof import('@/packages/components/bee-loading/bee-loading.vue')['default']
+    BeeTransition: typeof import('@/packages/components/bee-transition/bee-transition.vue')['default']
   }
 }

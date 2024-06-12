@@ -64,8 +64,6 @@
 
 <script setup lang="ts">
 import { reactive } from "vue"
-import BeeInput from "@/packages/components/bee-input/bee-input.vue"
-import BeeButton from "@/packages/components/bee-button/bee-button.vue"
 
 const state = reactive({
   value1: undefined,

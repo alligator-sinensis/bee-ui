@@ -58,8 +58,6 @@
   </bee-doc-demo-section>
 </template>
 
-<script setup lang="ts">
-import BeeCell from "@/packages/components/bee-cell/bee-cell.vue"
-</script>
+<script setup lang="ts"></script>
 
 <style scoped lang="scss"></style>

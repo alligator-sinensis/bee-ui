@@ -104,8 +104,6 @@
 
 <script setup lang="ts">
 import { ref } from "vue"
-import BeeButton from "@/packages/components/bee-button/bee-button.vue"
-import BeePopup from "@/packages/components/bee-popup/bee-popup.vue"
 
 const showCenter = ref(false)
 const showTop = ref(false)
