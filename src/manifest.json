@@ -61,7 +61,8 @@
       "es6": false
     },
     "usingComponents": true,
-    "mergeVirtualHostAttributes": true
+    "mergeVirtualHostAttributes": true,
+    "scopedSlotsCompiler": "augmented"
   },
   "mp-alipay": {
     "usingComponents": true

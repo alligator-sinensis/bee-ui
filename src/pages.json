@@ -64,6 +64,12 @@
           }
         },
         {
+          "path": "input-number/index",
+          "style": {
+            "navigationBarTitleText": "Input Number 数字输入框"
+          }
+        },
+        {
           "path": "space/index",
           "style": {
             "navigationBarTitleText": "Space 间距"

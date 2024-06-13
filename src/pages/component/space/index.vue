@@ -47,9 +47,9 @@
     <bee-doc-demo-block title="对齐方式">
       <view>align:{{ align }}</view>
       <bee-button @click="align = 'stretch'">stretch</bee-button>
-      <bee-button @click="align = 'start'">start</bee-button>
+      <bee-button @click="align = 'flex-start'">flex-start</bee-button>
       <bee-button @click="align = 'center'">center</bee-button>
-      <bee-button @click="align = 'end'">end</bee-button>
+      <bee-button @click="align = 'flex-end'">flex-end</bee-button>
       <bee-space :align="align" style="width: 250px; height: 150px; background-color: #eee">
         <view v-for="(item, index) in 3" :key="index" class="box"> 按钮 {{ item }} </view>
       </bee-space>

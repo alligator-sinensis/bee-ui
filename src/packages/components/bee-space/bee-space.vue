@@ -8,6 +8,14 @@
   </view>
 </template>
 
+<script lang="ts">
+export default {
+  options: {
+    virtualHost: true,
+    styleIsolation: "shared",
+  },
+}
+</script>
 <script setup lang="ts">
 import { computed } from "vue"
 
@@ -16,7 +24,7 @@ const props = withDefaults(
     direction?: "vertical" | "horizontal"
     size?: number | string | number[] | string[]
     // https://developer.mozilla.org/en-US/docs/Web/CSS/align-items
-    align?: "stretch" | "start" | "end" | "center"
+    align?: "stretch" | "flex-start" | "center" | "flex-end"
     wrap?: boolean
     // 是否让 Space 变为一个块级元素，填充整个父元素
     fill?: boolean
