@@ -7,8 +7,6 @@ export function pluginComponents() {
       {
         type: "component",
         resolve: (name: string) => {
-          console.log(name)
-
           if (name.match(/^Bee[A-Z]/)) {
             const compName = kebabCase(name)
             return {

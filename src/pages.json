@@ -62,6 +62,12 @@
           "style": {
             "navigationBarTitleText": "Input 输入框"
           }
+        },
+        {
+          "path": "space/index",
+          "style": {
+            "navigationBarTitleText": "Space 间距"
+          }
         }
       ]
     }
