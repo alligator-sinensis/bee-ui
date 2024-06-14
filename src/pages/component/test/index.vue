@@ -1,37 +1,18 @@
 <template>
-  <bee-doc-demo-section>
-    <a-com class="kkk" style="border: 10px solid darkblue" />
-    <!-- <bee-doc-demo-block>
-    <a-com />
-  </bee-doc-demo-block> -->
-  </bee-doc-demo-section>
+  <view>
+    <MyInputNumber v-model="value" />
+
+    <pre>{{ { value } }}</pre>
+
+    <input v-model="value" style="background-color: salmon" type="text" />
+  </view>
 </template>
 
-<script lang="ts">
-export default {
-  options: {
-    styleIsolation: "shared",
-  },
-}
-</script>
 <script setup lang="ts">
-import ACom from "./components/a-com.vue"
+import { ref } from "vue"
+import MyInputNumber from "./components/my-input-number.vue"
+
+const value = ref("")
 </script>
 
-<style scoped lang="scss">
-// .a-com {
-//   color: #fff;
-//   background-color: rebeccapurple;`
-// }
-
-.kkk {
-  color: #fff;
-  background-color: sandybrown;
-
-  :deep() {
-    .aaa {
-      color: pink !important;
-    }
-  }
-}
-</style>
+<style scoped lang="scss"></style>

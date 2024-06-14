@@ -1,0 +1,61 @@
+.bee-input {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: var(--bee-input-height);
+  line-height: 1;
+  vertical-align: middle;
+  background-color: #fff;
+  border: 1px solid var(--bee-border-color);
+  border-radius: var(--bee-input-border-radius);
+
+  &.is-disabled {
+    background-color: var(--bee-disabled-bg-color);
+  }
+
+  input {
+    flex: 1;
+    height: 100%;
+    min-height: 0;
+    color: var(--bee-input-text-color);
+    font-size: inherit;
+
+    .input-placeholder {
+      color: var(--bee-text-color-placeholder);
+    }
+  }
+
+  &--large {
+    padding: 0 14px;
+    font-size: 16px;
+  }
+
+  &--middle {
+    padding: 0 11px;
+    font-size: 14px;
+  }
+
+  &--small {
+    padding: 0 8px;
+    font-size: 10px;
+  }
+
+  &__left,
+  &__right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--bee-text-color-placeholder);
+  }
+
+  &__left {
+    margin-right: var(--bee-padding-xs);
+  }
+
+  &__right {
+    margin-left: var(--bee-padding-xs);
+  }
+}

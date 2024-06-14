@@ -69,5 +69,6 @@ module.exports = {
     ],
     "no-duplicate-imports": "error",
     "prefer-const": "error",
+    "@typescript-eslint/ban-ts-comment": "off",
   },
 }

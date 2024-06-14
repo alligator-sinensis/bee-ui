@@ -11,14 +11,15 @@
     <view v-if="!!slots.prefix" class="bee-input__left">
       <slot name="prefix"></slot>
     </view>
+    <!-- v-model="modelValue" -->
     <input
-      v-model="modelValue"
+      v-model.number="modelValue"
       :disabled="disabled || readonly"
-      :inputmode="inputmode"
+      :inputmode="inputNumber ? 'decimal' : (inputmode as any)"
       :maxlength="maxlength"
       :password="showPassword ? !passwordEnableStatus : password"
       :placeholder="placeholder"
-      :type="type"
+      :type="inputNumber ? 'digit' : type"
       @blur="onBlur"
       @click="onClickInput"
       @confirm="onConfirm"
@@ -63,13 +64,13 @@ export default {
 }
 </script>
 <script setup lang="ts">
-import { computed, ref, useSlots, type HTMLAttributes, type InputTypeHTMLAttribute } from "vue"
+import { computed, ref, useSlots } from "vue"
 import { componentSizeMap, type ComponentSize } from "../../constants"
 import { sleep } from "radash"
 
 const props = withDefaults(
   defineProps<{
-    modelValue?: string | number
+    modelValue?: number | string
     maxlength?: string | number
     placeholder?: string
     clearable?: boolean
@@ -84,13 +85,17 @@ const props = withDefaults(
     disabled?: boolean
     readonly?: boolean
     clearTrigger?: "always" | "focus"
-
     // uniapp其他
-    type?: InputTypeHTMLAttribute
-    inputmode?: HTMLAttributes["inputmode"]
+    type?: string
+    inputmode?: string
+    // input-number
+    inputNumber?: boolean
+    min?: number
+    max?: number
+    step?: number
+    precision?: number
   }>(),
   {
-    modelValue: "",
     maxlength: 140,
     clearable: false,
     size: "middle",
@@ -100,6 +105,11 @@ const props = withDefaults(
     disabled: false,
     readonly: false,
     clearTrigger: "focus",
+    // @ts-ignore
+    inputNumber: false,
+    min: -Infinity,
+    max: Infinity,
+    step: 1,
   },
 )
 
@@ -116,8 +126,22 @@ const passwordEnableStatus = ref(false)
 const isFocus = ref(false)
 
 const modelValue = computed({
-  get: () => props.modelValue,
-  set: (val) => emit("update:modelValue", val),
+  get: () => {
+    // const { inputNumber } = props
+    // if (inputNumber) {
+    // return parseFloat(props.modelValue)
+    // } else {
+    return props.modelValue
+    // }
+  },
+  set: (val) => {
+    // const { inputNumber } = props
+    // if (inputNumber) {
+    // emit("update:modelValue", parseFloat(val))
+    // } else {
+    emit("update:modelValue", val)
+    // }
+  },
 })
 
 const getStyle = computed(() => {
@@ -159,6 +183,9 @@ const onConfirm = (event) => {
   emit("confirm", event)
 }
 const onInput = (event) => {
+  // const value = event.detail.value
+  // console.log("onInput-value", value)
+  // modelValue.value = parseFloat(value)
   emit("input", event)
 }
 const onClick = (event) => {
@@ -172,65 +199,5 @@ const slots = useSlots()
 </script>
 
 <style scoped lang="scss">
-.bee-input {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  box-sizing: border-box;
-  width: 100%;
-  height: var(--bee-input-height);
-  line-height: 1;
-  vertical-align: middle;
-  background-color: #fff;
-  border: 1px solid var(--bee-border-color);
-  border-radius: var(--bee-input-border-radius);
-
-  &.is-disabled {
-    background-color: var(--bee-disabled-bg-color);
-  }
-
-  input {
-    flex: 1;
-    height: 100%;
-    min-height: 0;
-    color: var(--bee-input-text-color);
-    font-size: inherit;
-
-    .input-placeholder {
-      color: var(--bee-text-color-placeholder);
-    }
-  }
-
-  &--large {
-    padding: 0 14px;
-    font-size: 16px;
-  }
-
-  &--middle {
-    padding: 0 11px;
-    font-size: 14px;
-  }
-
-  &--small {
-    padding: 0 8px;
-    font-size: 10px;
-  }
-
-  &__left,
-  &__right {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    color: var(--bee-text-color-placeholder);
-  }
-
-  &__left {
-    margin-right: var(--bee-padding-xs);
-  }
-
-  &__right {
-    margin-left: var(--bee-padding-xs);
-  }
-}
+@import "./index";
 </style>

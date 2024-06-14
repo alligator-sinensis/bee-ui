@@ -15,7 +15,6 @@ declare module '@vue/runtime-core' {
     BeeDocDemoSection: typeof import('./../../components/bee-doc-demo-section/bee-doc-demo-section.vue')['default']
     BeeIcon: typeof import('@/packages/components/bee-icon/bee-icon.vue')['default']
     BeeInput: typeof import('@/packages/components/bee-input/bee-input.vue')['default']
-    BeeInputNumber: typeof import('@/packages/components/bee-input-number/bee-input-number.vue')['default']
     BeeLoading: typeof import('@/packages/components/bee-loading/bee-loading.vue')['default']
     BeeOverlay: typeof import('@/packages/components/bee-overlay/bee-overlay.vue')['default']
     BeePopup: typeof import('@/packages/components/bee-popup/bee-popup.vue')['default']
