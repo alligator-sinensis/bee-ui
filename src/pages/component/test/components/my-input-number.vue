@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, ref } from "vue"
+import { computed, nextTick, ref, watch } from "vue"
 import IsNumber from "is-number"
 
 const props = withDefaults(
@@ -31,17 +31,42 @@ const inputNumberValue = ref<string>("")
 // })
 
 const onInput = () => {
-  if (inputNumberValue.value === "-") {
+  parseValue(inputNumberValue.value)
+}
+
+const parseValue = (val) => {
+  console.log("parseValue", val)
+  if (val === "-") {
     inputNumberValue.value = ""
     return
   }
-  if (!IsNumber(inputNumberValue.value)) {
+  if (!IsNumber(val)) {
     nextTick(() => {
-      const parseFloatValue = parseFloat(inputNumberValue.value)
+      const parseFloatValue = parseFloat(val)
       inputNumberValue.value = isNaN(parseFloatValue) ? "" : String(parseFloatValue)
     })
+    return
   }
+  inputNumberValue.value = String(val)
 }
+
+watch(
+  () => props.modelValue,
+  () => {
+    console.log("watch=>props.modelValue", props.modelValue)
+    parseValue(props.modelValue)
+  },
+  {
+    immediate: true,
+  },
+)
+
+watch(
+  () => inputNumberValue.value,
+  () => {
+    console.log("watch=>inputNumberValue.value", inputNumberValue.value)
+  },
+)
 </script>
 
 <style scoped lang="scss"></style>
