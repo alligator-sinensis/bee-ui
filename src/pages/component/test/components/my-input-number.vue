@@ -21,15 +21,6 @@ const emit = defineEmits(["update:modelValue"])
 
 const inputNumberValue = ref<string>("")
 
-// const modelValue = computed({
-//   get: () => {
-//     return props.modelValue
-//   },
-//   set: (val) => {
-//     emit("update:modelValue", val)
-//   },
-// })
-
 const onInput = async () => {
   await setInputNumberValue(inputNumberValue.value)
   setModelValue()
