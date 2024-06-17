@@ -9,9 +9,16 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    BeeButton: typeof import('@/packages/components/bee-button/bee-button.vue')['default']
     BeeCell: typeof import('@/packages/components/bee-cell/bee-cell.vue')['default']
     BeeDocDemoBlock: typeof import('./../../components/bee-doc-demo-block/bee-doc-demo-block.vue')['default']
     BeeDocDemoSection: typeof import('./../../components/bee-doc-demo-section/bee-doc-demo-section.vue')['default']
     BeeIcon: typeof import('@/packages/components/bee-icon/bee-icon.vue')['default']
+    BeeInput: typeof import('@/packages/components/bee-input/bee-input.vue')['default']
+    BeeLoading: typeof import('@/packages/components/bee-loading/bee-loading.vue')['default']
+    BeeOverlay: typeof import('@/packages/components/bee-overlay/bee-overlay.vue')['default']
+    BeePopup: typeof import('@/packages/components/bee-popup/bee-popup.vue')['default']
+    BeeSpace: typeof import('@/packages/components/bee-space/bee-space.vue')['default']
+    BeeTransition: typeof import('@/packages/components/bee-transition/bee-transition.vue')['default']
   }
 }

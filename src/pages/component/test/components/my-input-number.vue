@@ -58,12 +58,6 @@ async function setVerifyValueByDisplayValue(value: string) {
     : String(parseFloatValue)
 }
 
-// async function setVerifyValueByModelValue(value) {
-//   console.log("setVerifyValueByModelValue", value)
-//   const newValue = isNil(value) ? "" : String(value)
-//   displayValue.value = isNumber(value) ? newValue : ""
-// }
-
 const emitModelValue = () => {
   const value = displayValue.value
   emit("update:modelValue", ["", "-"].includes(value) ? null : value)
