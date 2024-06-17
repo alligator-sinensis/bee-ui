@@ -1,61 +1,75 @@
 <template>
-  <bee-input v-bind="$attrs">
-    <template #prefix>
-      <view class="prefix">
-        <slot name="prefix"></slot>
-      </view>
-    </template>
-    <template #suffix>
-      <slot name="suffix"></slot>
-    </template>
-  </bee-input>
+  <view>
+    <input v-model="displayValue" @input="onInput" />
+    <pre>{{ { modelValue, displayValue } }}</pre>
+  </view>
 </template>
 
-<script lang="ts">
-export default {
-  options: {
-    virtualHost: true,
-    styleIsolation: "shared",
-  },
-}
-</script>
 <script setup lang="ts">
-import { computed } from "vue"
+import { nextTick, ref } from "vue"
+import isNumber from "is-number"
+import { watchPausable } from "@vueuse/core"
 
 const props = withDefaults(
   defineProps<{
     modelValue?: number
+    min?: number
+    max?: number
+    step?: number
+    precision?: number
+    emptyValue?: number
   }>(),
-  {},
+  {
+    inputNumber: false,
+    min: -Infinity,
+    max: Infinity,
+    step: 1,
+  },
+)
+const emit = defineEmits(["update:modelValue"])
+
+const displayValue = ref("")
+
+const { pause: PauseWatchModelValue, resume: resumeWatchModelValue } = watchPausable(
+  () => props.modelValue,
+  async (value) => {
+    console.log("watch => modelValue", value)
+    displayValue.value = isNumber(value) ? String(value) : ""
+    emit("update:modelValue", !isNumber(displayValue.value) ? null : Number(displayValue.value))
+  },
+  {
+    immediate: true,
+  },
 )
 
-const emit = defineEmits([
-  "update:modelValue",
-  "focus",
-  "blur",
-  "input",
-  "confirm",
-  "click",
-  "clickInput",
-])
-const modelValue = computed({
-  get: () => props.modelValue,
-  set: (val) => emit("update:modelValue", val),
-})
+const onInput = async (event) => {
+  const { value } = event.detail
+  PauseWatchModelValue()
+  await setVerifyValueByDisplayValue(value)
+  emit("update:modelValue", !isNumber(displayValue.value) ? null : displayValue.value)
+  await nextTick()
+  resumeWatchModelValue()
+}
 
-function processModelDirective(el, binding) {
-  if (binding.modifiers.number) {
-    el.addEventListener("input", (event) => {
-      const value = event.target.value
-      const numberValue = parseFloat(value)
-      if (!isNaN(numberValue)) {
-        binding.value = numberValue
-      } else {
-        binding.value = value
-      }
-    })
+async function setVerifyValueByDisplayValue(value: string) {
+  console.log("setVerifyValueByDisplayValue", value)
+  if (isNumber(value)) {
+    displayValue.value = value
+    return
   }
+  const parseFloatValue = parseFloat(value)
+  await nextTick()
+  displayValue.value = isNaN(parseFloatValue)
+    ? value.startsWith("-")
+      ? "-"
+      : ""
+    : String(parseFloatValue)
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+input {
+  padding: 10px;
+  border: 1px solid var(--bee-border-color);
+}
+</style>
