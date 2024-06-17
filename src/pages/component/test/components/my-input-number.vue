@@ -37,7 +37,6 @@ const onInput = async (event) => {
   const { value } = event.detail
   PauseWatchModelValue()
   await setVerifyValueByDisplayValue(value)
-  // emit("update:modelValue", ["", "-"].includes(displayValue.value) ? null : displayValue.value)
   emit("update:modelValue", !isNumber(displayValue.value) ? null : displayValue.value)
   await nextTick()
   resumeWatchModelValue()

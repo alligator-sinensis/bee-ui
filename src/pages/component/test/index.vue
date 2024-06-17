@@ -11,7 +11,7 @@
 import { ref } from "vue"
 import MyInputNumber from "./components/my-input-number.vue"
 
-const value = ref("-1")
+const value = ref(null) // 6  6w w6 null undefind -  -6  -6w -w6
 </script>
 
 <style scoped lang="scss"></style>
