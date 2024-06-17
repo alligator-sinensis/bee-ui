@@ -2,9 +2,8 @@
   <view>
     <MyInputNumber v-model="value" />
 
-    <pre>{{ { value } }}</pre>
-
-    <input v-model="value" style="background-color: salmon" type="text" />
+    <!-- <pre>{{ { value } }}</pre> -->
+    <!-- <input v-model="value" style="background-color: salmon" type="text" /> -->
   </view>
 </template>
 
@@ -12,7 +11,7 @@
 import { ref } from "vue"
 import MyInputNumber from "./components/my-input-number.vue"
 
-const value = ref("-")
+const value = ref("-OK")
 </script>
 
 <style scoped lang="scss"></style>

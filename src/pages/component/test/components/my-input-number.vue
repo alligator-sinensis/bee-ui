@@ -1,87 +1,53 @@
 <template>
   <view>
-    <input v-model="inputNumberValue" style="background-color: #f0f0f0" @input="onInput" />
+    <input v-model="displayValue" @input="onInput" />
 
-    <pre>{{ { modelValue, inputNumberValue } }}</pre>
+    <pre>{{ { modelValue, displayValue } }}</pre>
   </view>
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from "vue"
-import IsNumber from "is-number"
+import { computed, nextTick, reactive, ref, watch } from "vue"
+import isNumber from "is-number"
+import { isNil } from "lodash-es"
 
 const props = withDefaults(
   defineProps<{
-    modelValue?: number | string
+    modelValue?: number
   }>(),
   {},
 )
-
 const emit = defineEmits(["update:modelValue"])
 
-const inputNumberValue = ref<string>("")
+const displayValue = ref(String(props.modelValue))
 
-const onInput = async () => {
-  console.log("onInput", inputNumberValue.value)
-  await setInputNumberValue(inputNumberValue.value)
-}
-
-const setInputNumberValue = async (val) => {
-  console.log("parseValue", val)
-  if (val === "-") {
-    inputNumberValue.value = ""
-    setModelValue()
-    return
-  }
-  if (!IsNumber(val)) {
+const onInput = async (event) => {
+  const { value } = event.detail
+  // 设置成 v-model 就不需要这一步了
+  // displayValue.value = value
+  const verifyValue = getVerifyValue(value)
+  console.log({ verifyValue, displayValue: displayValue.value })
+  if (verifyValue !== displayValue.value) {
     await nextTick()
-    const parseFloatValue = parseFloat(val)
-    inputNumberValue.value = isNaN(parseFloatValue) ? "" : String(parseFloatValue)
-    setModelValue()
-    return
+    displayValue.value = verifyValue
   }
-  inputNumberValue.value = String(val)
-  setModelValue()
 }
 
-const setModelValue = () => {
-  const value = inputNumberValue.value
-  if (value === "") {
-    emit("update:modelValue", null)
-    return
-  }
+const getVerifyValue = (value: string, update = false) => {
   if (value === "-") {
-    emit("update:modelValue", null)
-    return
+    return value
   }
-  emit("update:modelValue", Number(value))
+  if (!isNumber(value)) {
+    const parseFloatValue = parseFloat(value)
+    return isNaN(parseFloatValue) ? "" : String(parseFloatValue)
+  }
+  return value
 }
-
-// watch(
-//   () => inputNumberValue.value,
-//   () => {
-//     console.log("watch=>inputNumberValue.value", inputNumberValue.value)
-//     setModelValue(inputNumberValue.value)
-//   },
-// )
-
-watch(
-  () => props.modelValue,
-  async () => {
-    console.log("watch=>props.modelValue", props.modelValue)
-    await setInputNumberValue(props.modelValue)
-  },
-  {
-    immediate: true,
-  },
-)
-
-// modelValue 和 inputNumberValue
-
-// 初始化：读取modelValue，解析设置inputNumberValue，再更新modelValue
-
-// 后期监听modelValue，解析设置inputNumberValue，再更新modelValue
-// onInput事件，解析设置inputNumberValue，再更新modelValue
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+input {
+  padding: 10px;
+  background-color: #f0f0f0;
+}
+</style>
