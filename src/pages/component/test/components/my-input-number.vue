@@ -26,7 +26,7 @@ const { pause: PauseWatchModelValue, resume: resumeWatchModelValue } = watchPaus
   async (value) => {
     console.log("watch => modelValue", value)
     displayValue.value = isNumber(value) ? String(value) : ""
-    emit("update:modelValue", displayValue.value === "" ? null : Number(displayValue.value))
+    emit("update:modelValue", !isNumber(displayValue.value) ? null : Number(displayValue.value))
   },
   {
     immediate: true,
@@ -37,7 +37,8 @@ const onInput = async (event) => {
   const { value } = event.detail
   PauseWatchModelValue()
   await setVerifyValueByDisplayValue(value)
-  emitModelValue()
+  // emit("update:modelValue", ["", "-"].includes(displayValue.value) ? null : displayValue.value)
+  emit("update:modelValue", !isNumber(displayValue.value) ? null : displayValue.value)
   await nextTick()
   resumeWatchModelValue()
 }
@@ -55,11 +56,6 @@ async function setVerifyValueByDisplayValue(value: string) {
       ? "-"
       : ""
     : String(parseFloatValue)
-}
-
-const emitModelValue = () => {
-  const value = displayValue.value
-  emit("update:modelValue", ["", "-"].includes(value) ? null : value)
 }
 </script>
 
