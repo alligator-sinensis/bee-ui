@@ -22,23 +22,26 @@ const emit = defineEmits(["update:modelValue"])
 const inputNumberValue = ref<string>("")
 
 const onInput = async () => {
+  console.log("onInput", inputNumberValue.value)
   await setInputNumberValue(inputNumberValue.value)
-  setModelValue()
 }
 
 const setInputNumberValue = async (val) => {
   console.log("parseValue", val)
   if (val === "-") {
     inputNumberValue.value = ""
+    setModelValue()
     return
   }
   if (!IsNumber(val)) {
     await nextTick()
     const parseFloatValue = parseFloat(val)
     inputNumberValue.value = isNaN(parseFloatValue) ? "" : String(parseFloatValue)
+    setModelValue()
     return
   }
   inputNumberValue.value = String(val)
+  setModelValue()
 }
 
 const setModelValue = () => {
@@ -67,7 +70,6 @@ watch(
   async () => {
     console.log("watch=>props.modelValue", props.modelValue)
     await setInputNumberValue(props.modelValue)
-    setModelValue()
   },
   {
     immediate: true,
