@@ -1,87 +1,111 @@
 <template>
   <view>
-    <input v-model="inputNumberValue" style="background-color: #f0f0f0" @input="onInput" />
+    <input v-model="displayValue" @input="onInput" />
 
-    <pre>{{ { modelValue, inputNumberValue } }}</pre>
+    <pre>{{ { modelValue, displayValue } }}</pre>
   </view>
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from "vue"
-import IsNumber from "is-number"
+import { computed, nextTick, reactive, ref, watch } from "vue"
+import isNumber from "is-number"
+import { isNil } from "lodash-es"
 
 const props = withDefaults(
   defineProps<{
-    modelValue?: number | string
+    modelValue?: number
   }>(),
   {},
 )
-
 const emit = defineEmits(["update:modelValue"])
 
-const inputNumberValue = ref<string>("")
+const displayValue = ref("")
 
-const onInput = async () => {
-  console.log("onInput", inputNumberValue.value)
-  await setInputNumberValue(inputNumberValue.value)
+const onInput = async (event) => {
+  //   const { value } = event.detail
+  //   // 设置成 v-model 就不需要这一步了
+  //   // displayValue.value = value
+  //   const verifyValue = getVerifyValue(value)
+  //   console.log({ verifyValue, displayValue: displayValue.value })
+  //   if (verifyValue !== displayValue.value) {
+  //     await nextTick()
+  //     displayValue.value = verifyValue
+  //   }
 }
 
-const setInputNumberValue = async (val) => {
-  console.log("parseValue", val)
-  if (val === "-") {
-    inputNumberValue.value = ""
-    setModelValue()
-    return
-  }
-  if (!IsNumber(val)) {
-    await nextTick()
-    const parseFloatValue = parseFloat(val)
-    inputNumberValue.value = isNaN(parseFloatValue) ? "" : String(parseFloatValue)
-    setModelValue()
-    return
-  }
-  inputNumberValue.value = String(val)
-  setModelValue()
-}
-
-const setModelValue = () => {
-  const value = inputNumberValue.value
-  if (value === "") {
-    emit("update:modelValue", null)
-    return
-  }
+const setVerifyValue = async (value: string) => {
+  console.log("setVerifyValue", value)
   if (value === "-") {
-    emit("update:modelValue", null)
+    displayValue.value = value
     return
   }
-  emit("update:modelValue", Number(value))
+  if (isNumber(value)) {
+    displayValue.value = value
+    return
+  }
+  const parseFloatValue = parseFloat(value)
+  await nextTick()
+  displayValue.value = isNaN(parseFloatValue)
+    ? value.startsWith("-")
+      ? "-"
+      : ""
+    : String(parseFloatValue)
 }
 
-// watch(
-//   () => inputNumberValue.value,
-//   () => {
-//     console.log("watch=>inputNumberValue.value", inputNumberValue.value)
-//     setModelValue(inputNumberValue.value)
-//   },
-// )
+const emitModelValue = () => {
+  const value = displayValue.value
+  emit("update:modelValue", ["", "-"].includes(value) ? null : value)
+}
 
+/* 
+  监听 displayValue
+  '-1w' => 格式化 => '-1'  emit(-1) 
+  '-w' => 格式化 => '-' emit(null)
+*/
 watch(
-  () => props.modelValue,
-  async () => {
-    console.log("watch=>props.modelValue", props.modelValue)
-    await setInputNumberValue(props.modelValue)
+  displayValue,
+  async (value) => {
+    console.log("watch => displayValue", value)
+    await setVerifyValue(value)
+    console.log("setVerifyValue-end", displayValue.value)
+    emitModelValue()
   },
   {
     immediate: true,
   },
 )
 
-// modelValue 和 inputNumberValue
+/* 
+  监听 modelValue
+  '-1w' => 格式化 => '-1' emit(-1)
+  '-w' => 格式化 => '' emit(null)
+*/
+watch(
+  () => props.modelValue,
+  async (newValue, oldValue) => {
+    console.log("watch => modelValue", { newValue, oldValue })
+    // await setVerifyValue(String(value))
+    console.log(displayValue.value)
 
-// 初始化：读取modelValue，解析设置inputNumberValue，再更新modelValue
-
-// 后期监听modelValue，解析设置inputNumberValue，再更新modelValue
-// onInput事件，解析设置inputNumberValue，再更新modelValue
+    if (newValue === null && displayValue.value === "") {
+      return
+    }
+    if (String(newValue) === displayValue.value) {
+      return
+    }
+    // if (newValue !== displayValue.value) {
+    displayValue.value = newValue ? String(newValue) : ""
+    // }
+  },
+  // {
+  //   immediate: true,
+  // },
+)
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+input {
+  padding: 10px;
+  background-color: #f0f0f0;
+}
+</style>
