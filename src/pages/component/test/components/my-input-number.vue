@@ -7,9 +7,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, reactive, ref, watch } from "vue"
+import { nextTick, ref } from "vue"
 import isNumber from "is-number"
-import { isNil } from "lodash-es"
 import { watchPausable } from "@vueuse/core"
 
 const props = withDefaults(
