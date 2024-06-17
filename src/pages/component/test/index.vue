@@ -12,7 +12,7 @@
 import { ref } from "vue"
 import MyInputNumber from "./components/my-input-number.vue"
 
-const value = ref("99")
+const value = ref("-")
 </script>
 
 <style scoped lang="scss"></style>

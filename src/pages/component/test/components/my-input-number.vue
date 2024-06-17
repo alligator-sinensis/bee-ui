@@ -30,43 +30,65 @@ const inputNumberValue = ref<string>("")
 //   },
 // })
 
-const onInput = () => {
-  parseValue(inputNumberValue.value)
+const onInput = async () => {
+  await setInputNumberValue(inputNumberValue.value)
+  setModelValue()
 }
 
-const parseValue = (val) => {
+const setInputNumberValue = async (val) => {
   console.log("parseValue", val)
   if (val === "-") {
     inputNumberValue.value = ""
     return
   }
   if (!IsNumber(val)) {
-    nextTick(() => {
-      const parseFloatValue = parseFloat(val)
-      inputNumberValue.value = isNaN(parseFloatValue) ? "" : String(parseFloatValue)
-    })
+    await nextTick()
+    const parseFloatValue = parseFloat(val)
+    inputNumberValue.value = isNaN(parseFloatValue) ? "" : String(parseFloatValue)
     return
   }
   inputNumberValue.value = String(val)
 }
 
+const setModelValue = () => {
+  const value = inputNumberValue.value
+  if (value === "") {
+    emit("update:modelValue", null)
+    return
+  }
+  if (value === "-") {
+    emit("update:modelValue", null)
+    return
+  }
+  emit("update:modelValue", Number(value))
+}
+
+// watch(
+//   () => inputNumberValue.value,
+//   () => {
+//     console.log("watch=>inputNumberValue.value", inputNumberValue.value)
+//     setModelValue(inputNumberValue.value)
+//   },
+// )
+
 watch(
   () => props.modelValue,
-  () => {
+  async () => {
     console.log("watch=>props.modelValue", props.modelValue)
-    parseValue(props.modelValue)
+    await setInputNumberValue(props.modelValue)
+    setModelValue()
   },
   {
     immediate: true,
   },
 )
 
-watch(
-  () => inputNumberValue.value,
-  () => {
-    console.log("watch=>inputNumberValue.value", inputNumberValue.value)
-  },
-)
+// modelValue 和 inputNumberValue
+
+// 初始化：读取modelValue，解析设置inputNumberValue，再更新modelValue
+
+// 后期监听modelValue，解析设置inputNumberValue，再更新modelValue
+// onInput事件，解析设置inputNumberValue，再更新modelValue
 </script>
 
 <style scoped lang="scss"></style>
