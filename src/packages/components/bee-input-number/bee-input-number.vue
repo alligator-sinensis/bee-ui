@@ -20,10 +20,13 @@ const props = withDefaults(
     emptyValue?: number
   }>(),
   {
-    inputNumber: false,
-    min: -Infinity,
-    max: Infinity,
+    // min: -Infinity,
+    // max: Infinity,
     step: 1,
+    emptyValue: 1,
+    precision: 5,
+    min: -10,
+    max: 10,
   },
 )
 const emit = defineEmits(["update:modelValue"])
@@ -33,63 +36,57 @@ const displayValue = ref("")
 const { pause: PauseWatchModelValue, resume: resumeWatchModelValue } = watchPausable(
   () => props.modelValue,
   async (value) => {
-    console.log("watch => modelValue", value)
+    // console.log("watch => modelValue", value)
     displayValue.value = isNumber(value) ? String(value) : ""
-    emit("update:modelValue", !isNumber(displayValue.value) ? null : Number(displayValue.value))
+    // onBlur(displayValue.value)
+    emit("update:modelValue", displayValue.value === "" ? null : Number(displayValue.value))
   },
   {
     immediate: true,
   },
 )
 
-const onInput = async (event) => {
-  const { value } = event.detail
+const onInput = async () => {
   PauseWatchModelValue()
-  await setVerifyValueByDisplayValue(value)
-  emit("update:modelValue", !isNumber(displayValue.value) ? null : displayValue.value)
   await nextTick()
-  resumeWatchModelValue()
-}
-
-async function setVerifyValueByDisplayValue(value: string) {
-  // console.log("setVerifyValueByDisplayValue", value)
-  if (isNumber(value)) {
-    displayValue.value = value
-    return
-  }
-  const parseFloatValue = parseFloat(value)
-  await nextTick()
+  const _displayValue = displayValue.value
+  const parseFloatValue = parseFloat(_displayValue)
+  // 例如输入 "-a" => "-"，输入
   displayValue.value = isNaN(parseFloatValue)
-    ? value.startsWith("-")
+    ? _displayValue.startsWith("-")
       ? "-"
       : ""
     : String(parseFloatValue)
+  emit("update:modelValue", displayValue.value === "" ? null : displayValue.value)
+  resumeWatchModelValue()
 }
 
-const onBlur = (event) => {
-  let value = event.detail.value as string
-  const { min, max, emptyValue, precision } = props
-  console.log("onBlur", value)
-  if (value === "") {
-    if (isNumber(emptyValue)) {
-      value = String(emptyValue)
-    } else {
-      return 1
-    }
-  }
-  let newVal = Number(value)
-  console.log(newVal)
-  if (newVal > max) {
-    newVal = max
-  } else if (newVal < min) {
-    newVal = min
-  }
-  if (precision) {
-    newVal = newVal.toFixed(precision)
-  }
-  console.log(newVal)
-  displayValue.value = String(newVal)
+// function verifyValueByDisplayValue(value: string) {
+//   const parseFloatValue = parseFloat(value)
+//   return isNaN(parseFloatValue) ? (value.startsWith("-") ? "-" : "") : String(parseFloatValue)
+// }
+
+function onBlur(event) {
+  // let value = event.detail.value as string
+  // let value = displayValue.value
+  // const { min, max, emptyValue, precision } = props
+  // if (value === "") {
+  //   if (isNumber(emptyValue)) {
+  //     value = String(emptyValue)
+  //   } else {
+  //     return
+  //   }
+  // }
+  // let numberValue = Number(value)
+  // if (numberValue > max) {
+  //   numberValue = max
+  // } else if (numberValue < min) {
+  //   numberValue = min
+  // }
+  // displayValue.value = precision ? numberValue.toFixed(precision) : String(numberValue)
 }
+
+function setVerifyValue() {}
 </script>
 
 <style scoped lang="scss">
