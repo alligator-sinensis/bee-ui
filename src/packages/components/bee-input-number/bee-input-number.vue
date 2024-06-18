@@ -50,14 +50,24 @@ const onInput = async () => {
   PauseWatchModelValue()
   await nextTick()
   const _displayValue = displayValue.value
+  /**
+   *  输入      输出
+   *  "-1y"    "-1"
+   *  "-y"     "-"
+   *  "-"      "-"
+   *  "--"     "-"
+   *  "000"    "000"
+   *  "0.0"    "0.0"
+   *  "-0.0"   "-0.0"  不太对
+   */
   const parseFloatValue = parseFloat(_displayValue)
-  // 例如输入 "-a" => "-"，输入
   displayValue.value = isNaN(parseFloatValue)
     ? _displayValue.startsWith("-")
       ? "-"
       : ""
     : String(parseFloatValue)
   emit("update:modelValue", displayValue.value === "" ? null : displayValue.value)
+  await nextTick()
   resumeWatchModelValue()
 }
 
