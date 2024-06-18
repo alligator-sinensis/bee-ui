@@ -1,6 +1,6 @@
 <template>
   <view>
-    <input v-model="displayValue" @input="onInput" />
+    <input v-model="displayValue" @blur="onBlur" @input="onInput" />
     <pre>{{ { modelValue, displayValue } }}</pre>
   </view>
 </template>
@@ -52,7 +52,7 @@ const onInput = async (event) => {
 }
 
 async function setVerifyValueByDisplayValue(value: string) {
-  console.log("setVerifyValueByDisplayValue", value)
+  // console.log("setVerifyValueByDisplayValue", value)
   if (isNumber(value)) {
     displayValue.value = value
     return
@@ -64,6 +64,31 @@ async function setVerifyValueByDisplayValue(value: string) {
       ? "-"
       : ""
     : String(parseFloatValue)
+}
+
+const onBlur = (event) => {
+  let value = event.detail.value as string
+  const { min, max, emptyValue, precision } = props
+  console.log("onBlur", value)
+  if (value === "") {
+    if (isNumber(emptyValue)) {
+      value = String(emptyValue)
+    } else {
+      return 1
+    }
+  }
+  let newVal = Number(value)
+  console.log(newVal)
+  if (newVal > max) {
+    newVal = max
+  } else if (newVal < min) {
+    newVal = min
+  }
+  if (precision) {
+    newVal = newVal.toFixed(precision)
+  }
+  console.log(newVal)
+  displayValue.value = String(newVal)
 }
 </script>
 
