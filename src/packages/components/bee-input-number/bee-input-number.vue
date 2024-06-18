@@ -23,7 +23,7 @@ const props = withDefaults(
     // min: -Infinity,
     // max: Infinity,
     step: 1,
-    emptyValue: 1,
+    emptyValue: 5.5,
     precision: 5,
     min: -10,
     max: 10,
@@ -39,7 +39,10 @@ const { pause: PauseWatchModelValue, resume: resumeWatchModelValue } = watchPaus
   async (value) => {
     // console.log("watch => modelValue", value)
     displayValue.value = isNumber(value) ? String(parseFloat(String(value))) : ""
-    emit("update:modelValue", displayValue.value === "" ? null : parseFloat(displayValue.value))
+    displayValue.value = setVerifyValue()
+    const emitValue = displayValue.value === "" ? null : parseFloat(displayValue.value)
+    // console.log("emitValue - watchModelValue", emitValue)
+    emit("update:modelValue", emitValue)
   },
   {
     immediate: true,
@@ -64,34 +67,12 @@ const onInput = async () => {
    *  "-."     "-."
    */
   const _displayValue = displayValue.value
-  // const parseDisplayValue = customParseFloat(_displayValue)
   if (!["", "-", "+", ".", "+.", "-."].includes(_displayValue) && !isNumber(_displayValue)) {
-    console.log(2, oldDisplayValue.value)
     displayValue.value = oldDisplayValue.value
   }
-
-  // console.log({ _displayValue, parseDisplayValue })
-  // if (_displayValue.startsWith("-")) {
-  //   displayValue.value = parseDisplayValue ? parseDisplayValue : "-"
-  // } else {
-  //   displayValue.value = parseDisplayValue
-  // }
-
-  // if (displayValue.value !== "") {
-  // displayValue.value = isNumber(_displayValue)
-  //   ? _displayValue
-  //   : _displayValue.startsWith("-") && parseDisplayValue === null
-  //     ? "-"
-  //     : parseDisplayValue
-  // displayValue.value = isNumber(_displayValue)
-  //   ? _displayValue
-  //   : _displayValue.startsWith("-")
-  //     ? ""
-  //     : ""
-  // }
-
-  // emit("update:modelValue", displayValue.value === "" ? null : parseFloat(displayValue.value))
-  emit("update:modelValue", isNumber(displayValue.value) ? parseFloat(displayValue.value) : null)
+  const emitValue = isNumber(displayValue.value) ? parseFloat(displayValue.value) : null
+  // console.log("emitValue - onInput", emitValue)
+  emit("update:modelValue", emitValue)
   await nextTick()
   resumeWatchModelValue()
 }
@@ -101,37 +82,39 @@ const onInput = async () => {
 //   return isNaN(parseFloatValue) ? (value.startsWith("-") ? "-" : "") : String(parseFloatValue)
 // }
 
-function onBlur(event) {
-  // let value = event.detail.value as string
-  // let value = displayValue.value
-  // const { min, max, emptyValue, precision } = props
-  // if (value === "") {
-  //   if (isNumber(emptyValue)) {
-  //     value = String(emptyValue)
-  //   } else {
-  //     return
-  //   }
-  // }
-  // let numberValue = Number(value)
-  // if (numberValue > max) {
-  //   numberValue = max
-  // } else if (numberValue < min) {
-  //   numberValue = min
-  // }
-  // displayValue.value = precision ? numberValue.toFixed(precision) : String(numberValue)
+function onBlur() {
+  displayValue.value = setVerifyValue()
 }
 
-function setVerifyValue() {}
-
-function customParseFloat(str = "") {
-  for (var i = str.length; i > 0; i--) {
-    const val = str.substring(0, i)
-    if (isNumber(val)) {
-      return val
+function setVerifyValue() {
+  const { min, max, emptyValue, precision } = props
+  let res: any = displayValue.value
+  if (res === "") {
+    if (isNumber(emptyValue)) {
+      res = String(emptyValue)
+    } else {
+      return res
     }
   }
-  return ""
+  res = Number(res)
+  if (res > max) {
+    res = max
+  } else if (res < min) {
+    res = min
+  }
+  res = precision ? res.toFixed(precision) : String(res)
+  return res
 }
+
+// function customParseFloat(str = "") {
+//   for (var i = str.length; i > 0; i--) {
+//     const val = str.substring(0, i)
+//     if (isNumber(val)) {
+//       return val
+//     }
+//   }
+//   return ""
+// }
 // console.log(customParseFloat())
 // console.log(customParseFloat(""))
 // console.log(customParseFloat("0.00."))
@@ -144,11 +127,12 @@ console.log(isNumber("."))
 watch(
   () => displayValue.value,
   (newValue, oldValue) => {
-    oldDisplayValue.value = typeof oldValue === "undefined" ? "" : oldValue
+    // oldDisplayValue.value = typeof oldValue === "undefined" ? "" : oldValue
+    oldDisplayValue.value = oldValue
   },
-  {
-    immediate: true,
-  },
+  // {
+  //   immediate: true,
+  // },
 )
 </script>
 

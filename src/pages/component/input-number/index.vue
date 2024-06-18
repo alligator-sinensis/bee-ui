@@ -3,6 +3,7 @@
     <pre>{{ state }}</pre>
     <bee-doc-demo-block title="基础用法">
       <bee-input-number v-model="state.value1" placeholder="请输入" />
+      <input v-model="state.value1" placeholder="请输入" />
     </bee-doc-demo-block>
   </bee-doc-demo-section>
 </template>
@@ -11,7 +12,7 @@
 import { reactive } from "vue"
 
 const state = reactive({
-  value1: "-.1",
+  // value1: '.',
 })
 </script>
 
