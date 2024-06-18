@@ -13,13 +13,13 @@
     </view>
     <!-- v-model="modelValue" -->
     <input
-      v-model.number="modelValue"
+      v-model="modelValue"
       :disabled="disabled || readonly"
-      :inputmode="inputNumber ? 'decimal' : (inputmode as any)"
+      :inputmode="inputmode as any"
       :maxlength="maxlength"
       :password="showPassword ? !passwordEnableStatus : password"
       :placeholder="placeholder"
-      :type="inputNumber ? 'digit' : type"
+      :type="type"
       @blur="onBlur"
       @click="onClickInput"
       @confirm="onConfirm"
@@ -70,7 +70,7 @@ import { sleep } from "radash"
 
 const props = withDefaults(
   defineProps<{
-    modelValue?: number | string
+    modelValue?: string
     maxlength?: string | number
     placeholder?: string
     clearable?: boolean
@@ -88,12 +88,6 @@ const props = withDefaults(
     // uniapp其他
     type?: string
     inputmode?: string
-    // input-number
-    inputNumber?: boolean
-    min?: number
-    max?: number
-    step?: number
-    precision?: number
   }>(),
   {
     maxlength: 140,
@@ -105,11 +99,6 @@ const props = withDefaults(
     disabled: false,
     readonly: false,
     clearTrigger: "focus",
-    // @ts-ignore
-    inputNumber: false,
-    min: -Infinity,
-    max: Infinity,
-    step: 1,
   },
 )
 
@@ -127,20 +116,10 @@ const isFocus = ref(false)
 
 const modelValue = computed({
   get: () => {
-    // const { inputNumber } = props
-    // if (inputNumber) {
-    // return parseFloat(props.modelValue)
-    // } else {
     return props.modelValue
-    // }
   },
   set: (val) => {
-    // const { inputNumber } = props
-    // if (inputNumber) {
-    // emit("update:modelValue", parseFloat(val))
-    // } else {
     emit("update:modelValue", val)
-    // }
   },
 })
 
@@ -183,9 +162,6 @@ const onConfirm = (event) => {
   emit("confirm", event)
 }
 const onInput = (event) => {
-  // const value = event.detail.value
-  // console.log("onInput-value", value)
-  // modelValue.value = parseFloat(value)
   emit("input", event)
 }
 const onClick = (event) => {

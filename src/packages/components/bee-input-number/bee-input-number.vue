@@ -1,10 +1,22 @@
 <template>
-  <view>
-    <button @click="increase">+</button>
-    <button @click="decrease">-</button>
+  <!-- <view>
+    
     <input v-model="displayValue" @blur="onBlur" @input="onInput" />
-    <pre>{{ { modelValue, displayValue } }}</pre>
-  </view>
+  
+  </view> -->
+  <pre>{{ { modelValue, displayValue, oldDisplayValue } }}</pre>
+  <bee-button @click="increase">+</bee-button>
+  <bee-input v-model="displayValue" v-bind="$attrs" @blur="onBlur" @input="onInput">
+    <template #prefix>
+      <view class="prefix">
+        <slot name="prefix"></slot>
+      </view>
+    </template>
+    <template #suffix>
+      <slot name="suffix"></slot>
+    </template>
+  </bee-input>
+  <bee-button @click="decrease">-</bee-button>
 </template>
 
 <script setup lang="ts">
@@ -73,10 +85,12 @@ const onInput = async () => {
    *  "-."     "-."
    */
   const _displayValue = displayValue.value
+  const _oldDisplayValue = oldDisplayValue.value
+  console.log({ _displayValue, _oldDisplayValue })
   if (!["", "-", "+", ".", "+.", "-."].includes(_displayValue) && !isNumber(_displayValue)) {
     displayValue.value = oldDisplayValue.value
   }
-  await emitModelValue()
+  // await emitModelValue()
 }
 
 async function onBlur() {
