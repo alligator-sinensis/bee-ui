@@ -12,7 +12,7 @@
 import { reactive } from "vue"
 
 const state = reactive({
-  // value1: '.',
+  value1: "5.5",
 })
 </script>
 

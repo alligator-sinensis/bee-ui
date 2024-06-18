@@ -1,5 +1,7 @@
 <template>
   <view>
+    <button @click="increase">+</button>
+    <button @click="decrease">-</button>
     <input v-model="displayValue" @blur="onBlur" @input="onInput" />
     <pre>{{ { modelValue, displayValue } }}</pre>
   </view>
@@ -22,8 +24,8 @@ const props = withDefaults(
   {
     // min: -Infinity,
     // max: Infinity,
-    step: 1,
-    emptyValue: 5.5,
+    step: 0.03,
+    emptyValue: 5.2,
     precision: 5,
     min: -10,
     max: 10,
@@ -34,14 +36,20 @@ const emit = defineEmits(["update:modelValue"])
 const displayValue = ref("")
 const oldDisplayValue = ref()
 
+watch(
+  () => displayValue.value,
+  (newValue, oldValue) => {
+    oldDisplayValue.value = oldValue
+  },
+)
+
 const { pause: PauseWatchModelValue, resume: resumeWatchModelValue } = watchPausable(
   () => props.modelValue,
   async (value) => {
-    // console.log("watch => modelValue", value)
+    console.log("watch => modelValue", value, typeof value)
     displayValue.value = isNumber(value) ? String(parseFloat(String(value))) : ""
-    displayValue.value = setVerifyValue()
+    displayValue.value = getVerifyValue()
     const emitValue = displayValue.value === "" ? null : parseFloat(displayValue.value)
-    // console.log("emitValue - watchModelValue", emitValue)
     emit("update:modelValue", emitValue)
   },
   {
@@ -50,8 +58,6 @@ const { pause: PauseWatchModelValue, resume: resumeWatchModelValue } = watchPaus
 )
 
 const onInput = async () => {
-  PauseWatchModelValue()
-  await nextTick()
   /**
    *  输入      输出
    *  "1w"     "1"
@@ -70,23 +76,15 @@ const onInput = async () => {
   if (!["", "-", "+", ".", "+.", "-."].includes(_displayValue) && !isNumber(_displayValue)) {
     displayValue.value = oldDisplayValue.value
   }
-  const emitValue = isNumber(displayValue.value) ? parseFloat(displayValue.value) : null
-  // console.log("emitValue - onInput", emitValue)
-  emit("update:modelValue", emitValue)
-  await nextTick()
-  resumeWatchModelValue()
+  await emitModelValue()
 }
 
-// function verifyValueByDisplayValue(value: string) {
-//   const parseFloatValue = parseFloat(value)
-//   return isNaN(parseFloatValue) ? (value.startsWith("-") ? "-" : "") : String(parseFloatValue)
-// }
-
-function onBlur() {
-  displayValue.value = setVerifyValue()
+async function onBlur() {
+  displayValue.value = getVerifyValue()
+  await emitModelValue()
 }
 
-function setVerifyValue() {
+function getVerifyValue() {
   const { min, max, emptyValue, precision } = props
   let res: any = displayValue.value
   if (res === "") {
@@ -106,34 +104,38 @@ function setVerifyValue() {
   return res
 }
 
-// function customParseFloat(str = "") {
-//   for (var i = str.length; i > 0; i--) {
-//     const val = str.substring(0, i)
-//     if (isNumber(val)) {
-//       return val
-//     }
-//   }
-//   return ""
-// }
-// console.log(customParseFloat())
-// console.log(customParseFloat(""))
-// console.log(customParseFloat("0.00."))
-// console.log(customParseFloat("0.00"))
-// console.log(customParseFloat("-0"))
-// console.log(customParseFloat("-"))
+// 增加
+const increase = async () => {
+  const currentNumber = displayValue.value === "" ? 0 : Number(displayValue.value)
+  const stepNumber = isNumber(props.step) ? Number(props.step) : 1
+  displayValue.value = String(currentNumber + stepNumber)
+  displayValue.value = getVerifyValue()
+  await emitModelValue()
+}
 
-console.log(isNumber("."))
+// 减少
+const decrease = async () => {
+  const currentNumber = displayValue.value === "" ? 0 : Number(displayValue.value)
+  const stepNumber = isNumber(props.step) ? Number(props.step) : 1
+  displayValue.value = String(currentNumber - stepNumber)
+  displayValue.value = getVerifyValue()
+  await emitModelValue()
+}
 
-watch(
-  () => displayValue.value,
-  (newValue, oldValue) => {
-    // oldDisplayValue.value = typeof oldValue === "undefined" ? "" : oldValue
-    oldDisplayValue.value = oldValue
-  },
-  // {
-  //   immediate: true,
-  // },
-)
+/**
+ * 处理update:modelValue
+ * update之前先暂停modelValue侦听器，update完成后再恢复modelValue侦听器。
+ */
+const emitModelValue = async () => {
+  PauseWatchModelValue()
+  await nextTick()
+
+  const emitValue = isNumber(displayValue.value) ? parseFloat(displayValue.value) : null
+  emit("update:modelValue", emitValue)
+
+  await nextTick()
+  resumeWatchModelValue()
+}
 </script>
 
 <style scoped lang="scss">
