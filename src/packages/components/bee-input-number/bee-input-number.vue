@@ -61,11 +61,12 @@ const onInput = async () => {
    *  "-0.0"   "-0.0"  不太对
    */
   const parseFloatValue = parseFloat(_displayValue)
-  displayValue.value = isNaN(parseFloatValue)
-    ? _displayValue.startsWith("-")
+  displayValue.value = isNumber(_displayValue)
+    ? _displayValue
+    : isNaN(parseFloatValue)
       ? "-"
-      : ""
-    : String(parseFloatValue)
+      : String(parseFloatValue)
+
   emit("update:modelValue", displayValue.value === "" ? null : displayValue.value)
   await nextTick()
   resumeWatchModelValue()
