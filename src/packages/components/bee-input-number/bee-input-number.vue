@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, ref } from "vue"
+import { nextTick, ref, watch } from "vue"
 import isNumber from "is-number"
 import { watchPausable } from "@vueuse/core"
 
@@ -32,14 +32,14 @@ const props = withDefaults(
 const emit = defineEmits(["update:modelValue"])
 
 const displayValue = ref("")
+const oldDisplayValue = ref()
 
 const { pause: PauseWatchModelValue, resume: resumeWatchModelValue } = watchPausable(
   () => props.modelValue,
   async (value) => {
     // console.log("watch => modelValue", value)
-    displayValue.value = isNumber(value) ? String(value) : ""
-    // onBlur(displayValue.value)
-    emit("update:modelValue", displayValue.value === "" ? null : Number(displayValue.value))
+    displayValue.value = isNumber(value) ? String(parseFloat(String(value))) : ""
+    emit("update:modelValue", displayValue.value === "" ? null : parseFloat(displayValue.value))
   },
   {
     immediate: true,
@@ -49,25 +49,49 @@ const { pause: PauseWatchModelValue, resume: resumeWatchModelValue } = watchPaus
 const onInput = async () => {
   PauseWatchModelValue()
   await nextTick()
-  const _displayValue = displayValue.value
   /**
    *  输入      输出
+   *  "1w"     "1"
    *  "-1y"    "-1"
    *  "-y"     "-"
    *  "-"      "-"
    *  "--"     "-"
    *  "000"    "000"
    *  "0.0"    "0.0"
-   *  "-0.0"   "-0.0"  不太对
+   *  "-0.0"   "-0.0"
+   *  "."      "."
+   *  "+."     "+."
+   *  "-."     "-."
    */
-  const parseFloatValue = parseFloat(_displayValue)
-  displayValue.value = isNumber(_displayValue)
-    ? _displayValue
-    : isNaN(parseFloatValue)
-      ? "-"
-      : String(parseFloatValue)
+  const _displayValue = displayValue.value
+  // const parseDisplayValue = customParseFloat(_displayValue)
+  if (!["", "-", "+", ".", "+.", "-."].includes(_displayValue) && !isNumber(_displayValue)) {
+    console.log(2, oldDisplayValue.value)
+    displayValue.value = oldDisplayValue.value
+  }
 
-  emit("update:modelValue", displayValue.value === "" ? null : displayValue.value)
+  // console.log({ _displayValue, parseDisplayValue })
+  // if (_displayValue.startsWith("-")) {
+  //   displayValue.value = parseDisplayValue ? parseDisplayValue : "-"
+  // } else {
+  //   displayValue.value = parseDisplayValue
+  // }
+
+  // if (displayValue.value !== "") {
+  // displayValue.value = isNumber(_displayValue)
+  //   ? _displayValue
+  //   : _displayValue.startsWith("-") && parseDisplayValue === null
+  //     ? "-"
+  //     : parseDisplayValue
+  // displayValue.value = isNumber(_displayValue)
+  //   ? _displayValue
+  //   : _displayValue.startsWith("-")
+  //     ? ""
+  //     : ""
+  // }
+
+  // emit("update:modelValue", displayValue.value === "" ? null : parseFloat(displayValue.value))
+  emit("update:modelValue", isNumber(displayValue.value) ? parseFloat(displayValue.value) : null)
   await nextTick()
   resumeWatchModelValue()
 }
@@ -98,6 +122,34 @@ function onBlur(event) {
 }
 
 function setVerifyValue() {}
+
+function customParseFloat(str = "") {
+  for (var i = str.length; i > 0; i--) {
+    const val = str.substring(0, i)
+    if (isNumber(val)) {
+      return val
+    }
+  }
+  return ""
+}
+// console.log(customParseFloat())
+// console.log(customParseFloat(""))
+// console.log(customParseFloat("0.00."))
+// console.log(customParseFloat("0.00"))
+// console.log(customParseFloat("-0"))
+// console.log(customParseFloat("-"))
+
+console.log(isNumber("."))
+
+watch(
+  () => displayValue.value,
+  (newValue, oldValue) => {
+    oldDisplayValue.value = typeof oldValue === "undefined" ? "" : oldValue
+  },
+  {
+    immediate: true,
+  },
+)
 </script>
 
 <style scoped lang="scss">
