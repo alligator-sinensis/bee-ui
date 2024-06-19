@@ -1,10 +1,21 @@
 <template>
-  <view class="bee-input-number" :style="getStyle">
+  <view
+    class="bee-input-number"
+    :class="[`bee-input-number--${props.size}`, { 'is-disabled': disabled }]"
+    :style="getStyle"
+  >
     <view class="bee-input-number__stepper bee-input-number__stepper-increase" @click="decrease">
-      -
+      <bee-icon name="subtract-line" />
     </view>
 
-    <bee-input v-model="displayValue" v-bind="$attrs" :size="size" @blur="onBlur" @input="onInput">
+    <bee-input
+      v-model="displayValue"
+      v-bind="$attrs"
+      :disabled="disabled"
+      :size="size"
+      @blur="onBlur"
+      @input="onInput"
+    >
       <template #prefix>
         <view class="prefix">
           <slot name="prefix"></slot>
@@ -16,7 +27,7 @@
     </bee-input>
 
     <view class="bee-input-number__stepper bee-input-number__stepper-decrease" @click="increase">
-      +
+      <bee-icon name="add-line" />
     </view>
   </view>
   <!-- <pre>{{ { modelValue, displayValue, oldDisplayValue } }}</pre> -->
@@ -38,12 +49,14 @@ const props = withDefaults(
     emptyValue?: number
     stepper?: boolean
     size?: Exclude<ComponentSize, "mini">
+    disabled?: boolean
   }>(),
   {
     min: -Infinity,
     max: Infinity,
     Stepper: false,
     size: "middle",
+    disabled: false,
     // step: 0.03,
     // emptyValue: 5.2,
     // precision: 5,
@@ -80,7 +93,7 @@ const { pause: PauseWatchModelValue, resume: resumeWatchModelValue } = watchPaus
 const getStyle = computed(() => {
   const { size } = props
   const res = {
-    "--bee-input-height": `${componentSizeMap[size]}px`,
+    "--bee-input-number-height": `${componentSizeMap[size]}px`,
   }
   return res
 })
@@ -189,10 +202,41 @@ const emitModelValue = async (verifyExtremes = false) => {
 .bee-input-number {
   position: relative;
   display: inline-flex;
+  vertical-align: middle;
 
-  .bee-input-number__stepper {
-    height: 100%;
-    background-color: #f2f3f5;
+  .bee-input {
+    flex: 1;
+    overflow: hidden;
+  }
+
+  &__stepper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--bee-input-number-height);
+    height: var(--bee-input-number-height);
+    color: var(--bee-stepper-icon-color);
+    font-size: 1.5em;
+    background-color: var(--bee-stepper-background-color);
+  }
+
+  &--large {
+    font-size: 16px;
+  }
+
+  &--middle {
+    font-size: 14px;
+  }
+
+  &--small {
+    font-size: 10px;
+  }
+
+  &.is-disabled {
+    .bee-input-number__stepper {
+      color: var(--bee-stepper-disabled-icon-color);
+      background-color: var(--bee-stepper-disabled-background-color);
+    }
   }
 }
 </style>
