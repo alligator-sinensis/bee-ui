@@ -1,28 +1,32 @@
 <template>
-  <!-- <view>
-    
-    <input v-model="displayValue" @blur="onBlur" @input="onInput" />
-  
-  </view> -->
-  <pre>{{ { modelValue, displayValue, oldDisplayValue } }}</pre>
-  <bee-button @click="increase">+</bee-button>
-  <bee-input v-model="displayValue" v-bind="$attrs" @blur="onBlur" @input="onInput">
-    <template #prefix>
-      <view class="prefix">
-        <slot name="prefix"></slot>
-      </view>
-    </template>
-    <template #suffix>
-      <slot name="suffix"></slot>
-    </template>
-  </bee-input>
-  <bee-button @click="decrease">-</bee-button>
+  <view class="bee-input-number" :style="getStyle">
+    <view class="bee-input-number__stepper bee-input-number__stepper-increase" @click="decrease">
+      -
+    </view>
+
+    <bee-input v-model="displayValue" v-bind="$attrs" :size="size" @blur="onBlur" @input="onInput">
+      <template #prefix>
+        <view class="prefix">
+          <slot name="prefix"></slot>
+        </view>
+      </template>
+      <template #suffix>
+        <slot name="suffix"></slot>
+      </template>
+    </bee-input>
+
+    <view class="bee-input-number__stepper bee-input-number__stepper-decrease" @click="increase">
+      +
+    </view>
+  </view>
+  <!-- <pre>{{ { modelValue, displayValue, oldDisplayValue } }}</pre> -->
 </template>
 
 <script setup lang="ts">
-import { nextTick, ref, watch } from "vue"
+import { computed, nextTick, ref, watch } from "vue"
 import isNumber from "is-number"
 import { watchPausable } from "@vueuse/core"
+import { componentSizeMap, type ComponentSize } from "../../constants"
 
 const props = withDefaults(
   defineProps<{
@@ -32,15 +36,19 @@ const props = withDefaults(
     step?: number
     precision?: number
     emptyValue?: number
+    stepper?: boolean
+    size?: Exclude<ComponentSize, "mini">
   }>(),
   {
-    // min: -Infinity,
-    // max: Infinity,
-    step: 0.03,
+    min: -Infinity,
+    max: Infinity,
+    Stepper: false,
+    size: "middle",
+    // step: 0.03,
     // emptyValue: 5.2,
-    precision: 5,
-    min: -10,
-    max: 10,
+    // precision: 5,
+    // min: -10,
+    // max: 100,
   },
 )
 const emit = defineEmits(["update:modelValue"])
@@ -58,7 +66,7 @@ watch(
 const { pause: PauseWatchModelValue, resume: resumeWatchModelValue } = watchPausable(
   () => props.modelValue,
   async (value) => {
-    console.log("watch => modelValue", value, typeof value)
+    // console.log("watch => modelValue", value, typeof value)
     displayValue.value = isNumber(value) ? String(parseFloat(String(value))) : ""
     displayValue.value = getVerifyValue()
     const emitValue = displayValue.value === "" ? null : parseFloat(displayValue.value)
@@ -68,6 +76,14 @@ const { pause: PauseWatchModelValue, resume: resumeWatchModelValue } = watchPaus
     immediate: true,
   },
 )
+
+const getStyle = computed(() => {
+  const { size } = props
+  const res = {
+    "--bee-input-height": `${componentSizeMap[size]}px`,
+  }
+  return res
+})
 
 const onInput = async () => {
   // input事件时暂停modelValue侦听器
@@ -92,9 +108,7 @@ const onInput = async () => {
   if (!["", "-", "+", ".", "+.", "-."].includes(_displayValue) && !isNumber(_displayValue)) {
     displayValue.value = oldDisplayValue.value
   }
-  console.log(getVerifyValue())
-
-  emitModelValue()
+  emitModelValue(true)
   // update:modelValue后，也需要nextTick下，再恢复modelValue侦听器，否则依然会触发modelValue侦听器
   await nextTick()
   resumeWatchModelValue()
@@ -108,8 +122,19 @@ async function onBlur() {
   resumeWatchModelValue()
 }
 
+function getVerifyExtremes(value: number) {
+  const { min, max } = props
+  let res = Number(value)
+  if (res > max) {
+    res = max
+  } else if (res < min) {
+    res = min
+  }
+  return res
+}
+
 function getVerifyValue() {
-  const { min, max, emptyValue, precision } = props
+  const { emptyValue, precision } = props
   let res: any = displayValue.value
   if (res === "") {
     if (isNumber(emptyValue)) {
@@ -118,12 +143,7 @@ function getVerifyValue() {
       return res
     }
   }
-  res = Number(res)
-  if (res > max) {
-    res = max
-  } else if (res < min) {
-    res = min
-  }
+  res = getVerifyExtremes(res)
   res = precision ? res.toFixed(precision) : String(res)
   return res
 }
@@ -152,24 +172,27 @@ const decrease = async () => {
   resumeWatchModelValue()
 }
 
-const emitModelValue = async () => {
-  const { min, max } = props
-  let emitValue = isNumber(displayValue.value) ? parseFloat(displayValue.value) : null
-  if (emitValue !== null) {
-    if (emitValue > max) {
-      emitValue = max
-    } else if (emitValue < min) {
-      emitValue = min
-    }
+const emitModelValue = async (verifyExtremes = false) => {
+  if (!isNumber(displayValue.value)) {
+    emit("update:modelValue", null)
+    return
   }
-  console.log("emitModelValue", emitValue)
+  let emitValue = parseFloat(displayValue.value)
+  if (verifyExtremes) {
+    emitValue = getVerifyExtremes(emitValue)
+  }
   emit("update:modelValue", emitValue)
 }
 </script>
 
 <style scoped lang="scss">
-input {
-  padding: 10px;
-  border: 1px solid var(--bee-border-color);
+.bee-input-number {
+  position: relative;
+  display: inline-flex;
+
+  .bee-input-number__stepper {
+    height: 100%;
+    background-color: #f2f3f5;
+  }
 }
 </style>

@@ -5,7 +5,7 @@
       <bee-input-number v-model="state.value1" placeholder="请输入" />
       <!-- <bee-input-number v-model="state.value1" input-number placeholder="请输入" /> -->
     </bee-doc-demo-block>
-    <!-- <bee-doc-demo-block title="禁用和只读">
+    <bee-doc-demo-block title="禁用和只读">
       <bee-input-number v-model="state.value1" disabled />
       <bee-input-number v-model="state.value1" readonly />
     </bee-doc-demo-block>
@@ -68,7 +68,7 @@
         suffix-icon="calendar-2-line"
       />
       <bee-button>小蜜蜂</bee-button>
-    </bee-doc-demo-block> -->
+    </bee-doc-demo-block>
   </bee-doc-demo-section>
 </template>
 
@@ -76,7 +76,7 @@
 import { reactive } from "vue"
 
 const state = reactive({
-  value1: undefined,
+  value1: 3,
 })
 
 const showToast = (title) => {
