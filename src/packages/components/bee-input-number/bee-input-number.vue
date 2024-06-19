@@ -37,7 +37,7 @@ const props = withDefaults(
     // min: -Infinity,
     // max: Infinity,
     step: 0.03,
-    emptyValue: 5.2,
+    // emptyValue: 5.2,
     precision: 5,
     min: -10,
     max: 10,
@@ -70,6 +70,10 @@ const { pause: PauseWatchModelValue, resume: resumeWatchModelValue } = watchPaus
 )
 
 const onInput = async () => {
+  // input事件时暂停modelValue侦听器
+  PauseWatchModelValue()
+  // 执行nextTick()，否则uniapp的input事件中立即修改值会不生效
+  await nextTick()
   /**
    *  输入      输出
    *  "1w"     "1"
@@ -85,17 +89,23 @@ const onInput = async () => {
    *  "-."     "-."
    */
   const _displayValue = displayValue.value
-  const _oldDisplayValue = oldDisplayValue.value
-  console.log({ _displayValue, _oldDisplayValue })
   if (!["", "-", "+", ".", "+.", "-."].includes(_displayValue) && !isNumber(_displayValue)) {
     displayValue.value = oldDisplayValue.value
   }
-  // await emitModelValue()
+  console.log(getVerifyValue())
+
+  emitModelValue()
+  // update:modelValue后，也需要nextTick下，再恢复modelValue侦听器，否则依然会触发modelValue侦听器
+  await nextTick()
+  resumeWatchModelValue()
 }
 
 async function onBlur() {
+  PauseWatchModelValue()
   displayValue.value = getVerifyValue()
-  await emitModelValue()
+  emitModelValue()
+  await nextTick()
+  resumeWatchModelValue()
 }
 
 function getVerifyValue() {
@@ -120,35 +130,40 @@ function getVerifyValue() {
 
 // 增加
 const increase = async () => {
+  PauseWatchModelValue()
   const currentNumber = displayValue.value === "" ? 0 : Number(displayValue.value)
   const stepNumber = isNumber(props.step) ? Number(props.step) : 1
   displayValue.value = String(currentNumber + stepNumber)
   displayValue.value = getVerifyValue()
-  await emitModelValue()
+  emitModelValue()
+  await nextTick()
+  resumeWatchModelValue()
 }
 
 // 减少
 const decrease = async () => {
+  PauseWatchModelValue()
   const currentNumber = displayValue.value === "" ? 0 : Number(displayValue.value)
   const stepNumber = isNumber(props.step) ? Number(props.step) : 1
   displayValue.value = String(currentNumber - stepNumber)
   displayValue.value = getVerifyValue()
-  await emitModelValue()
-}
-
-/**
- * 处理update:modelValue
- * update之前先暂停modelValue侦听器，update完成后再恢复modelValue侦听器。
- */
-const emitModelValue = async () => {
-  PauseWatchModelValue()
-  await nextTick()
-
-  const emitValue = isNumber(displayValue.value) ? parseFloat(displayValue.value) : null
-  emit("update:modelValue", emitValue)
-
+  emitModelValue()
   await nextTick()
   resumeWatchModelValue()
+}
+
+const emitModelValue = async () => {
+  const { min, max } = props
+  let emitValue = isNumber(displayValue.value) ? parseFloat(displayValue.value) : null
+  if (emitValue !== null) {
+    if (emitValue > max) {
+      emitValue = max
+    } else if (emitValue < min) {
+      emitValue = min
+    }
+  }
+  console.log("emitModelValue", emitValue)
+  emit("update:modelValue", emitValue)
 }
 </script>
 
