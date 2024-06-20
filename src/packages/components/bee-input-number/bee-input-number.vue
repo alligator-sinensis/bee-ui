@@ -66,7 +66,7 @@ const props = withDefaults(
   {
     min: -Infinity,
     max: Infinity,
-    Stepper: false,
+    stepper: true,
     size: "middle",
     disabled: false,
     // step: 0.03,
