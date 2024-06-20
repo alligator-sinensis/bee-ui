@@ -85,9 +85,9 @@ const state = reactive({
 const beforeChange = async (value) => {
   console.log(value)
   uni.showLoading()
-  await new Promise((resolve) => {
+  await new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve(true)
+      reject()
     }, 500)
   }).finally(() => {
     uni.hideLoading()

@@ -145,11 +145,17 @@ const onInput = async () => {
 async function onBlur() {
   const { beforeChange } = props
   PauseWatchModelValue()
-  displayValue.value = getVerifyValue()
+  const verifyValue = getVerifyValue()
   if (beforeChange && focusDisplayValue.value !== displayValue.value) {
-    await beforeChange(displayValue.value).catch(() => {
-      displayValue.value = focusDisplayValue.value
-    })
+    await beforeChange(displayValue.value)
+      .then(() => {
+        displayValue.value = verifyValue
+      })
+      .catch(() => {
+        displayValue.value = focusDisplayValue.value
+      })
+  } else {
+    displayValue.value = verifyValue
   }
   emitModelValue()
   await nextTick()
@@ -188,11 +194,25 @@ function getVerifyValue() {
 
 // 增加
 const increase = async () => {
+  const { beforeChange } = props
   PauseWatchModelValue()
+  const oldValue = displayValue.value
   const currentNumber = displayValue.value === "" ? 0 : Number(displayValue.value)
   const stepNumber = isNumber(props.step) ? Number(props.step) : 1
   displayValue.value = String(currentNumber + stepNumber)
-  displayValue.value = getVerifyValue()
+  const verifyValue = getVerifyValue()
+  console.log(oldValue, displayValue.value)
+  if (beforeChange) {
+    await beforeChange(displayValue.value)
+      .then(() => {
+        displayValue.value = verifyValue
+      })
+      .catch(() => {
+        displayValue.value = oldValue
+      })
+  } else {
+    displayValue.value = verifyValue
+  }
   emitModelValue()
   await nextTick()
   resumeWatchModelValue()
