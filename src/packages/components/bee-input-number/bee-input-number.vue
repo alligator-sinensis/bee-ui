@@ -1,10 +1,18 @@
 <template>
   <view
     class="bee-input-number"
-    :class="[`bee-input-number--${props.size}`, { 'is-disabled': disabled }]"
+    :class="[
+      `bee-input-number--${props.size}`,
+      { 'is-disabled': disabled },
+      { 'is-stepper': stepper },
+    ]"
     :style="getStyle"
   >
-    <view class="bee-input-number__stepper bee-input-number__stepper-increase" @click="decrease">
+    <view
+      v-if="stepper"
+      class="bee-input-number__stepper bee-input-number__stepper-increase"
+      @click="decrease"
+    >
       <bee-icon name="subtract-line" />
     </view>
 
@@ -26,7 +34,11 @@
       </template>
     </bee-input>
 
-    <view class="bee-input-number__stepper bee-input-number__stepper-decrease" @click="increase">
+    <view
+      v-if="stepper"
+      class="bee-input-number__stepper bee-input-number__stepper-decrease"
+      @click="increase"
+    >
       <bee-icon name="add-line" />
     </view>
   </view>
@@ -218,6 +230,7 @@ const emitModelValue = async (verifyExtremes = false) => {
     color: var(--bee-stepper-icon-color);
     font-size: 1.5em;
     background-color: var(--bee-stepper-background-color);
+    border-radius: var(--bee-stepper-radius);
   }
 
   &--large {
@@ -236,6 +249,18 @@ const emitModelValue = async (verifyExtremes = false) => {
     .bee-input-number__stepper {
       color: var(--bee-stepper-disabled-icon-color);
       background-color: var(--bee-stepper-disabled-background-color);
+    }
+  }
+
+  &.is-stepper {
+    gap: 2px;
+    text-align: center;
+
+    .bee-input {
+      width: 32px;
+      padding: 0;
+      background-color: var(--bee-stepper-background-color);
+      border: none;
     }
   }
 }

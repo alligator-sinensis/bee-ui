@@ -3,7 +3,7 @@
     <pre>{{ state }}</pre>
     <bee-doc-demo-block title="基础用法">
       <bee-input-number v-model="state.value1" placeholder="请输入" />
-      <!-- <bee-input-number v-model="state.value1" input-number placeholder="请输入" /> -->
+      <bee-input-number v-model="state.value1" placeholder="请输入" stepper />
     </bee-doc-demo-block>
     <bee-doc-demo-block title="禁用和只读">
       <bee-input-number v-model="state.value1" disabled />
