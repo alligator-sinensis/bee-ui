@@ -22,6 +22,7 @@
       :disabled="disabled"
       :size="size"
       @blur="onBlur"
+      @focus="onFocus"
       @input="onInput"
     >
       <template #prefix>
@@ -62,6 +63,7 @@ const props = withDefaults(
     stepper?: boolean
     size?: Exclude<ComponentSize, "mini">
     disabled?: boolean
+    beforeChange?: (value: any) => Promise<void>
   }>(),
   {
     min: -Infinity,
@@ -80,6 +82,7 @@ const emit = defineEmits(["update:modelValue"])
 
 const displayValue = ref("")
 const oldDisplayValue = ref()
+const focusDisplayValue = ref()
 
 watch(
   () => displayValue.value,
@@ -140,11 +143,21 @@ const onInput = async () => {
 }
 
 async function onBlur() {
+  const { beforeChange } = props
   PauseWatchModelValue()
   displayValue.value = getVerifyValue()
+  if (beforeChange && focusDisplayValue.value !== displayValue.value) {
+    await beforeChange(displayValue.value).catch(() => {
+      displayValue.value = focusDisplayValue.value
+    })
+  }
   emitModelValue()
   await nextTick()
   resumeWatchModelValue()
+}
+
+async function onFocus() {
+  focusDisplayValue.value = displayValue.value
 }
 
 function getVerifyExtremes(value: number) {
@@ -257,7 +270,7 @@ const emitModelValue = async (verifyExtremes = false) => {
     text-align: center;
 
     .bee-input {
-      width: 32px;
+      width: 132px;
       padding: 0;
       background-color: var(--bee-stepper-background-color);
       border: none;

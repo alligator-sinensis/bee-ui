@@ -39,6 +39,7 @@
         prefix-icon="search-line"
         show-password
         show-word-limit
+        size="large"
         suffix-icon="calendar-2-line"
         @blur="showToast('blur')"
         @click="showToast('click')"
@@ -50,7 +51,41 @@
         <template #prefix> prefix </template>
         <template #suffix> suffix </template>
       </bee-input>
-
+      <bee-input
+        v-model="state.value1"
+        clearable
+        prefix-icon="search-line"
+        show-password
+        show-word-limit
+        suffix-icon="calendar-2-line"
+        @blur="showToast('blur')"
+        @click="showToast('click')"
+        @click-input="showToast('click-input')"
+        @confirm="showToast('confirm')"
+        @focus="showToast('focus')"
+        @input="showToast('input')"
+      >
+        <template #prefix> prefix </template>
+        <template #suffix> suffix </template>
+      </bee-input>
+      <bee-input
+        v-model="state.value1"
+        clearable
+        prefix-icon="search-line"
+        show-password
+        show-word-limit
+        size="small"
+        suffix-icon="calendar-2-line"
+        @blur="showToast('blur')"
+        @click="showToast('click')"
+        @click-input="showToast('click-input')"
+        @confirm="showToast('confirm')"
+        @focus="showToast('focus')"
+        @input="showToast('input')"
+      >
+        <template #prefix> prefix </template>
+        <template #suffix> suffix </template>
+      </bee-input>
       <bee-input
         v-model="state.value1"
         prefix-icon="search-line"
