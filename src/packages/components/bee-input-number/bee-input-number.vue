@@ -114,9 +114,11 @@ const getStyle = computed(() => {
 })
 
 const setValue = async (newValue, oldValue) => {
+  PauseWatchModelValue()
   const { beforeChange } = props
-  const verifyValue = getVerifyValue()
-  if (beforeChange && newValue !== oldValue) {
+  const verifyValue = getVerifyValue(newValue)
+  // console.log({ newValue, oldValue, verifyValue })
+  if (beforeChange && verifyValue !== oldValue) {
     await beforeChange(displayValue.value)
       .then(() => {
         displayValue.value = verifyValue
@@ -162,8 +164,8 @@ const onInput = async () => {
 }
 
 async function onBlur() {
-  const { beforeChange } = props
-  PauseWatchModelValue()
+  // const { beforeChange } = props
+  // PauseWatchModelValue()
   // const verifyValue = getVerifyValue()
   // if (beforeChange && focusDisplayValue.value !== displayValue.value) {
   //   await beforeChange(displayValue.value)
@@ -180,6 +182,9 @@ async function onBlur() {
   // await nextTick()
   // resumeWatchModelValue()
   await setValue(displayValue.value, focusDisplayValue.value)
+
+  // await nextTick()
+  // resumeWatchModelValue()
 }
 
 async function onFocus() {
@@ -197,9 +202,9 @@ function getVerifyExtremes(value: number) {
   return res
 }
 
-function getVerifyValue() {
+function getVerifyValue(value = "") {
   const { emptyValue, precision } = props
-  let res: any = displayValue.value
+  let res: any = value || displayValue.value
   if (res === "") {
     if (isNumber(emptyValue)) {
       res = String(emptyValue)
@@ -214,28 +219,10 @@ function getVerifyValue() {
 
 // 增加
 const increase = async () => {
-  const { beforeChange } = props
-  PauseWatchModelValue()
   const oldValue = displayValue.value
   const currentNumber = displayValue.value === "" ? 0 : Number(displayValue.value)
   const stepNumber = isNumber(props.step) ? Number(props.step) : 1
   displayValue.value = String(currentNumber + stepNumber)
-  // const verifyValue = getVerifyValue()
-  // console.log(oldValue, displayValue.value)
-  // if (beforeChange) {
-  //   await beforeChange(displayValue.value)
-  //     .then(() => {
-  //       displayValue.value = verifyValue
-  //     })
-  //     .catch(() => {
-  //       displayValue.value = oldValue
-  //     })
-  // } else {
-  //   displayValue.value = verifyValue
-  // }
-  // emitModelValue()
-  // await nextTick()
-  // resumeWatchModelValue()
   await setValue(displayValue.value, oldValue)
 }
 

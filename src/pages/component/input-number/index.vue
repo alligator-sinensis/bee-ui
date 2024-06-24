@@ -7,6 +7,7 @@
     </bee-doc-demo-block>
     <bee-doc-demo-block title="异步变更">
       <bee-input-number v-model="state.value1" :before-change="beforeChange" :max="100" />
+      <bee-input-number v-model="state.value1" :before-change="beforeChange2" :max="100" />
     </bee-doc-demo-block>
     <bee-doc-demo-block title="禁用和只读">
       <bee-input-number v-model="state.value1" disabled />
@@ -83,6 +84,18 @@ const state = reactive({
 })
 
 const beforeChange = async (value) => {
+  console.log(value)
+  uni.showLoading()
+  await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true)
+    }, 500)
+  }).finally(() => {
+    uni.hideLoading()
+  })
+}
+
+const beforeChange2 = async (value) => {
   console.log(value)
   uni.showLoading()
   await new Promise((resolve, reject) => {
