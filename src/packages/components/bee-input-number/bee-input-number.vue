@@ -43,7 +43,7 @@
       <bee-icon name="add-line" />
     </view>
   </view>
-  <!-- <pre>{{ { modelValue, displayValue, oldDisplayValue } }}</pre> -->
+  <pre>{{ { modelValue, displayValue } }}</pre>
 </template>
 
 <script setup lang="ts">
@@ -54,7 +54,7 @@ import { componentSizeMap, type ComponentSize } from "../../constants"
 
 const props = withDefaults(
   defineProps<{
-    modelValue?: number
+    modelValue?: number | string | null
     min?: number
     max?: number
     step?: number
@@ -73,7 +73,7 @@ const props = withDefaults(
     disabled: false,
     // step: 0.03,
     // emptyValue: 5.2,
-    // precision: 5,
+    precision: 5,
     // min: -10,
     // max: 100,
   },
@@ -94,9 +94,16 @@ watch(
 const { pause: PauseWatchModelValue, resume: resumeWatchModelValue } = watchPausable(
   () => props.modelValue,
   async (value) => {
-    // console.log("watch => modelValue", value, typeof value)
-    displayValue.value = isNumber(value) ? String(parseFloat(String(value))) : ""
-    displayValue.value = getVerifyValue()
+    // "-.1" => "-0.1"
+    let toDisplayValue = isNumber(value) ? String(parseFloat(String(value))) : ""
+    if (toDisplayValue === displayValue.value) {
+      return
+    }
+    console.log("watch => modelValue", value, typeof value)
+    // "-0.1"
+    toDisplayValue = getVerifyValue(toDisplayValue)
+    displayValue.value = toDisplayValue
+    // -0.1
     const emitValue = displayValue.value === "" ? null : parseFloat(displayValue.value)
     emit("update:modelValue", emitValue)
   },
@@ -113,23 +120,34 @@ const getStyle = computed(() => {
   return res
 })
 
-const setValue = async (newValue, oldValue) => {
+const setValue = async (newValue: string, oldValue: string) => {
   PauseWatchModelValue()
   const { beforeChange } = props
-  const verifyValue = getVerifyValue(newValue)
-  // console.log({ newValue, oldValue, verifyValue })
-  if (beforeChange && verifyValue !== oldValue) {
-    await beforeChange(displayValue.value)
+  const verifyNewValue = getVerifyValue(newValue)
+  console.log({ newValue, oldValue, verifyNewValue })
+  if (beforeChange && verifyNewValue !== oldValue) {
+    const emitModelValue = getEmitModelValue({
+      displayValue: verifyNewValue,
+    })
+    console.log({ emitModelValue })
+
+    await beforeChange(emitModelValue)
       .then(() => {
-        displayValue.value = verifyValue
+        displayValue.value = verifyNewValue
+        emit("update:modelValue", emitModelValue)
       })
       .catch(() => {
         displayValue.value = oldValue
+        const emitModelValue = getEmitModelValue()
+        emit("update:modelValue", emitModelValue)
       })
   } else {
-    displayValue.value = verifyValue
+    displayValue.value = verifyNewValue
+    const emitModelValue = getEmitModelValue()
+    emit("update:modelValue", emitModelValue)
   }
-  emitModelValue()
+
+  // emitModelValue()
   await nextTick()
   resumeWatchModelValue()
 }
@@ -154,10 +172,10 @@ const onInput = async () => {
    *  "-."     "-."
    */
   const _displayValue = displayValue.value
-  if (!["", "-", "+", ".", "+.", "-."].includes(_displayValue) && !isNumber(_displayValue)) {
+  if (!isNumber(_displayValue) && !["", "-", "+", ".", "+.", "-."].includes(_displayValue)) {
     displayValue.value = oldDisplayValue.value
   }
-  emitModelValue(true)
+  doEmitModelValue({ verifyExtremes: true })
   // update:modelValue后，也需要nextTick下，再恢复modelValue侦听器，否则依然会触发modelValue侦听器
   await nextTick()
   resumeWatchModelValue()
@@ -193,7 +211,7 @@ async function onFocus() {
 
 function getVerifyExtremes(value: number) {
   const { min, max } = props
-  let res = Number(value)
+  let res = value
   if (res > max) {
     res = max
   } else if (res < min) {
@@ -202,19 +220,22 @@ function getVerifyExtremes(value: number) {
   return res
 }
 
-function getVerifyValue(value = "") {
+/**
+ * 验证 displayValue
+ */
+function getVerifyValue(value?: string) {
   const { emptyValue, precision } = props
-  let res: any = value || displayValue.value
-  if (res === "") {
+  let res = typeof value === "undefined" ? displayValue.value : value
+  if (!isNumber(res)) {
     if (isNumber(emptyValue)) {
       res = String(emptyValue)
     } else {
       return res
     }
   }
-  res = getVerifyExtremes(res)
-  res = precision ? res.toFixed(precision) : String(res)
-  return res
+  const NumberRes = getVerifyExtremes(Number(res))
+  const stringRes = precision ? NumberRes.toFixed(precision) : String(NumberRes)
+  return stringRes
 }
 
 // 增加
@@ -233,12 +254,25 @@ const decrease = async () => {
   const stepNumber = isNumber(props.step) ? Number(props.step) : 1
   displayValue.value = String(currentNumber - stepNumber)
   displayValue.value = getVerifyValue()
-  emitModelValue()
+  doEmitModelValue()
   await nextTick()
   resumeWatchModelValue()
 }
 
-const emitModelValue = async (verifyExtremes = false) => {
+const getEmitModelValue = (_options?: any) => {
+  const options = { verifyExtremes: false, displayValue: displayValue.value }
+  Object.assign(options, _options)
+  if (!isNumber(options.displayValue)) {
+    return null
+  }
+  let emitValue = parseFloat(options.displayValue)
+  if (options.verifyExtremes) {
+    emitValue = getVerifyExtremes(emitValue)
+  }
+  return emitValue
+}
+
+const doEmitModelValue = ({ verifyExtremes = false } = {}) => {
   if (!isNumber(displayValue.value)) {
     emit("update:modelValue", null)
     return
@@ -248,7 +282,29 @@ const emitModelValue = async (verifyExtremes = false) => {
     emitValue = getVerifyExtremes(emitValue)
   }
   emit("update:modelValue", emitValue)
+  return emitValue
 }
+
+// function modelValueToDisplayValue() {
+//   const { modelValue } = props
+//   const res = isNumber(modelValue) ? String(parseFloat(String(modelValue))) : ""
+//   return res
+// }
+
+// function displayValueToModelValue(value?: string) {
+//   const { emptyValue, precision } = props
+//   let stringRes = value === undefined ? displayValue.value : value
+//   if (!isNumber(res)) {
+//     if (isNumber(emptyValue)) {
+//       res = String(emptyValue)
+//     } else {
+//       return res
+//     }
+//   }
+//   const NumberRes = getVerifyExtremes(Number(res))
+//   const stringRes = precision ? NumberRes.toFixed(precision) : String(NumberRes)
+//   return stringRes
+// }
 </script>
 
 <style scoped lang="scss">
