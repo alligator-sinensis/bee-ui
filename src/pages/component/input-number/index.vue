@@ -2,8 +2,13 @@
   <bee-doc-demo-section>
     <pre>{{ state }}</pre>
     <bee-doc-demo-block title="基础用法">
-      <bee-input-number v-model="state.value1" :max="10" placeholder="请输入" />
       <bee-input-number
+        v-model="state.value1"
+        :max="10"
+        placeholder="请输入"
+        @update:modelValue="modelValue"
+      />
+      <!-- <bee-input-number
         v-model="state.value1"
         :before-change="beforeChange"
         :max="10"
@@ -14,13 +19,17 @@
         :before-change="beforeChange2"
         :max="10"
         placeholder="请输入"
-      />
+      /> -->
     </bee-doc-demo-block>
   </bee-doc-demo-section>
 </template>
 
 <script setup lang="ts">
 import { reactive } from "vue"
+
+const modelValue = (e) => {
+  console.log("update:modelValue", e)
+}
 
 const state = reactive({
   value1: 1,
