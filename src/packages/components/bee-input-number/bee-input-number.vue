@@ -113,6 +113,25 @@ const getStyle = computed(() => {
   return res
 })
 
+const setValue = async (newValue, oldValue) => {
+  const { beforeChange } = props
+  const verifyValue = getVerifyValue()
+  if (beforeChange && newValue !== oldValue) {
+    await beforeChange(displayValue.value)
+      .then(() => {
+        displayValue.value = verifyValue
+      })
+      .catch(() => {
+        displayValue.value = oldValue
+      })
+  } else {
+    displayValue.value = verifyValue
+  }
+  emitModelValue()
+  await nextTick()
+  resumeWatchModelValue()
+}
+
 const onInput = async () => {
   // input事件时暂停modelValue侦听器
   PauseWatchModelValue()
@@ -145,21 +164,22 @@ const onInput = async () => {
 async function onBlur() {
   const { beforeChange } = props
   PauseWatchModelValue()
-  const verifyValue = getVerifyValue()
-  if (beforeChange && focusDisplayValue.value !== displayValue.value) {
-    await beforeChange(displayValue.value)
-      .then(() => {
-        displayValue.value = verifyValue
-      })
-      .catch(() => {
-        displayValue.value = focusDisplayValue.value
-      })
-  } else {
-    displayValue.value = verifyValue
-  }
-  emitModelValue()
-  await nextTick()
-  resumeWatchModelValue()
+  // const verifyValue = getVerifyValue()
+  // if (beforeChange && focusDisplayValue.value !== displayValue.value) {
+  //   await beforeChange(displayValue.value)
+  //     .then(() => {
+  //       displayValue.value = verifyValue
+  //     })
+  //     .catch(() => {
+  //       displayValue.value = focusDisplayValue.value
+  //     })
+  // } else {
+  //   displayValue.value = verifyValue
+  // }
+  // emitModelValue()
+  // await nextTick()
+  // resumeWatchModelValue()
+  await setValue(displayValue.value, focusDisplayValue.value)
 }
 
 async function onFocus() {
@@ -200,22 +220,23 @@ const increase = async () => {
   const currentNumber = displayValue.value === "" ? 0 : Number(displayValue.value)
   const stepNumber = isNumber(props.step) ? Number(props.step) : 1
   displayValue.value = String(currentNumber + stepNumber)
-  const verifyValue = getVerifyValue()
-  console.log(oldValue, displayValue.value)
-  if (beforeChange) {
-    await beforeChange(displayValue.value)
-      .then(() => {
-        displayValue.value = verifyValue
-      })
-      .catch(() => {
-        displayValue.value = oldValue
-      })
-  } else {
-    displayValue.value = verifyValue
-  }
-  emitModelValue()
-  await nextTick()
-  resumeWatchModelValue()
+  // const verifyValue = getVerifyValue()
+  // console.log(oldValue, displayValue.value)
+  // if (beforeChange) {
+  //   await beforeChange(displayValue.value)
+  //     .then(() => {
+  //       displayValue.value = verifyValue
+  //     })
+  //     .catch(() => {
+  //       displayValue.value = oldValue
+  //     })
+  // } else {
+  //   displayValue.value = verifyValue
+  // }
+  // emitModelValue()
+  // await nextTick()
+  // resumeWatchModelValue()
+  await setValue(displayValue.value, oldValue)
 }
 
 // 减少
