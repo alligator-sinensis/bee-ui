@@ -43,7 +43,7 @@
       <bee-icon name="add-line" />
     </view>
   </view>
-  <!-- <pre>{{ { modelValue, displayValue, oldDisplayValue } }}</pre> -->
+  <pre>{{ { modelValue, displayValue } }}</pre>
 </template>
 
 <script setup lang="ts">
@@ -54,7 +54,7 @@ import { componentSizeMap, type ComponentSize } from "../../constants"
 
 const props = withDefaults(
   defineProps<{
-    modelValue?: number
+    modelValue?: number | string | null
     min?: number
     max?: number
     step?: number
@@ -72,8 +72,8 @@ const props = withDefaults(
     size: "middle",
     disabled: false,
     // step: 0.03,
-    // emptyValue: 5.2,
-    // precision: 5,
+    emptyValue: 5.2,
+    precision: 5,
     // min: -10,
     // max: 100,
   },
@@ -94,9 +94,16 @@ watch(
 const { pause: PauseWatchModelValue, resume: resumeWatchModelValue } = watchPausable(
   () => props.modelValue,
   async (value) => {
-    // console.log("watch => modelValue", value, typeof value)
-    displayValue.value = isNumber(value) ? String(parseFloat(String(value))) : ""
-    displayValue.value = getVerifyValue()
+    // "-.1" => "-0.1"
+    let toDisplayValue = isNumber(value) ? String(parseFloat(String(value))) : ""
+    if (toDisplayValue === displayValue.value) {
+      return
+    }
+    console.log("watch => modelValue", value, typeof value)
+    // "-0.1"
+    toDisplayValue = getVerifyValue(toDisplayValue)
+    displayValue.value = toDisplayValue
+    // -0.1
     const emitValue = displayValue.value === "" ? null : parseFloat(displayValue.value)
     emit("update:modelValue", emitValue)
   },
@@ -113,6 +120,35 @@ const getStyle = computed(() => {
   return res
 })
 
+const setValue = async (newValue: string, oldValue: string) => {
+  PauseWatchModelValue()
+  const { beforeChange } = props
+  const verifyNewValue = getVerifyValue(newValue)
+  console.log({
+    newValue,
+    oldValue,
+    verifyNewValue,
+  })
+  try {
+    const emitModelValue = displayValueToModelValue(verifyNewValue)
+    if (beforeChange && verifyNewValue !== oldValue) {
+      await beforeChange(emitModelValue)
+    }
+    displayValue.value = verifyNewValue
+    emit("update:modelValue", emitModelValue)
+  } catch (error) {
+    displayValue.value = oldValue
+    const emitModelValue = displayValueToModelValue(oldValue)
+    emit("update:modelValue", emitModelValue)
+  }
+
+  await nextTick()
+  resumeWatchModelValue()
+}
+
+/**
+ * onInput
+ */
 const onInput = async () => {
   // input事件时暂停modelValue侦听器
   PauseWatchModelValue()
@@ -133,42 +169,53 @@ const onInput = async () => {
    *  "-."     "-."
    */
   const _displayValue = displayValue.value
-  if (!["", "-", "+", ".", "+.", "-."].includes(_displayValue) && !isNumber(_displayValue)) {
+  // 输入不正确的数字回退
+  if (!isNumber(_displayValue) && !["", "-", "+", ".", "+.", "-."].includes(_displayValue)) {
     displayValue.value = oldDisplayValue.value
   }
-  emitModelValue(true)
+
+  let emitModelValue = displayValueToModelValue(displayValue.value)
+  if (emitModelValue !== null) emitModelValue = getVerifyExtremes(emitModelValue)
+  emit("update:modelValue", emitModelValue)
+
   // update:modelValue后，也需要nextTick下，再恢复modelValue侦听器，否则依然会触发modelValue侦听器
   await nextTick()
   resumeWatchModelValue()
 }
 
 async function onBlur() {
-  const { beforeChange } = props
-  PauseWatchModelValue()
-  const verifyValue = getVerifyValue()
-  if (beforeChange && focusDisplayValue.value !== displayValue.value) {
-    await beforeChange(displayValue.value)
-      .then(() => {
-        displayValue.value = verifyValue
-      })
-      .catch(() => {
-        displayValue.value = focusDisplayValue.value
-      })
-  } else {
-    displayValue.value = verifyValue
-  }
-  emitModelValue()
-  await nextTick()
-  resumeWatchModelValue()
+  await setValue(displayValue.value, focusDisplayValue.value)
 }
 
 async function onFocus() {
   focusDisplayValue.value = displayValue.value
 }
 
+// 增加
+const increase = async () => {
+  const currentNumber = displayValue.value === "" ? 0 : Number(displayValue.value)
+  const stepNumber = isNumber(props.step) ? Number(props.step) : 1
+  const newValue = String(currentNumber + stepNumber)
+  const oldValue = displayValue.value
+  await setValue(newValue, oldValue)
+}
+
+// 减少
+const decrease = async () => {
+  const currentNumber = displayValue.value === "" ? 0 : Number(displayValue.value)
+  const stepNumber = isNumber(props.step) ? Number(props.step) : 1
+  const newValue = String(currentNumber - stepNumber)
+  const oldValue = displayValue.value
+  await setValue(newValue, oldValue)
+}
+
+/**
+ * getVerifyExtremes
+ * 获取值保证在范围区间内
+ */
 function getVerifyExtremes(value: number) {
   const { min, max } = props
-  let res = Number(value)
+  let res = value
   if (res > max) {
     res = max
   } else if (res < min) {
@@ -177,69 +224,34 @@ function getVerifyExtremes(value: number) {
   return res
 }
 
-function getVerifyValue() {
+/**
+ * 验证 displayValue
+ * 设置控制、范围区间、精度
+ */
+function getVerifyValue(value?: string) {
   const { emptyValue, precision } = props
-  let res: any = displayValue.value
-  if (res === "") {
+  let res = typeof value === "undefined" ? displayValue.value : value
+  if (!isNumber(res)) {
     if (isNumber(emptyValue)) {
       res = String(emptyValue)
     } else {
       return res
     }
   }
-  res = getVerifyExtremes(res)
-  res = precision ? res.toFixed(precision) : String(res)
-  return res
+  const NumberRes = getVerifyExtremes(Number(res))
+  const stringRes = precision ? NumberRes.toFixed(precision) : String(NumberRes)
+  return stringRes
 }
 
-// 增加
-const increase = async () => {
-  const { beforeChange } = props
-  PauseWatchModelValue()
-  const oldValue = displayValue.value
-  const currentNumber = displayValue.value === "" ? 0 : Number(displayValue.value)
-  const stepNumber = isNumber(props.step) ? Number(props.step) : 1
-  displayValue.value = String(currentNumber + stepNumber)
-  const verifyValue = getVerifyValue()
-  console.log(oldValue, displayValue.value)
-  if (beforeChange) {
-    await beforeChange(displayValue.value)
-      .then(() => {
-        displayValue.value = verifyValue
-      })
-      .catch(() => {
-        displayValue.value = oldValue
-      })
-  } else {
-    displayValue.value = verifyValue
+/**
+ * displayValueToModelValue
+ * 是数字返回number，非数字返回null，
+ */
+function displayValueToModelValue(value) {
+  if (!isNumber(value)) {
+    return null
   }
-  emitModelValue()
-  await nextTick()
-  resumeWatchModelValue()
-}
-
-// 减少
-const decrease = async () => {
-  PauseWatchModelValue()
-  const currentNumber = displayValue.value === "" ? 0 : Number(displayValue.value)
-  const stepNumber = isNumber(props.step) ? Number(props.step) : 1
-  displayValue.value = String(currentNumber - stepNumber)
-  displayValue.value = getVerifyValue()
-  emitModelValue()
-  await nextTick()
-  resumeWatchModelValue()
-}
-
-const emitModelValue = async (verifyExtremes = false) => {
-  if (!isNumber(displayValue.value)) {
-    emit("update:modelValue", null)
-    return
-  }
-  let emitValue = parseFloat(displayValue.value)
-  if (verifyExtremes) {
-    emitValue = getVerifyExtremes(emitValue)
-  }
-  emit("update:modelValue", emitValue)
+  return parseFloat(value)
 }
 </script>
 

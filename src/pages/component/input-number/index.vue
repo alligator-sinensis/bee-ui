@@ -5,21 +5,26 @@
       <bee-input-number
         v-model="state.value1"
         :max="10"
+        :min="1"
         placeholder="请输入"
-        @update:modelValue="modelValue"
+        @blur="onBlur"
+        @change="onChange"
+        @focus="onFocus"
       />
-      <!-- <bee-input-number
-        v-model="state.value1"
+      <bee-input-number
+        v-model="state.value2"
         :before-change="beforeChange"
         :max="10"
         placeholder="请输入"
+        @change="onChange"
       />
       <bee-input-number
-        v-model="state.value1"
+        v-model="state.value3"
         :before-change="beforeChange2"
         :max="10"
         placeholder="请输入"
-      /> -->
+        @change="onChange"
+      />
     </bee-doc-demo-block>
   </bee-doc-demo-section>
 </template>
@@ -27,13 +32,22 @@
 <script setup lang="ts">
 import { reactive } from "vue"
 
-const modelValue = (e) => {
-  console.log("update:modelValue", e)
+const state = reactive({
+  value1: 3.3333,
+  value2: 1,
+  value3: 1,
+})
+
+const onChange = (currentValue, oldValue) => {
+  console.log({ currentValue, oldValue })
 }
 
-const state = reactive({
-  value1: 1,
-})
+const onBlur = (event) => {
+  console.log("onBlur", event)
+}
+const onFocus = (event) => {
+  console.log("onFocus", event)
+}
 
 const beforeChange = async (value) => {
   console.log("beforeChange", value)
