@@ -4,7 +4,11 @@
     :class="[`bee-stepper--${props.size}`, { 'is-disabled': disabled }]"
     :style="getStyle"
   >
-    <view class="bee-stepper__button bee-stepper__button-increase" @click="clickControls(false)">
+    <view
+      class="bee-stepper__button bee-stepper__button-decrease"
+      :class="[{ 'is-disabled': getControlsTargetValue(false) < min }]"
+      @click="clickControls(false)"
+    >
       <bee-icon name="subtract-line" />
     </view>
 
@@ -24,7 +28,11 @@
       @focus="onFocus"
     />
 
-    <view class="bee-stepper__button bee-stepper__button-decrease" @click="clickControls(true)">
+    <view
+      class="bee-stepper__button bee-stepper__button-increase"
+      :class="[{ 'is-disabled': getControlsTargetValue(true) > max }]"
+      @click="clickControls(true)"
+    >
       <bee-icon name="add-line" />
     </view>
   </view>
@@ -52,6 +60,13 @@ const modelValue = computed({
   },
 })
 
+const disabledButtonIncrease = computed(() => {
+  return getControlsTargetValue(true) < props.max
+})
+const disabledButtonDecrease = computed(() => {
+  return getControlsTargetValue(false) > props.min
+})
+
 const getStyle = computed(() => {
   const { size } = props
   const res = {
@@ -60,10 +75,15 @@ const getStyle = computed(() => {
   return res
 })
 
-const clickControls = (direction) => {
+const getControlsTargetValue = (direction) => {
   const currentNumber = isNumber(modelValue.value) ? Number(modelValue.value) : 0
   const stepNumber = isNumber(props.step) ? Number(props.step) : 1
   const newValue = direction ? currentNumber + stepNumber : currentNumber - stepNumber
+  return newValue
+}
+
+const clickControls = (direction) => {
+  const newValue = getControlsTargetValue(direction)
   refInputNumber.value.setValue(String(newValue))
 }
 
@@ -92,6 +112,12 @@ const onFocus = (event) => {
     font-size: 1.5em;
     background-color: var(--bee-stepper-background-color);
     border-radius: var(--bee-stepper-radius);
+
+    &.is-disabled {
+      color: var(--bee-stepper-disabled-icon-color);
+      background-color: var(--bee-stepper-disabled-background-color);
+      pointer-events: none;
+    }
   }
 
   .bee-input-number {
@@ -129,8 +155,6 @@ const onFocus = (event) => {
     .bee-stepper__button {
       color: var(--bee-stepper-disabled-icon-color);
     }
-
-    // --bee-stepper-disabled-icon-color
   }
 }
 </style>
