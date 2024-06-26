@@ -24,6 +24,7 @@
 import { nextTick, ref, watch } from "vue"
 import isNumber from "is-number"
 import { watchPausable } from "@vueuse/core"
+import type { ComponentSize } from "../../constants"
 
 const props = withDefaults(
   defineProps<{
@@ -31,6 +32,7 @@ const props = withDefaults(
     min?: number
     max?: number
     step?: number
+    size?: Exclude<ComponentSize, "mini">
     precision?: number
     emptyValue?: number
     stepper?: boolean
