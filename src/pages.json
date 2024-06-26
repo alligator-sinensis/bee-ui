@@ -70,6 +70,12 @@
           }
         },
         {
+          "path": "stepper/index",
+          "style": {
+            "navigationBarTitleText": "Stepper 步进器"
+          }
+        },
+        {
           "path": "space/index",
           "style": {
             "navigationBarTitleText": "Space 间距"

@@ -33,7 +33,7 @@
       <bee-icon class="bee-input__icon" :name="suffixIcon" :prefix="suffixIconPrefix" />
     </view>
     <view v-if="showClearable" class="bee-input__right">
-      <bee-icon class="bee-input__icon" name="close-circle-line" @click="modelValue = ''" />
+      <bee-icon class="bee-input__icon" name="close-circle-line" @click="handleClear" />
     </view>
     <view v-if="showPassword" class="bee-input__right">
       <bee-icon
@@ -65,42 +65,11 @@ export default {
 </script>
 <script setup lang="ts">
 import { computed, ref, useSlots } from "vue"
-import { componentSizeMap, type ComponentSize } from "../../constants"
+import { componentSizeMap } from "../../constants"
+import { type InputProps, inputPropDefaults } from "./input"
 import { sleep } from "radash"
 
-const props = withDefaults(
-  defineProps<{
-    modelValue?: string
-    maxlength?: string | number
-    placeholder?: string
-    clearable?: boolean
-    size?: Exclude<ComponentSize, "mini">
-    prefixIcon?: string
-    prefixIconPrefix?: string
-    suffixIcon?: string
-    suffixIconPrefix?: string
-    password?: boolean
-    showPassword?: boolean
-    showWordLimit?: boolean
-    disabled?: boolean
-    readonly?: boolean
-    clearTrigger?: "always" | "focus"
-    // uniapp其他
-    type?: string
-    inputmode?: string
-  }>(),
-  {
-    maxlength: 140,
-    clearable: false,
-    size: "middle",
-    password: false,
-    showPassword: false,
-    showWordLimit: false,
-    disabled: false,
-    readonly: false,
-    clearTrigger: "focus",
-  },
-)
+const props = withDefaults(defineProps<InputProps>(), inputPropDefaults)
 
 const emit = defineEmits([
   "update:modelValue",
@@ -110,7 +79,11 @@ const emit = defineEmits([
   "confirm",
   "click",
   "clickInput",
+  "clear",
 ])
+
+const slots = useSlots()
+
 const passwordEnableStatus = ref(false)
 const isFocus = ref(false)
 
@@ -149,6 +122,11 @@ const showClearable = computed(() => {
   return false
 })
 
+const handleClear = () => {
+  modelValue.value = ""
+  emit("clear")
+}
+
 const onFocus = (event) => {
   emit("focus", event)
   isFocus.value = true
@@ -170,8 +148,6 @@ const onClick = (event) => {
 const onClickInput = (event) => {
   emit("clickInput", event)
 }
-
-const slots = useSlots()
 </script>
 
 <style scoped lang="scss">

@@ -11,10 +11,6 @@
   border: 1px solid var(--bee-border-color);
   border-radius: var(--bee-input-border-radius);
 
-  &.is-disabled {
-    background-color: var(--bee-disabled-bg-color);
-  }
-
   input {
     flex: 1;
     height: 100%;
@@ -24,6 +20,14 @@
 
     .input-placeholder {
       color: var(--bee-text-color-placeholder);
+    }
+  }
+
+  &.is-disabled {
+    background-color: var(--bee-disabled-bg-color);
+
+    input {
+      color: var(--bee-text-color-disabled);
     }
   }
 
@@ -39,7 +43,7 @@
 
   &--small {
     padding: 0 8px;
-    font-size: 10px;
+    font-size: 12px;
   }
 
   &__left,

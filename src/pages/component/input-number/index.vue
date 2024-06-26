@@ -1,6 +1,6 @@
 <template>
   <bee-doc-demo-section>
-    <pre>{{ state }}</pre>
+    <!-- <pre>{{ state }}</pre> -->
     <bee-doc-demo-block title="基础用法">
       <bee-input-number
         v-model="state.value1"
@@ -11,19 +11,60 @@
         @change="onChange"
         @focus="onFocus"
       />
+    </bee-doc-demo-block>
+    <bee-doc-demo-block title="禁用和只读">
+      <bee-input-number v-model="state.value2" disabled placeholder="请输入" />
+      <bee-input-number v-model="state.value2" placeholder="请输入" readonly />
+    </bee-doc-demo-block>
+    <bee-doc-demo-block title="精度">
+      <bee-input-number v-model="state.value3" placeholder="请输入" :precision="4" />
+    </bee-doc-demo-block>
+    <bee-doc-demo-block title="不同的尺寸">
+      <bee-input-number v-model="state.value4" placeholder="请输入" size="large" />
+      <bee-input-number v-model="state.value4" placeholder="请输入" />
+      <bee-input-number v-model="state.value4" placeholder="请输入" size="small" />
+    </bee-doc-demo-block>
+    <bee-doc-demo-block title="为空时默认值">
+      <bee-input-number v-model="state.value5" :default-value-if-empty="0" />
+    </bee-doc-demo-block>
+    <bee-doc-demo-block title="一键清空">
+      注意，如果设置了default-value-if-empty属性，点击清空会将值设置为default-value-if-empty
+      <bee-input-number v-model="state.value61" clearable @change="onChange" />
+      <bee-input-number v-model="state.value62" clearable :default-value-if-empty="3" />
+    </bee-doc-demo-block>
+    <bee-doc-demo-block title="带图标的输入框">
       <bee-input-number
-        v-model="state.value2"
-        :before-change="beforeChange"
+        v-model="state.value7"
+        prefix-icon="search-line"
+        suffix-icon="calendar-2-line"
+      />
+    </bee-doc-demo-block>
+    <bee-doc-demo-block title="插槽">
+      <bee-input-number
+        v-model="state.value8"
+        prefix-icon="search-line"
+        suffix-icon="calendar-2-line"
+      >
+        <template #prefix> prefix </template>
+        <template #suffix> suffix </template>
+      </bee-input-number>
+      <bee-input-number v-model="state.value8">
+        <template #prefix> 单价 </template>
+        <template #suffix> ( 元 ) </template>
+      </bee-input-number>
+    </bee-doc-demo-block>
+    <bee-doc-demo-block title="异步变更">
+      <bee-input-number
+        v-model="state.value9"
+        :before-change="(value) => beforeChange(value, true)"
         :max="10"
         placeholder="请输入"
-        @change="onChange"
       />
       <bee-input-number
-        v-model="state.value3"
-        :before-change="beforeChange2"
+        v-model="state.value10"
+        :before-change="(value) => beforeChange(value, false)"
         :max="10"
         placeholder="请输入"
-        @change="onChange"
       />
     </bee-doc-demo-block>
   </bee-doc-demo-section>
@@ -33,15 +74,22 @@
 import { reactive } from "vue"
 
 const state = reactive({
-  value1: 3.3333,
+  value1: 1,
   value2: 1,
   value3: 1,
+  value4: 1,
+  value5: null,
+  value61: 1,
+  value62: 1,
+  value7: 1,
+  value8: 1,
+  value9: 1,
+  value10: 1,
 })
 
 const onChange = (currentValue, oldValue) => {
   console.log({ currentValue, oldValue })
 }
-
 const onBlur = (event) => {
   console.log("onBlur", event)
 }
@@ -49,35 +97,15 @@ const onFocus = (event) => {
   console.log("onFocus", event)
 }
 
-const beforeChange = async (value) => {
+const beforeChange = async (value, flag) => {
   console.log("beforeChange", value)
   uni.showLoading()
-  await new Promise((resolve) => {
+  await new Promise<void>((resolve, reject) => {
     setTimeout(() => {
-      resolve(true)
+      flag ? resolve() : reject()
     }, 500)
   }).finally(() => {
     uni.hideLoading()
-  })
-}
-
-const beforeChange2 = async (value) => {
-  console.log("beforeChange", value)
-  uni.showLoading()
-  await new Promise((resolve, reject) => {
-    setTimeout(() => {
-      reject()
-    }, 500)
-  }).finally(() => {
-    uni.hideLoading()
-  })
-}
-
-const showToast = (title) => {
-  console.log(title)
-  uni.showToast({
-    icon: "none",
-    title,
   })
 }
 </script>

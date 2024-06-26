@@ -2,58 +2,42 @@
   <bee-input
     v-model="displayValue"
     class="bee-input-number"
-    v-bind="$attrs"
+    :clear-trigger="clearTrigger"
+    :clearable="clearable"
     :disabled="disabled"
+    :placeholder="placeholder"
+    :prefix-icon="prefixIcon"
+    :prefix-icon-prefix="prefixIconPrefix"
+    :readonly="readonly"
+    :size="size"
+    :suffix-icon="suffixIcon"
+    :suffix-icon-prefix="suffixIconPrefix"
     @blur="onBlur"
+    @clear="onClear"
     @focus="onFocus"
     @input="onInput"
   >
-    <template #prefix>
-      <view class="prefix">
-        <slot name="prefix"></slot>
-      </view>
+    <template #prefix v-if="!!slots.prefix">
+      <slot name="prefix"></slot>
     </template>
-    <template #suffix>
+    <template #suffix v-if="!!slots.suffix">
       <slot name="suffix"></slot>
     </template>
   </bee-input>
-  <pre>{{ { modelValue, displayValue } }}</pre>
+  <!-- <pre>{{ { modelValue, displayValue } }}</pre> -->
 </template>
 
 <script setup lang="ts">
-import { nextTick, ref, watch } from "vue"
+import { nextTick, ref, useSlots, watch } from "vue"
 import isNumber from "is-number"
 import { watchPausable } from "@vueuse/core"
-import type { ComponentSize } from "../../constants"
+import { type InputNumberProps, inputNumberPropDefaults } from "./inputNumber"
 
-const props = withDefaults(
-  defineProps<{
-    modelValue?: number | string | null
-    min?: number
-    max?: number
-    step?: number
-    size?: Exclude<ComponentSize, "mini">
-    precision?: number
-    emptyValue?: number
-    stepper?: boolean
-    disabled?: boolean
-    beforeChange?: (value: any) => Promise<void>
-  }>(),
-  {
-    min: -Infinity,
-    max: Infinity,
-    stepper: true,
-    size: "middle",
-    disabled: false,
-    // step: 0.03,
-    // emptyValue: 5.2,
-    precision: 2,
-    // min: -10,
-    // max: 100,
-  },
-)
+const props = withDefaults(defineProps<InputNumberProps>(), inputNumberPropDefaults)
 
 const emit = defineEmits(["update:modelValue", "change", "blur", "focus"])
+
+const slots = useSlots()
 
 const displayValue = ref("")
 const oldDisplayValue = ref()
@@ -69,15 +53,17 @@ watch(
 const { pause: PauseWatchModelValue, resume: resumeWatchModelValue } = watchPausable(
   () => props.modelValue,
   async (value) => {
+    // console.log("watch => modelValue", value, typeof value)
     // "-.1" => "-0.1"
-    let toDisplayValue = isNumber(value) ? String(parseFloat(String(value))) : ""
-    if (toDisplayValue === displayValue.value) {
+    const toDisplayValue = isNumber(value) ? String(parseFloat(String(value))) : ""
+    // "-0.1"
+    const verifyToDisplayValue = getVerifyValue(toDisplayValue)
+
+    if (verifyToDisplayValue === displayValue.value) {
       return
     }
-    console.log("watch => modelValue", value, typeof value)
-    // "-0.1"
-    toDisplayValue = getVerifyValue(toDisplayValue)
-    displayValue.value = toDisplayValue
+
+    displayValue.value = verifyToDisplayValue
     // -0.1
     const emitValue = displayValue.value === "" ? null : parseFloat(displayValue.value)
     emit("update:modelValue", emitValue)
@@ -87,15 +73,17 @@ const { pause: PauseWatchModelValue, resume: resumeWatchModelValue } = watchPaus
   },
 )
 
-const setValue = async (newValue: string, oldValue: string) => {
+const setValue = async (_newValue: string, _oldValue?: string) => {
   PauseWatchModelValue()
   const { beforeChange } = props
-  const verifyNewValue = getVerifyValue(newValue)
+  const oldValue = _oldValue || displayValue.value
+  const verifyNewValue = getVerifyValue(_newValue)
   // console.log({
   //   newValue,
   //   oldValue,
   //   verifyNewValue,
   // })
+
   const emitModelValue = displayValueToModelValue(verifyNewValue)
   const oldModelValue = displayValueToModelValue(oldValue)
   try {
@@ -181,11 +169,11 @@ function getVerifyExtremes(value: number) {
  * 设置控制、范围区间、精度
  */
 function getVerifyValue(value: string) {
-  const { emptyValue, precision } = props
+  const { defaultValueIfEmpty, precision } = props
   let res = value
   if (!isNumber(res)) {
-    if (isNumber(emptyValue)) {
-      res = String(emptyValue)
+    if (isNumber(defaultValueIfEmpty)) {
+      res = String(defaultValueIfEmpty)
     } else {
       return res
     }
@@ -205,6 +193,16 @@ function displayValueToModelValue(value) {
   }
   return parseFloat(value)
 }
+
+const onClear = () => {
+  const oldValue = props.modelValue
+  displayValue.value = getVerifyValue(displayValue.value)
+  const emitValue = displayValueToModelValue(displayValue.value)
+  emit("update:modelValue", emitValue)
+  emit("change", emitValue, oldValue)
+}
+
+defineExpose({ setValue })
 </script>
 
 <style scoped lang="scss"></style>

@@ -20,6 +20,7 @@ declare module '@vue/runtime-core' {
     BeeOverlay: typeof import('@/packages/components/bee-overlay/bee-overlay.vue')['default']
     BeePopup: typeof import('@/packages/components/bee-popup/bee-popup.vue')['default']
     BeeSpace: typeof import('@/packages/components/bee-space/bee-space.vue')['default']
+    BeeStepper: typeof import('@/packages/components/bee-stepper/bee-stepper.vue')['default']
     BeeTransition: typeof import('@/packages/components/bee-transition/bee-transition.vue')['default']
   }
 }

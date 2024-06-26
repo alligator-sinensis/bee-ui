@@ -1,7 +1,7 @@
 import type { ComponentSize } from "../../constants"
 
-export type InputProps<T extends boolean> = {
-  modelValue?: T extends true ? number : string
+export type InputProps = {
+  modelValue?: string
   maxlength?: string | number
   placeholder?: string
   clearable?: boolean
@@ -19,16 +19,9 @@ export type InputProps<T extends boolean> = {
   // uniapp其他
   type?: string
   inputmode?: string
-  // input-number
-  inputNumber?: T
-  min?: number
-  max?: number
-  step?: number
-  precision?: number
 }
 
-export const inputPropDefaults: InputProps<false> = {
-  modelValue: "",
+export const inputPropDefaults: InputProps = {
   maxlength: 140,
   clearable: false,
   size: "middle",
@@ -38,8 +31,4 @@ export const inputPropDefaults: InputProps<false> = {
   disabled: false,
   readonly: false,
   clearTrigger: "focus",
-  inputNumber: false,
-  min: -Infinity,
-  max: Infinity,
-  step: 1,
 }
