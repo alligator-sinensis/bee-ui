@@ -101,6 +101,7 @@ const onFocus = (event) => {
 <style scoped lang="scss">
 .bee-stepper {
   display: inline-flex;
+  gap: 2px;
 
   &__button {
     display: flex;
@@ -131,21 +132,18 @@ const onFocus = (event) => {
   &--large {
     .bee-input-number {
       width: var(--bee-stepper-input-large-width);
-      margin: 0 2px;
     }
   }
 
   &--middle {
     .bee-input-number {
       width: var(--bee-stepper-input-middle-width);
-      margin: 0 2px;
     }
   }
 
   &--small {
     .bee-input-number {
       width: var(--bee-stepper-input-small-width);
-      margin: 0 2px;
     }
   }
 
